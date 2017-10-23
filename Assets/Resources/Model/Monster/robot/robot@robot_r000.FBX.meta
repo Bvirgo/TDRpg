@@ -1,0 +1,171 @@
+fileFormatVersion: 2
+guid: d7b731969910c4246846f42af8afd52c
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: BodyRig
+    100002: bone_arm_L
+    100004: bone_arm_R
+    100006: bone_foot_L
+    100008: bone_foot_R
+    100010: bone_hand_L
+    100012: bone_hand_R
+    100014: bone_hip
+    100016: bone_leg_L
+    100018: bone_leg_R
+    100020: bone_legend_L
+    100022: bone_legend_R
+    100024: bone_spine
+    100026: bone_uparm_L
+    100028: bone_uparm_R
+    100030: bone_upleg_L
+    100032: bone_upleg_R
+    100034: Down
+    100036: KZ_arm_L
+    100038: KZ_arm_R
+    100040: KZ_foot_L
+    100042: KZ_foot_R
+    100044: KZ_hand_L
+    100046: KZ_hand_R
+    100048: KZ_hip
+    100050: KZ_knee_L
+    100052: KZ_knee_R
+    100054: KZ_leg_L
+    100056: KZ_leg_R
+    100058: KZ_uparm_L
+    100060: KZ_uparm_R
+    100062: KZ_upleg_L
+    100064: KZ_upleng_R
+    100066: Medium
+    100068: Particle View 01
+    100070: //RootNode
+    100072: Up
+    400000: BodyRig
+    400002: bone_arm_L
+    400004: bone_arm_R
+    400006: bone_foot_L
+    400008: bone_foot_R
+    400010: bone_hand_L
+    400012: bone_hand_R
+    400014: bone_hip
+    400016: bone_leg_L
+    400018: bone_leg_R
+    400020: bone_legend_L
+    400022: bone_legend_R
+    400024: bone_spine
+    400026: bone_uparm_L
+    400028: bone_uparm_R
+    400030: bone_upleg_L
+    400032: bone_upleg_R
+    400034: Down
+    400036: KZ_arm_L
+    400038: KZ_arm_R
+    400040: KZ_foot_L
+    400042: KZ_foot_R
+    400044: KZ_hand_L
+    400046: KZ_hand_R
+    400048: KZ_hip
+    400050: KZ_knee_L
+    400052: KZ_knee_R
+    400054: KZ_leg_L
+    400056: KZ_leg_R
+    400058: KZ_uparm_L
+    400060: KZ_uparm_R
+    400062: KZ_upleg_L
+    400064: KZ_upleng_R
+    400066: Medium
+    400068: Particle View 01
+    400070: //RootNode
+    400072: Up
+    7400000: robot_r000
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: robot_r000
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: BodyRig
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

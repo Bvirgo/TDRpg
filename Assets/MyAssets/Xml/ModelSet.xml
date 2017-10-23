@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?> 
+    <Root>  
+      <Model id="1001" Type="N" model="Merchant_female_Prefab" AB="ui_res_monster"/>
+      <Model id="1002" Type="N" model="Villager_B_Boy_prefab" AB="ui_res_monster"/>
+      <Model id="1003" Type="M" model="FlowerModel-Blue" AB="ui_res_monster"/>
+      <Model id="1004" Type="M" model="MagmaDemon-Orange" AB="ui_res_monster"/>
+      <Model id="1005" Type="M" model="MaskedOrc-Grey" AB="ui_res_monster"/>
+      <Model id="1006" Type="M" model="ModelCatBat-Brown" AB="ui_res_monster"/>
+      <Model id="1007" Type="M" model="ModelHornet-Red" AB="ui_res_monster"/>
+      <Model id="1008" Type="M" model="Mushroom Model-Purple" AB="ui_res_monster"/>
+      <Model id="1009" Type="M" model="MushroomModel-Pink" AB="ui_res_monster"/>
+      <Model id="1010" Type="M" model="PlantModel-Brown" AB="ui_res_monster"/>  
+      <Model id="1011" Type="M" model="Boss_Idel-1" AB="ui_res_monster"/>   
+      <Model id="2001" Type="P" model="Boy_SimpleMove" AB="charactor"/>  
+      <Model id="2002" Type="P" model="Girl_SimpleMove" AB="charactor"/>   
+      <Model id="2003" Type="P" model="Boy_Room" AB="charactor"/>  
+      <Model id="2004" Type="P" model="Girl_Room" AB="charactor"/>   
+    </Root>  

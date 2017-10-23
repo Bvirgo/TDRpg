@@ -1,0 +1,166 @@
+fileFormatVersion: 2
+guid: 5d74bbbbb3577ca4198263a881b66365
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: 1
+    100002: 10
+    100004: 2
+    100006: 3
+    100008: 4
+    100010: 5
+    100012: 6
+    100014: 7
+    100016: 8
+    100018: 9
+    100020: BodyRig
+    100022: bone_A_1
+    100024: bone_A_2
+    100026: bone_all
+    100028: bone_B_1
+    100030: bone_B_2
+    100032: bone_B_3
+    100034: bone_B_4
+    100036: bone_B_5
+    100038: bone_C_1
+    100040: Bone_C_2
+    100042: Down
+    100044: Medium
+    100046: //RootNode
+    100048: Up
+    100050: bone_A_3
+    100052: bone_A_4
+    100054: Dummy01
+    100056: Dummy02
+    100058: Dummy03
+    100060: Dummy04
+    100062: Dummy05
+    100064: Dummy06
+    100066: Dummy07
+    100068: Statue
+    400000: 1
+    400002: 10
+    400004: 2
+    400006: 3
+    400008: 4
+    400010: 5
+    400012: 6
+    400014: 7
+    400016: 8
+    400018: 9
+    400020: BodyRig
+    400022: bone_A_1
+    400024: bone_A_2
+    400026: bone_all
+    400028: bone_B_1
+    400030: bone_B_2
+    400032: bone_B_3
+    400034: bone_B_4
+    400036: bone_B_5
+    400038: bone_C_1
+    400040: Bone_C_2
+    400042: Down
+    400044: Medium
+    400046: //RootNode
+    400048: Up
+    400050: bone_A_3
+    400052: bone_A_4
+    400054: Dummy01
+    400056: Dummy02
+    400058: Dummy03
+    400060: Dummy04
+    400062: Dummy05
+    400064: Dummy06
+    400066: Dummy07
+    400068: Statue
+    4300000: 1
+    4300002: 2
+    4300004: 9
+    4300006: 4
+    4300008: 5
+    4300010: 6
+    4300012: 7
+    4300014: 8
+    4300016: 10
+    4300018: 3
+    4300020: Statue
+    9500000: //RootNode
+    13700000: 1
+    13700002: 10
+    13700004: 2
+    13700006: 3
+    13700008: 4
+    13700010: 5
+    13700012: 6
+    13700014: 7
+    13700016: 8
+    13700018: 9
+    13700020: Statue
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 1
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths:
+    - Statue
+    - Down
+    - Medium
+    - Up
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00700000022
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: BodyRig
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

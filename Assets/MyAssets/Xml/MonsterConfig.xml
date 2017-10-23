@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?> 
+    <Root>  
+      <Monster id="001" monsterType="N" model="Merchant_female_Prefab" name="月亮之女" x="118.74" y="0" z="-4.96" icon="NPC对话半身像" mapID="4" hp="10000" attackDis="0" atkCD="0" damage="100" cruise="30" pursuit="40" bcruise="1"/>
+      <Monster id="002" monsterType="N" model="Villager_B_Boy_prefab" name="太阳之子" x="39.88" y="0" z="-13.03" icon="NPC对话半身像" mapID="4" hp="10000" attackDis="0" atkCD="0" damage="100" cruise="30" pursuit="40" bcruise="1"/>
+      <Monster id="003" monsterType="M" model="FlowerMonster-Blue" name="幽冥鬼草" x="118.74" y="0" z="-4.96" icon="NPC对话半身像" mapID="4" hp="1000" attackDis="2" atkCD="1" damage="50" cruise="30" pursuit="40" bcruise="1"/>
+      <Monster id="004" monsterType="M" model="MagmaDemon-Orange" name="熔岩地精" x="118.74" y="0" z="-4.96" icon="NPC对话半身像" mapID="4" hp="3000" attackDis="2" atkCD="1" damage="100" cruise="30" pursuit="40" bcruise="1"/>
+      <Monster id="005" monsterType="M" model="MaskedOrc-Grey" name="地狱小鬼" x="118.74" y="0" z="-4.96" icon="NPC对话半身像" mapID="4" hp="2000" attackDis="3" atkCD="1" damage="150" cruise="50" pursuit="70" bcruise="1"/>
+      <Monster id="006" monsterType="M" model="MonsterCatBat-Brown" name="吸血蝙蝠" x="118.74" y="0" z="-4.96" icon="NPC对话半身像" mapID="4" hp="3000" attackDis="3" atkCD="1" damage="200" cruise="30" pursuit="40" bcruise="1"/>
+      <Monster id="007" monsterType="M" model="MonsterHornet-Red" name="尸王蜂" x="118.74" y="0" z="-4.96" icon="NPC对话半身像" mapID="4" hp="2000" attackDis="3" atkCD="1" damage="250" cruise="30" pursuit="40" bcruise="1"/>
+      <Monster id="008" monsterType="M" model="Mushroom Monster-Purple" name="幽冥菇" x="118.74" y="0" z="-4.96" icon="NPC对话半身像" mapID="4" hp="2000" attackDis="3" atkCD="1" damage="300" cruise="30" pursuit="40" bcruise="1"/>
+      <Monster id="009" monsterType="M" model="MushroomMonster-Pink" name="九幽菇" x="118.74" y="0" z="-4.96" icon="NPC对话半身像" mapID="4" hp="4000" attackDis="3" atkCD="1" damage="400" cruise="30" pursuit="40" bcruise="1"/>
+      <Monster id="010" monsterType="M" model="PlantMonster-Brown" name="食神草" x="118.74" y="0" z="-4.96" icon="NPC对话半身像" mapID="4" hp="10000" attackDis="4" atkCD="5" damage="1000" cruise="30" pursuit="40" bcruise="1"/>  
+      <Monster id="011" monsterType="M" model="elang" name="嗜血鬼狼" x="118.74" y="0" z="-4.96" icon="NPC对话半身像" mapID="4" hp="2000" attackDis="2" atkCD="1" damage="100" cruise="30" pursuit="40" bcruise="1"/>  
+      <Monster id="012" monsterType="M" model="miersi_ZC" name="堕落守卫" x="118.74" y="0" z="-4.96" icon="NPC对话半身像" mapID="4" hp="2000" attackDis="2.5" atkCD="1.5" damage="150" cruise="30" pursuit="40" bcruise="1"/> 
+      <Monster id="101" monsterType="M" model="Boss_Idel-1" name="邪神" x="118.74" y="0" z="-4.96" icon="NPC对话半身像" mapID="4" hp="10000" attackDis="3.5" atkCD="2" damage="500" cruise="50" pursuit="100" bcruise="0"/>       
+    </Root>  
