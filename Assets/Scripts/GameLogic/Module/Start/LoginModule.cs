@@ -16,14 +16,14 @@ public class LoginModule : BaseModule {
     {
         base.OnLoad();
 
-        MessageCenter.Instance.AddListener(MsgType.LoginView_Login, OnLogin);
+        MessageCenter.Instance.AddListener(MsgType.Start_ShowLogin, OnLogin);
     }
 
     protected override void OnRelease()
     {
         base.OnRelease();
 
-        MessageCenter.Instance.RemoveListener(MsgType.LoginView_Login,OnLogin);
+        MessageCenter.Instance.RemoveListener(MsgType.Start_ShowLogin, OnLogin);
     }
     #endregion
 

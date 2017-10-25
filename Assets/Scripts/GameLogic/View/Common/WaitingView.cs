@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using System;
 
 public class WaitingView : BaseUI {
-    #region UI & Member
+    #region UI & Container
     [HideInInspector,AutoUGUI]
     public Slider sld_percent;
     [HideInInspector, AutoUGUI]
@@ -17,11 +17,13 @@ public class WaitingView : BaseUI {
     private string m_strTips;
     private int m_nTotal;
     #endregion
+
+    #region Init & Register
     public override UIType GetUIType()
     {
-        return UIType.Login;
+        return UIType.Waiting;
     }
-    
+
     protected override void OnStart()
     {
         base.OnStart();
@@ -36,7 +38,7 @@ public class WaitingView : BaseUI {
         m_strTips = msg["tips"].ToString();
         string strType = msg["type"].ToString();
         m_nTotal = (int)msg["t"];
-        Init(m_strTips,strType);
+        Init(m_strTips, strType);
 
         MessageCenter.Instance.AddListener(MsgType.WV_UpdateWaiting, OnUpdate);
         MessageCenter.Instance.AddListener(MsgType.WV_NewWaiting, OnShowWaiting);
@@ -54,7 +56,7 @@ public class WaitingView : BaseUI {
             m_waitingImg.Rotate(new Vector3(0, 0, -100 * Time.deltaTime));
         }
     }
-    
+
     protected override void OnRelease()
     {
         base.OnRelease();
@@ -63,13 +65,16 @@ public class WaitingView : BaseUI {
         MessageCenter.Instance.RemoveListener(MsgType.WV_NewWaiting, OnShowWaiting);
     }
 
-    private void Init(string _strTips,string _strType)
+    private void Init(string _strTips, string _strType)
     {
         txt_percent.text = _strTips;
         m_bClock = _strType.Equals(Defines.WaitingType_Clock);
         m_waitingImg.gameObject.SetActive(m_bClock);
         sld_percent.gameObject.SetActive(!m_bClock);
     }
+    #endregion
+
+    #region Actions
 
     private void OnShowWaiting(Message _msg)
     {
@@ -94,8 +99,8 @@ public class WaitingView : BaseUI {
             int nCurrent = (int)_msg["c"];
             nCurrent = nCurrent > 0 ? nCurrent : -999;
 
-            if (m_nTotal <= nCurrent 
-                || m_nTotal == 0 )
+            if (m_nTotal <= nCurrent
+                || m_nTotal == 0)
             {
                 UIManager.Instance.CloseUI(UIType.Waiting);
                 return;
@@ -106,4 +111,5 @@ public class WaitingView : BaseUI {
             txt_percent.text = string.Format("{0}：{1}/{2}", m_strTips, nCurrent, m_nTotal);
         }
     }
+    #endregion
 }

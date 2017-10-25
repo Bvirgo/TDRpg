@@ -74,7 +74,8 @@ namespace ZFrameWork
         /// </summary>
         private void RegisterAllScene()
         {
-            RegisterScene(ScnType.LoginScene, "LoginScene", typeof(LoginScn), null);
+            // Example
+            RegisterScene(ScnType.LoginScene, "LoginScene", typeof(StartScn), null);
 
             //RegisterScene(ScnType.Village, ScnType.Village.ToString(), typeof(ShopEditorScn), null);
 

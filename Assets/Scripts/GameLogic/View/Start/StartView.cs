@@ -1,16 +1,26 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ZFrameWork;
+using UnityEngine.UI;
+public class StartView : BaseUI{
+    #region UI
 
-public class StartView : MonoBehaviour {
+    #endregion
+    public override UIType GetUIType()
+    {
+        return UIType.Start;
+    }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    protected override void OnAwake()
+    {
+        base.OnAwake();
+        UIManager.Instance.OpenSubPanle(UIType.SubIndex, root, true);
+    }
+
+    protected override void OnRelease()
+    {
+        base.OnRelease();
+    }
 }

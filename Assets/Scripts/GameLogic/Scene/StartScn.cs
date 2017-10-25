@@ -6,10 +6,10 @@ using ZFrameWork;
 /// <summary>
 /// Login Scene
 /// </summary>
-public class LoginScn : BaseScene
+public class StartScn : BaseScene
 {
     #region Base
-    public LoginScn()
+    public StartScn()
     {
         this.AutoRegister = true;
     }
@@ -18,7 +18,11 @@ public class LoginScn : BaseScene
     {
         base.OnLoad();
 
+        // Open Login View
+        UIManager.Instance.OpenUI(UIType.Start, true);
+
         RegisterModule();
+
     }
 
     protected override void OnRelease()

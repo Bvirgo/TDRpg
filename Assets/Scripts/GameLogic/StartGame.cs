@@ -40,12 +40,8 @@ public class StartGame : MonoBehaviour {
     /// </summary>
     private void LoadFirstScn()
     {
-
         // Register Login Scene Module
-        ModuleManager.Instance.RegisterModule(typeof(LoginScn));
-
-        // Open Login View
-        UIManager.Instance.OpenUI(UIType.Login, true);
+        ModuleManager.Instance.RegisterModule(typeof(StartScn));
     }
 
 }

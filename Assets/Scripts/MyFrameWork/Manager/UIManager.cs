@@ -443,8 +443,8 @@ namespace ZFrameWork
         #endregion
 
         #region Sub Panle
-        Dictionary<Transform, Dictionary<SubUIType, GameObject>> uiView_SubPanles = new Dictionary<Transform, Dictionary<SubUIType, GameObject>>();
-        private void OpenSubPanle(SubUIType _uiType, Transform _tfParent,bool _isCloseOthers = false, params object[] _uiParams)
+        Dictionary<Transform, Dictionary<UIType, GameObject>> uiView_SubPanles = new Dictionary<Transform, Dictionary<UIType, GameObject>>();
+        public void OpenSubPanle(UIType _uiType, Transform _tfParent,bool _isCloseOthers = false, params object[] _uiParams)
         {
             // Close Others UI.
             if (_isCloseOthers)
@@ -458,13 +458,20 @@ namespace ZFrameWork
   
                 if (dic.ContainsKey(_uiType))
                 {
+                    var subUIObj = dic[_uiType];
+                    var bp = subUIObj.GetComponent<BasePanel>();
+                    if (bp != null)
+                    {
+                        bp.OnShow();
+                    }
+
                     dic[_uiType].gameObject.SetActive(true);
                     return;
                 }
             }
             else
             {
-                Dictionary<SubUIType, GameObject> dicSubPanle = new Dictionary<SubUIType, GameObject>();
+                Dictionary<UIType, GameObject> dicSubPanle = new Dictionary<UIType, GameObject>();
                 uiView_SubPanles.Add(_tfParent, dicSubPanle);
             }
 
@@ -474,7 +481,7 @@ namespace ZFrameWork
         /// <summary>
         /// Load Sub UI
         /// </summary>
-        private void LoadSubUIData(SubUIType _uiType, Transform _tfParent, params object[] _uiParams)
+        private void LoadSubUIData(UIType _uiType, Transform _tfParent, params object[] _uiParams)
         {
             string strSubUIPath = UIPathDefines.GetSubUIPrefabPathByType(_uiType);
             UnityEngine.Object _prefabObj = Resources.Load(strSubUIPath);
@@ -483,23 +490,25 @@ namespace ZFrameWork
             if (_prefabObj != null && uiScripte != null)
             {
                 GameObject _subUiObject = MonoBehaviour.Instantiate(_prefabObj) as GameObject;
-                Transform tfPanleRoot = _tfParent.Find("PanleRoot") ?? _tfParent;
+                Transform tfPanleRoot = _tfParent.Find("Panels") ?? _tfParent;
                 _subUiObject.transform.SetParent(tfPanleRoot);
+                _subUiObject.transform.localPosition = Vector3.zero;
+                _subUiObject.transform.localScale = Vector3.one;
 
-                Dictionary<SubUIType, GameObject> dicSubPanle;
+                Dictionary<UIType, GameObject> dicSubPanle;
                 if (!uiView_SubPanles.ContainsKey(_tfParent))
                 {
-                    dicSubPanle = new Dictionary<SubUIType, GameObject>();
+                    dicSubPanle = new Dictionary<UIType, GameObject>();
                     uiView_SubPanles.Add(_tfParent, dicSubPanle);
                 }
                 dicSubPanle = uiView_SubPanles[_tfParent];
                 dicSubPanle.AddOrReplace(_uiType, _subUiObject);
                 uiView_SubPanles[_tfParent] = dicSubPanle;
 
-                BaseUI _baseUI = _subUiObject.GetComponent<BaseUI>();
+                BasePanel _baseUI = _subUiObject.GetComponent<BasePanel>();
                 if (null == _baseUI)
                 {
-                    _baseUI = _subUiObject.AddComponent(uiScripte) as BaseUI;
+                    _baseUI = _subUiObject.AddComponent(uiScripte) as BasePanel;
                 }
 
                 // 自动注册指定UGUI 
@@ -508,9 +517,11 @@ namespace ZFrameWork
                 // 根据打开参数，View加载UI相关数据:比如音乐、动画等
                 if (null != _baseUI)
                 {
+                    _baseUI.OnSetParent(_tfParent);
                     _baseUI.SetUIWhenOpening(_uiParams);
+                    _baseUI.OnShow();
                 }
-
+                
                 _subUiObject.SetActive(true);
             }
         }
@@ -526,6 +537,12 @@ namespace ZFrameWork
                 var dic = uiView_SubPanles[_tf];
                 foreach (var item in dic)
                 {
+                    var subUIObj = item.Value;
+                    var bp = subUIObj.GetComponent<BasePanel>();
+                    if (bp != null)
+                    {
+                        bp.OnHide();
+                    }
                     item.Value.SetActive(false);
                 }
             }
@@ -535,13 +552,19 @@ namespace ZFrameWork
         /// Hide Sub UI
         /// </summary>
         /// <param name="_uiType"></param>
-        public void HideSubPanle(Transform _tf,SubUIType _uiType)
+        public void HideSubPanle(Transform _tf, UIType _uiType)
         {
             if (_tf != null && uiView_SubPanles.ContainsKey(_tf))
             {
                 var dic = uiView_SubPanles[_tf];
                 if (dic.ContainsKey(_uiType))
                 {
+                    var subUIObj = dic[_uiType];
+                    var bp = subUIObj.GetComponent<BasePanel>();
+                    if (bp != null)
+                    {
+                        bp.OnHide();
+                    }
                     dic[_uiType].SetActive(false);
                 }
             }

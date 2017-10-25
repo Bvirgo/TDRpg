@@ -92,7 +92,7 @@ namespace ZFrameWork
         /// <summary>
         /// Login View
         /// </summary>
-        Login,
+        Start,
         /// <summary>
         /// Main View
         /// </summary>
@@ -100,25 +100,24 @@ namespace ZFrameWork
         /// <summary>
         /// Shop View
         /// </summary>
-        Battle
-    }
+        Battle,
 
-    public enum SubUIType : byte
-    {
+        /**|Start Index|**/
+        SubIndex,
         /**|Register Panle|**/
-        Register,
+        SubRegister,
         /**|CreateRole Panle|**/
-        CreateRole,
+        SubCreateRole,
         /**|Login Panle|**/
-        Login,
+        SubLogin,
         /**|Package Panle|**/
-        Package,
+        SubPackage,
         /**|Skills Tree|**/
-        Skills,
+        SubSkills,
         /**|Role Property Panel|**/
-        RoleProperty,
+        SubRoleProperty,
         /**|Room Maps Panle|**/
-        RoomsMaps
+        SubRoomsMaps
     }
 
     public enum EnumTouchEventType
@@ -203,7 +202,7 @@ namespace ZFrameWork
         /// <summary>
         /// ui子页面预设。
         /// </summary>
-        public const string UI_SUBUI_PREFAB = "UIPrefab/SubUI/";
+        public const string UI_SUBUI_PREFAB = "UIPrefabs/SubUI/";
         /// <summary>
         /// icon路径
         /// </summary>
@@ -220,8 +219,8 @@ namespace ZFrameWork
             string _uiPrefab = string.Empty;
             switch (_uiType)
             {
-                case UIType.Login:
-                    _uiPrefab = "LoginView";
+                case UIType.Start:
+                    _uiPrefab = "StartView";
                     break;
                 case UIType.Waiting:
                     _uiPrefab = "WaitingView";
@@ -256,8 +255,8 @@ namespace ZFrameWork
             System.Type _scriptType = null;
             switch (_uiType)
             {
-                case UIType.Login:
-                    _scriptType = typeof(LoginView);
+                case UIType.Start:
+                    _scriptType = typeof(StartView);
                     break;
 
                 case UIType.Waiting:
@@ -282,13 +281,18 @@ namespace ZFrameWork
         /// </summary>
         /// <returns>The prefab path by type.</returns>
         /// <param name="_uiType">_ui type.</param>
-        public static string GetSubUIPrefabPathByType(SubUIType _uiType)
+        public static string GetSubUIPrefabPathByType(UIType _uiType)
         {
             string _uiPrefab = string.Empty;
             switch (_uiType)
             {
-                case SubUIType.Login:
-                    _uiPrefab = "LoginPanle";
+                case UIType.SubLogin:
+                    _uiPrefab = "LoginPanel";
+                    break;
+                case UIType.SubIndex:
+                    _uiPrefab = "IndexPanel";
+                    break;
+                case UIType.SubCreateRole:
                     break;
 
                 default:
@@ -303,15 +307,17 @@ namespace ZFrameWork
         /// </summary>
         /// <returns>The user interface script by type.</returns>
         /// <param name="_uiType">_ui type.</param>
-        public static System.Type GetSubUIScriptByType(SubUIType _uiType)
+        public static System.Type GetSubUIScriptByType(UIType _uiType)
         {
             System.Type _scriptType = null;
             switch (_uiType)
             {
-                case SubUIType.Login:
-                    _scriptType = typeof(LoginView);
+                case UIType.SubLogin:
+                    _scriptType = typeof(LoginPanel);
                     break;
-
+                case UIType.SubIndex:
+                    _scriptType = typeof(IndexPanel);
+                    break;
                 default:
                     Debug.Log("Not Find EnumUIType! type: " + _uiType.ToString());
                     break;

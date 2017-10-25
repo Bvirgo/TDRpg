@@ -39,48 +39,9 @@ namespace ZFrameWork
         public const string Win_Finish = "Win_Finish";
         #endregion
 
-        #region Login
-        public const string LoginView_Login = "LoginView_Login";
+        #region Start
+        public const string  Start_ShowLogin= "Start_ShowLogin";
 
-        #endregion
-
-        #region ShopView
-        public const string ShopView_Show = "ShopView_Show";
-        public const string ShopView_LoadRoute = "ShopView_LoadRoute";
-        public const string ShopView_SaveRoute = "ShopView_SaveRouteToServer";
-        public const string ShopView_LocalSave = "ShopView_SaveRouteToLocal";
-
-        public const string ShopView_RefreshSampleBoard = "ShopView_RefreshSampleBoard";
-        public const string ShopView_RefreshShopList = "ShopView_RefreshShopList";
-        public const string ShopView_RefreshBoardList = "ShopView_RefreshBoardList";
-
-        public const string ShopView_DeleteShop = "ShopView_DeleteShop";
-        public const string ShopView_DeleteBoard = "ShopView_DeleteBoard";
-
-        public const string ShopView_SampleBoardClicked = "ShopView_SampleBoardClicked";
-        public const string ShopView_BoardClicked = "ShopView_BoardClicked";
-        public const string ShopView_ShopItemClicked = "ShopView_ShopClicked";
-
-        public const string ShopView_NewPoint = "ShopView_NewPoint";
-        public const string ShopView_CancelPoint = "ShopView_CancelPoint";
-
-        public const string ShopView_OnlyShop = "ShopView_OnlyShop";
-        public const string ShopView_OnlyBoard = "ShopView_OnlyBoard";
-        public const string ShopView_ShopAndBoard = "ShopView_ShopBoard";
-        #endregion
-
-        #region Component Editor
-        public const string MainView_Show = "MainView_Show";
-        public const string MainView_ReplaceAll = "MainView_ReplaceAll";
-        public const string MainView_RefreshTag = "MainView_RefreshTagList";
-        public const string MainView_RefreshCom = "MainView_RefreshComList";
-        public const string MainView_TagItemClick = "MainView_TagItemClick";
-        public const string MainView_ComItemClick = "MainView_ComItemClick";
-        public const string MainView_LoadRes = "MainView_LoadRes";
-        public const string MainView_Save = "MainView_Save";
-        public const string MainView_NewComp = "MainView_NewComp";
-        public const string MainView_Affirm = "MainView_Affirm";
-        
         #endregion
     }
 }
