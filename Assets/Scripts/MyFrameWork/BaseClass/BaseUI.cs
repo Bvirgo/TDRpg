@@ -60,7 +60,7 @@ namespace ZFrameWork
         /// <summary>
         /// The state.
         /// </summary>
-        protected EnumObjectState state = EnumObjectState.None;
+        protected ObjectState state = ObjectState.None;
 
         /// <summary>
         /// Occurs when state changed.
@@ -71,13 +71,13 @@ namespace ZFrameWork
         /// Gets or sets the state.
         /// </summary>
         /// <value>The state.</value>
-        public EnumObjectState State
+        public ObjectState State
         {
             protected set
             {
                 if (value != state)
                 {
-                    EnumObjectState oldState = state;
+                    ObjectState oldState = state;
                     state = value;
                     if (null != StateChanged)
                     {
@@ -126,7 +126,7 @@ namespace ZFrameWork
         #region When Open
         void Awake()
         {
-            this.State = EnumObjectState.Initial;
+            this.State = ObjectState.Initial;
             root = gameObject.transform;
             event_action = new Dictionary<string, MessageEvent>();
             OnAwake();
@@ -140,7 +140,7 @@ namespace ZFrameWork
 
         protected virtual void OnAwake()
         {
-            this.State = EnumObjectState.Loading;
+            this.State = ObjectState.Loading;
             // Play When Open
             this.OnPlayOpenUIAudio();
         }
@@ -161,7 +161,7 @@ namespace ZFrameWork
 
         protected virtual void SetUI(params object[] uiParams)
         {
-            this.State = EnumObjectState.Loading;
+            this.State = ObjectState.Loading;
             this.uiParams = uiParams;
         }
 
@@ -187,10 +187,10 @@ namespace ZFrameWork
         private IEnumerator AsyncOnLoadData()
         {
             yield return new WaitForSeconds(0);
-            if (this.State == EnumObjectState.Loading)
+            if (this.State == ObjectState.Loading)
             {
                 this.OnLoadData();
-                this.State = EnumObjectState.Ready;
+                this.State = ObjectState.Ready;
             }
         }
 
@@ -203,7 +203,7 @@ namespace ZFrameWork
         /// </summary>
         public void Release()
         {
-            this.State = EnumObjectState.Closing;
+            this.State = ObjectState.Closing;
             GameObject.Destroy(cachedGameObject);
             OnRelease();
         }
@@ -236,7 +236,7 @@ namespace ZFrameWork
         // Update is called once per frame
         void Update()
         {
-            if (EnumObjectState.Ready == this.state)
+            if (ObjectState.Ready == this.state)
             {
                 OnUpdate(Time.deltaTime);
             }

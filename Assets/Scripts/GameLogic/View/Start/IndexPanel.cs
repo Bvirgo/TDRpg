@@ -32,6 +32,11 @@ public class IndexPanel : BasePanel {
         {
             UIManager.Instance.OpenSubPanle(UIType.SubLogin, parent, true);
         });
+
+        Btn_Enter.onClick.AddListener(()=> 
+        {
+            LevelManager.Instance.ChangeScene(ScnType.VillageScene,UIType.Village);
+        });
     }
 
     public override void OnHide()

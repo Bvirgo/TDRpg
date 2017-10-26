@@ -40,11 +40,11 @@ namespace ZFrameWork
 			}
 		}
 
-		public virtual BaseActor GetActorByID(int id)
+		public virtual BaseActor GetActorByID(string id)
 		{
 			if (null != actorList && actorList.Count > 0)
 				for (int i=0; i<actorList.Count; i++)
-					if (actorList[i].ID == id)
+					if (actorList[i].guid.Equals(id))
 						return actorList[i];
 			return null;
 		}

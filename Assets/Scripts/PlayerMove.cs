@@ -90,7 +90,7 @@ public class PlayerMove : MonoBehaviour
             }
             else
             {
-                m_nav.Stop();
+                m_nav.isStopped = true;
                 m_nav.enabled = false;
                 m_animator.SetBool("bRun", false);
             }

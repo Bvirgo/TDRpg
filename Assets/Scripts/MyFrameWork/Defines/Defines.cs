@@ -4,10 +4,9 @@ using System.Collections;
 
 namespace ZFrameWork
 {
-
     #region Global delegate 委托
     // UI状态改变
-    public delegate void StateChangedEvent(object sender, EnumObjectState newState, EnumObjectState oldState);
+    public delegate void StateChangedEvent(object sender, ObjectState newState, ObjectState oldState);
 
     public delegate void MessageEvent(Message message);
 
@@ -43,7 +42,7 @@ namespace ZFrameWork
     /// <summary>
     /// 对象当前状态 
     /// </summary>
-    public enum EnumObjectState
+    public enum ObjectState
     {
         /// <summary>
         /// The none.
@@ -70,96 +69,34 @@ namespace ZFrameWork
         /// </summary>
         Closing
     }
+    #endregion
 
-    /// <summary>
-    /// Enum user interface type.
-    /// UI面板类型
-    /// </summary>
-    public enum UIType : int
-    {
-        /// <summary>
-        /// The none.
-        /// </summary>
-        None = -1,
-        /// <summary>
-        /// Alert Window
-        /// </summary>
-        AlertWindow,
-        /// <summary>
-        /// Waiting View
-        /// </summary>
-        Waiting,
-        /// <summary>
-        /// Login View
-        /// </summary>
-        Start,
-        /// <summary>
-        /// Main View
-        /// </summary>
-        Village,
-        /// <summary>
-        /// Shop View
-        /// </summary>
-        Battle,
-
-        /**|Start Index|**/
-        SubIndex,
-        /**|Register Panle|**/
-        SubRegister,
-        /**|CreateRole Panle|**/
-        SubCreateRole,
-        /**|Login Panle|**/
-        SubLogin,
-        /**|Package Panle|**/
-        SubPackage,
-        /**|Skills Tree|**/
-        SubSkills,
-        /**|Role Property Panel|**/
-        SubRoleProperty,
-        /**|Room Maps Panle|**/
-        SubRoomsMaps
-    }
-
-    public enum EnumTouchEventType
-    {
-        OnClick,
-        OnDoubleClick,
-        OnDown,
-        OnUp,
-        OnEnter,
-        OnExit,
-        OnSelect,
-        OnUpdateSelect,
-        OnDeSelect,
-        OnDrag,
-        OnDragEnd,
-        OnDrop,
-        OnScroll,
-        OnMove,
-    }
+    #region Role Enum
 
     public enum PropertyType : int
     {
-        RoleName = 1, 
-        Sex,    
-        RoleID, 
-        Gold,   
-        Coin,  
-        Level,   
-        Exp,    
+        RoleName = 1,
+        Sex,
+        RoleHeadIcon,
+        RoleID,
+        Gold,
+        Coin,
+        Level,
+        Exp,
+        PL,
 
         AttackSpeed,
-        HP,     
-        HPMax, 
-        Attack, 
-        Water, 
-        Fire, 
+        HP,
+        HPMax,
+        Attack,
+        Water,
+        Fire,
     }
 
     /// <summary>
     /// 角色类型
     /// </summary>
-    public enum EnumActorType
+    public enum ActorType
     {
         None = 0,
         Role,
@@ -167,6 +104,9 @@ namespace ZFrameWork
         NPC,
     }
 
+    #endregion
+
+    #region Scene Enum
     /// <summary>
     /// 场景类型
     /// </summary>
@@ -177,156 +117,11 @@ namespace ZFrameWork
         LoadingScene,
         LoginScene,
         MainScene,
+        VillageScene,
         CopyScene,
         PVPScene,
         PVEScene,
-        /////////////
-        Login,
-        Village,
-        Battle,
     }
-
-    #endregion
-
-    #region Defines static class & cosnt
-
-    /// <summary>
-    /// 路径定义。
-    /// </summary>
-    public static class UIPathDefines
-    {
-        /// <summary>
-        /// UI预设。
-        /// </summary>
-        public const string UI_PREFAB = "UIPrefabs/";
-        /// <summary>
-        /// ui子页面预设。
-        /// </summary>
-        public const string UI_SUBUI_PREFAB = "UIPrefabs/SubUI/";
-        /// <summary>
-        /// icon路径
-        /// </summary>
-        public const string UI_IOCN_PATH = "UI/Icon/";
-
-        #region UI View
-        /// <summary>
-        /// Gets the type of the prefab path by.
-        /// </summary>
-        /// <returns>The prefab path by type.</returns>
-        /// <param name="_uiType">_ui type.</param>
-        public static string GetPrefabPathByType(UIType _uiType)
-        {
-            string _uiPrefab = string.Empty;
-            switch (_uiType)
-            {
-                case UIType.Start:
-                    _uiPrefab = "StartView";
-                    break;
-                case UIType.Waiting:
-                    _uiPrefab = "WaitingView";
-                    break;
-
-                case UIType.AlertWindow:
-                    _uiPrefab = "WinView";
-                    break;
-
-                case UIType.Village:
-                    _uiPrefab = "VillageView";
-                    break;
-
-                case UIType.Battle:
-                    _uiPrefab = "BattleView";
-                    break;
-
-                default:
-                    Debug.Log("Not Find EnumUIType! type: " + _uiType.ToString());
-                    break;
-            }
-            return UI_PREFAB + _uiPrefab;
-        }
-
-        /// <summary>
-        /// Gets the type of the user interface script by.
-        /// </summary>
-        /// <returns>The user interface script by type.</returns>
-        /// <param name="_uiType">_ui type.</param>
-        public static System.Type GetUIScriptByType(UIType _uiType)
-        {
-            System.Type _scriptType = null;
-            switch (_uiType)
-            {
-                case UIType.Start:
-                    _scriptType = typeof(StartView);
-                    break;
-
-                case UIType.Waiting:
-                    _scriptType = typeof(WaitingView);
-                    break;
-
-                case UIType.AlertWindow:
-                    _scriptType = typeof(AlertWindowView);
-                    break;
-
-                default:
-                    Debug.Log("Not Find EnumUIType! type: " + _uiType.ToString());
-                    break;
-            }
-            return _scriptType;
-        }
-        #endregion
-
-        #region Sub UI 
-        /// <summary>
-        /// Gets the type of the prefab path by.
-        /// </summary>
-        /// <returns>The prefab path by type.</returns>
-        /// <param name="_uiType">_ui type.</param>
-        public static string GetSubUIPrefabPathByType(UIType _uiType)
-        {
-            string _uiPrefab = string.Empty;
-            switch (_uiType)
-            {
-                case UIType.SubLogin:
-                    _uiPrefab = "LoginPanel";
-                    break;
-                case UIType.SubIndex:
-                    _uiPrefab = "IndexPanel";
-                    break;
-                case UIType.SubCreateRole:
-                    break;
-
-                default:
-                    Debug.Log("Not Find EnumUIType! type: " + _uiType.ToString());
-                    break;
-            }
-            return UI_SUBUI_PREFAB + _uiPrefab;
-        }
-
-        /// <summary>
-        /// Gets the type of the user interface script by.
-        /// </summary>
-        /// <returns>The user interface script by type.</returns>
-        /// <param name="_uiType">_ui type.</param>
-        public static System.Type GetSubUIScriptByType(UIType _uiType)
-        {
-            System.Type _scriptType = null;
-            switch (_uiType)
-            {
-                case UIType.SubLogin:
-                    _scriptType = typeof(LoginPanel);
-                    break;
-                case UIType.SubIndex:
-                    _scriptType = typeof(IndexPanel);
-                    break;
-                default:
-                    Debug.Log("Not Find EnumUIType! type: " + _uiType.ToString());
-                    break;
-            }
-            return _scriptType;
-        }
-        #endregion
-    }
-
     #endregion
 
     #region Global Const String
@@ -348,7 +143,10 @@ namespace ZFrameWork
         public const string MainGroundPath = "Maps/Ground";
         public const string WhiteHousePath = "Building/WhiteHouse";
         public const string MapsLayerName = "Ground";
-        public const string TestShopRoute = "03941001001";
+
+        /**|Role Define|**/
+        public const string Man = "Prefabs/Player/Boy_SimpleMove";
+
     }
     #endregion
 }

@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using ZFrameWork;
 using UnityEngine.UI;
-public class StartView : BaseUI{
-    #region UI
-
-    #endregion
+public class StartView : BaseUI
+{
     public override UIType GetUIType()
     {
         return UIType.Start;
@@ -17,10 +15,12 @@ public class StartView : BaseUI{
     {
         base.OnAwake();
         UIManager.Instance.OpenSubPanle(UIType.SubIndex, root, true);
+
     }
 
     protected override void OnRelease()
     {
         base.OnRelease();
     }
+
 }

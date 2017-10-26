@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace ZFrameWork
 {
     /// <summary>
-    /// 场景管理类
+    /// Level Manager 
     /// </summary>
-	public class LevelManager : Singleton<LevelManager>
+	public class LevelManager :DDOLSingleton<LevelManager>
 	{
 		#region SceneInfoData class
 
@@ -56,13 +57,15 @@ namespace ZFrameWork
             }
         }
 
-        public override void Init()
+        private  void InitData()
         {
             dicSceneInfos = new Dictionary<ScnType, SceneInfoData>();
         }
 
         public void OnInit()
         {
+            InitData();
+
             // Registe All Scene
             RegisterAllScene();
         }
@@ -74,16 +77,17 @@ namespace ZFrameWork
         /// </summary>
         private void RegisterAllScene()
         {
+            RegisterScene(ScnType.LoadingScene,"LoadingScene",typeof(EmptyScn));
             // Example
-            RegisterScene(ScnType.LoginScene, "LoginScene", typeof(StartScn), null);
+            RegisterScene(ScnType.StartGame, "Start", typeof(StartScn), null);
 
-            //RegisterScene(ScnType.Village, ScnType.Village.ToString(), typeof(ShopEditorScn), null);
+            RegisterScene(ScnType.VillageScene, "Village", typeof(VillageScn), null);
 
             //RegisterScene(ScnType.Battle, ScnType.Battle.ToString(), typeof(CompEditorScn), null);
         }
 
         /// <summary>
-        /// 关卡管理类注册
+        /// Register Scene
         /// </summary>
         /// <param name="_sceneID">关卡ID</param>
         /// <param name="_sceneName">关卡名</param>
@@ -153,10 +157,10 @@ namespace ZFrameWork
         }
         #endregion
 
-        #region Change Scene Direction (场景无缝切换)
+        #region Change Scene Direction
 
         /// <summary>
-        /// 直接切换
+        /// Change Scene Direct
         /// </summary>
         /// <param name="_sceneType"></param>
         public void ChangeSceneDirect(ScnType _sceneType)
@@ -210,21 +214,20 @@ namespace ZFrameWork
         /// </summary>
         /// <param name="sceneName"></param>
         /// <returns></returns>
-		private IEnumerator<AsyncOperation> AsyncLoadScene(string sceneName,Action _cb = null)
+		private IEnumerator<AsyncOperation> AsyncLoadScene(string sceneName,Action _cbDone = null)
 		{
             AsyncOperation oper = SceneManager.LoadSceneAsync(sceneName);
 
             yield return oper;
             // message send
-
-            if (_cb != null)
+            if (oper.isDone && _cbDone != null)
             {
-                _cb();
+                _cbDone();
             }
 		}
         #endregion
 
-        #region Change Scene By Loading (场景过渡切换)
+        #region Change Scene By Loading
         public void ChangeScene(ScnType _sceneType)
         {
             UIManager.Instance.CloseUIAll();
@@ -250,19 +253,7 @@ namespace ZFrameWork
         {
             sceneOpenUIType = _uiType;
             sceneOpenUIParams = _params;
-            if (LastSceneType == _sceneType)
-            {
-                if (sceneOpenUIType == UIType.None)
-                {
-                    return;
-                }
-                UIManager.Instance.OpenUI(sceneOpenUIType, false, sceneOpenUIParams);
-                sceneOpenUIType = UIType.None;
-            }
-            else
-            {
-                ChangeScene(_sceneType);
-            }
+            ChangeScene(_sceneType);
         }
 
         private IEnumerator AsyncLoadOtherScene()
@@ -270,41 +261,54 @@ namespace ZFrameWork
             string sceneName = GetSceneName(ScnType.LoadingScene);
             AsyncOperation oper = SceneManager.LoadSceneAsync(sceneName);
             yield return oper;
-            // message send
             if (oper.isDone)
             {
+                GameObject uiObj = GameObject.Find("Canvas");
+                if (uiObj != null)
+                {
+                    Transform LoadingProgressBar = uiObj.transform.Find("Bg/LoadingProgressBar");
+                    Image barImg = LoadingProgressBar.GetComponent<Image>();
+                    barImg.fillAmount = 0;
 
-                // Loading UI
+                    // we start loading the scene
+                    SceneInfoData sid = GetSceneInfo(ChangeSceneType);
+                    String strNextScnName = sid.SceneName;
 
-                //				GameObject go = GameObject.Find("LoadingScenePanel");
-                //				LoadingSceneUI loadingSceneUI = go.GetComponent<LoadingSceneUI>();
-                //				BaseScene scene = CurrentScene;
-                //				if (null != scene)
-                //				{
-                //					scene.CurrentSceneId = ChangeSceneId;
-                //				}
-                //				//检测是否注册该场景
-                //				if (!SceneManager.Instance.isRegisterScene(ChangeSceneId))
-                //				{
-                //					Debug.LogError("没有注册此场景！" + ChangeSceneId.ToString());
-                //				}
-                //				LoadingSceneUI.Load(ChangeSceneId);
-                //				LoadingSceneUI.LoadCompleted += SceneLoadCompleted;
+                    AsyncOperation _asyncOperation = SceneManager.LoadSceneAsync(strNextScnName, LoadSceneMode.Single);
+                    _asyncOperation.allowSceneActivation = false;
+
+                    float _fillTarget = 0;
+                    // while the scene loads, we assign its progress to a target that we'll use to fill the progress bar smoothly
+                    while (_asyncOperation.progress < 0.9f)
+                    {
+                        _fillTarget = _asyncOperation.progress;
+                        barImg.fillAmount = _fillTarget;
+                        yield return null;
+                    }
+
+                    // we switch to the new scene
+                    _asyncOperation.allowSceneActivation = true;
+
+                    yield return _asyncOperation;
+
+                    if (_asyncOperation.isDone)
+                    {
+                        // the load is now complete, we replace the bar with the complete animation
+                        SceneLoadCompleted(sid);
+                    }
+                }
             }
         }
-
+        
         /// <summary>
         /// loading 完成
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-		void SceneLoadCompleted(object sender, EventArgs e)
-        {
-            Debug.Log("切换场景完成 + " + sender as String);
-            //场景切换完成
-            //MessageCenter.Instance.SendMessage(MessageType.GAMESCENE_CHANGECOMPLETE, this, null, false);
+		void SceneLoadCompleted(SceneInfoData _scInfo)
+        {          
+            // Register Module
+            ModuleManager.Instance.RegisterModule(_scInfo.SceneType);
 
-            //有要打开的UI
+            //Open UI
             if (sceneOpenUIType != UIType.None)
             {
                 UIManager.Instance.OpenUI(sceneOpenUIType, false, sceneOpenUIParams);

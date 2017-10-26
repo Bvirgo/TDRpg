@@ -8,17 +8,17 @@ namespace ZFrameWork
     /// <summary>
     /// 所有场景对象基类：NPC,Role,Monster
     /// </summary>
-	public class BaseActor : IDynamicProperty
-	{
-        #region Base Data
+	public class BaseActor : MonoBehaviour,IDynamicProperty
+    {
+        #region Property
         // 对象属性字典
         protected Dictionary<int, PropertyItem> dicProperty = null;
 
         public event PropertyChangedHandle PropertyChanged;
 
-        public EnumActorType ActorType { set; get; }
+        public ActorType ActorType { set; get; }
 
-        public int ID { set; get; }
+        public string guid { set; get; }
 
         private BaseScene currentScene;
 
@@ -26,7 +26,6 @@ namespace ZFrameWork
         {
             set
             {
-                //add Change Scene Logic...
                 currentScene = value;
             }
             get
@@ -35,9 +34,34 @@ namespace ZFrameWork
             }
         }
 
-        public BaseActor()
+        void Awake()
         {
+            guid = Guid.NewGuid().ToString();
+            OnAwake();
         }
+
+        void Start()
+        {
+            OnStart();
+        }
+
+        protected virtual void OnAwake()
+        {
+
+        }
+
+        protected virtual void OnStart()
+        {
+
+        }
+
+        void OnDestory()
+        {
+            OnRelease();
+        }
+
+        protected virtual void OnRelease()
+        { }
         #endregion
 
         #region Property Register & UnRegister

@@ -369,9 +369,9 @@ namespace ZFrameWork
 		/// <param name="_sender">_sender.</param>
 		/// <param name="_newState">_new state.</param>
 		/// <param name="_oldState">_old state.</param>
-		private void CloseUIHandler(object _sender, EnumObjectState _newState, EnumObjectState _oldState)
+		private void CloseUIHandler(object _sender, ObjectState _newState, ObjectState _oldState)
 		{
-			if (_newState == EnumObjectState.Closing)
+			if (_newState == ObjectState.Closing)
 			{
 				BaseUI _baseUI = _sender as BaseUI;
 				dicOpenUIs.Remove(_baseUI.GetUIType());
@@ -514,6 +514,8 @@ namespace ZFrameWork
                 // 自动注册指定UGUI 
                 AutoInjectUGUI(_baseUI);
 
+                _subUiObject.SetActive(true);
+
                 // 根据打开参数，View加载UI相关数据:比如音乐、动画等
                 if (null != _baseUI)
                 {
@@ -521,8 +523,6 @@ namespace ZFrameWork
                     _baseUI.SetUIWhenOpening(_uiParams);
                     _baseUI.OnShow();
                 }
-                
-                _subUiObject.SetActive(true);
             }
         }
 

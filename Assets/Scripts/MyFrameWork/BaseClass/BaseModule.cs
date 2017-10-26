@@ -11,9 +11,9 @@ namespace ZFrameWork
 			AlreadyRegister,
 		}
 
-		private EnumObjectState state = EnumObjectState.Initial;
+		private ObjectState state = ObjectState.Initial;
 
-		public EnumObjectState State
+		public ObjectState State
 		{
 			get
 			{
@@ -23,7 +23,7 @@ namespace ZFrameWork
 			{
 				if (state == value) return;
 
-				EnumObjectState oldState = state;
+				ObjectState oldState = state;
 				state = value;
 
 				if (null != StateChanged)
@@ -36,7 +36,7 @@ namespace ZFrameWork
 
 		public event StateChangedEvent StateChanged;
 
-		protected virtual void OnStateChanged(EnumObjectState newState, EnumObjectState oldState)
+		protected virtual void OnStateChanged(ObjectState newState, ObjectState oldState)
 		{
 
 		}
@@ -66,9 +66,9 @@ namespace ZFrameWork
 
 		public void Load()
 		{
-			if (State != EnumObjectState.Initial) return;
+			if (State != ObjectState.Initial) return;
 
-			State = EnumObjectState.Loading;
+			State = ObjectState.Loading;
 
 			//...
 			if (registerMode == EnumRegisterMode.AutoRegister)
@@ -79,7 +79,7 @@ namespace ZFrameWork
 			}
 
 			OnLoad();
-			State = EnumObjectState.Ready;
+			State = ObjectState.Ready;
 		}
 
 		protected virtual void OnLoad()
@@ -89,9 +89,9 @@ namespace ZFrameWork
 
 		public void Release()
 		{
-			if (State != EnumObjectState.Disabled)
+			if (State != ObjectState.Disabled)
 			{
-				State = EnumObjectState.Disabled;
+				State = ObjectState.Disabled;
 
 				// ...
 				if (registerMode == EnumRegisterMode.AlreadyRegister)

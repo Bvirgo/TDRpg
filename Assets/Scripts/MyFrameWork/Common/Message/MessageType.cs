@@ -43,6 +43,11 @@ namespace ZFrameWork
         public const string  Start_ShowLogin= "Start_ShowLogin";
 
         #endregion
+
+        #region Role 
+        public const string Role_RefreshRoleInfo = "Role_RefreshRoleInfo";
+        public const string Role_GetRoleInfo = "Role_GetRoleInfo";
+        #endregion
     }
 }
 
