@@ -103,8 +103,6 @@ public class UIPackagePanel : BasePanel
     protected override void OnReady()
     {
         base.OnReady();
-
-        GetPackageGoodsList();
     }
 
     public override void OnShow()
@@ -142,6 +140,20 @@ public class UIPackagePanel : BasePanel
         {
             UIManager.Instance.HideSubPanle(UIType.SubPackage);
         });
+
+        Btn_Left.onClick.AddListener(()=> 
+        {
+            m_nCurPage++;
+            m_nCurPage = m_nCurPage > m_nPages ? 1 : m_nCurPage;
+            PackagePageChange();
+        });
+
+        Btn_Right.onClick.AddListener(() =>
+        {
+            m_nCurPage--;
+            m_nCurPage = m_nCurPage < 1 ? m_nPages : m_nCurPage;
+            PackagePageChange();
+        });
     }
 
     protected override void InitContainer()
@@ -175,7 +187,6 @@ public class UIPackagePanel : BasePanel
         m_nCurPage = 1;
         m_nPages = (nPackageGoodsCount + 15) / 16;
         m_nPages = m_nPages < 1 ? 1 : m_nPages;
-        Txt_Index.text = m_nCurPage +"/"+m_nPages;
 
         PackagePageChange();
     }
@@ -192,6 +203,8 @@ public class UIPackagePanel : BasePanel
         nEnd = nStart + 16;
         nEnd = nEnd >= nPackageGoodsCount ? nPackageGoodsCount : nEnd;
 
+        Txt_Index.text = m_nCurPage + "/" + m_nPages;
+
         CleanPackgeItem();
 
         for (int i = nStart; i < nEnd; i++)
@@ -200,6 +213,11 @@ public class UIPackagePanel : BasePanel
         }
     }
 
+    /// <summary>
+    /// Create New Goods Item
+    /// </summary>
+    /// <param name="_tf"></param>
+    /// <param name="_item"></param>
     private void CreateNewGoodsItem(Transform _tf, InventoryItem _item)
     {
         Button btn = _tf.GetComponent<Button>();
@@ -219,6 +237,9 @@ public class UIPackagePanel : BasePanel
         txt_num.gameObject.SetActive(true);
     }
 
+    /// <summary>
+    /// Clean Package Item
+    /// </summary>
     private void CleanPackgeItem()
     {
         for (int i = 0; i < m_pPackageItems.Count; i++)
