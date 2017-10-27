@@ -45,7 +45,7 @@ namespace ZFrameWork
 
         protected virtual void OnStateChanged(ObjectState newState, ObjectState oldState) { }
 
-		private EnumRegisterMode registerMode = EnumRegisterMode.NotRegister;
+		private EnumRegisterMode registerMode = EnumRegisterMode.AutoRegister;
 
 		public bool AutoRegister
 		{

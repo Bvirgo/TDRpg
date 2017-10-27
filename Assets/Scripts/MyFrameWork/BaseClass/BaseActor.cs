@@ -47,12 +47,19 @@ namespace ZFrameWork
 
         protected virtual void OnAwake()
         {
-
+            InitContainer();
         }
 
         protected virtual void OnReady()
         {
+            Register();
+        }
 
+        protected virtual void Register() { }
+
+        protected virtual void InitContainer()
+        {
+            event_action = new Dictionary<string, MessageEvent>();
         }
 
         void OnDestory()
@@ -61,7 +68,39 @@ namespace ZFrameWork
         }
 
         protected virtual void OnRelease()
-        { }
+        {
+            UnRegisterAllMsg();
+        }
+        #endregion
+
+        #region Event
+        public Dictionary<string, MessageEvent> event_action;
+        /// <summary>
+        /// Clean Events
+        /// </summary>
+        protected virtual void UnRegisterAllMsg()
+        {
+            foreach (var item in event_action)
+            {
+                MessageCenter.Instance.RemoveListener(item.Key, item.Value);
+            }
+        }
+
+        protected virtual void RegisterMsg(string _strMsg, MessageEvent _cbMsg)
+        {
+            MessageCenter.Instance.AddListener(_strMsg, _cbMsg);
+
+            event_action.AddOrReplace(_strMsg, _cbMsg);
+        }
+
+        protected virtual void UnRegisterMsg(string _strMsg)
+        {
+            if (event_action.ContainsKey(_strMsg))
+            {
+                MessageCenter.Instance.RemoveListener(_strMsg, event_action[_strMsg]);
+                event_action.Remove(_strMsg);
+            }
+        }
         #endregion
 
         #region Property Register & UnRegister

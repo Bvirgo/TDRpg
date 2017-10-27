@@ -29,12 +29,44 @@ public class RoleProperty : BaseActor
         base.OnPropertyChanged(id, oldValue, newValue);
         RefreshUI();
     }
-    protected override void OnReady()
+
+    protected override void InitContainer()
     {
-        base.OnReady();
-        InitContainer();
-        Register();
+        m_nExp = 10000;
+        m_nGold = 1000;
+        m_nGem = 100;
+        m_nHp = 90;
+        m_nPL = 60;
+        m_nLevel = m_nExp / 100;
+        m_nAttack = 999;
+        m_strRoleName = "马云";
+
+        AddProperty(PropertyType.Attack, m_nAttack);
+        AddProperty(PropertyType.HP, m_nHp);
+        AddProperty(PropertyType.PL, m_nPL);
+        AddProperty(PropertyType.Level, m_nLevel);
+        AddProperty(PropertyType.Gold, m_nGold);
+        AddProperty(PropertyType.Coin, m_nGem);
+        AddProperty(PropertyType.RoleName, m_strRoleName);
+        AddProperty(PropertyType.RoleID, guid);
+
+        m_proAttack = GetProperty(PropertyType.Attack);
+        m_proHP = GetProperty(PropertyType.HP);
+        m_proPL = GetProperty(PropertyType.PL);
+        m_proLv = GetProperty(PropertyType.Level);
+        m_proGold = GetProperty(PropertyType.Gold);
+        m_proGem = GetProperty(PropertyType.Coin);
+        m_proName = GetProperty(PropertyType.RoleName);
+
+        RefreshUI();
     }
+
+    protected override void Register()
+    {
+        base.Register();
+        RegisterMsg(MsgType.Role_GetRoleInfo, GetRoleInfo);
+    }
+
     void Update()
     {
         // Add HP & PL By Time
@@ -71,48 +103,7 @@ public class RoleProperty : BaseActor
 
         RefreshTimer();
     }
-
-    private void Register()
-    {
-        MessageCenter.Instance.AddListener(MsgType.Role_GetRoleInfo,GetRoleInfo);
-    }
-
-    private void UnRegister()
-    {
-        MessageCenter.Instance.RemoveListener(MsgType.Role_GetRoleInfo, GetRoleInfo);
-    }
-
-    private void InitContainer()
-    {
-        m_nExp = 10000;
-        m_nGold = 1000;
-        m_nGem = 100;
-        m_nHp = 90;
-        m_nPL = 60;
-        m_nLevel = m_nExp / 100;
-        m_nAttack = 999;
-        m_strRoleName = "马云";
-        
-        AddProperty(PropertyType.Attack,m_nAttack);
-        AddProperty(PropertyType.HP, m_nHp);
-        AddProperty(PropertyType.PL,m_nPL);
-        AddProperty(PropertyType.Level, m_nLevel);
-        AddProperty(PropertyType.Gold, m_nGold);
-        AddProperty(PropertyType.Coin,m_nGem);
-        AddProperty(PropertyType.RoleName,m_strRoleName);
-        AddProperty(PropertyType.RoleID,guid);
-
-        m_proAttack = GetProperty(PropertyType.Attack);
-        m_proHP = GetProperty(PropertyType.HP);
-        m_proPL = GetProperty(PropertyType.PL);
-        m_proLv = GetProperty(PropertyType.Level);
-        m_proGold = GetProperty(PropertyType.Gold);
-        m_proGem = GetProperty(PropertyType.Coin);
-        m_proName = GetProperty(PropertyType.RoleName);
-
-        RefreshUI();
-    }
-
+    
     private void RefreshUI()
     {
         Message msg = new Message(MsgType.Role_RefreshRoleInfo, this);
@@ -141,11 +132,5 @@ public class RoleProperty : BaseActor
     {
         RefreshUI();
     }
-
-
-    protected override void OnRelease()
-    {
-        base.OnRelease();
-        UnRegister();
-    }
+    
 }
