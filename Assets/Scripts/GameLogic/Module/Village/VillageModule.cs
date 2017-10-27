@@ -19,7 +19,8 @@ public class VillageModule : BaseModule
 
     private string m_strInventoryConfig;
     #endregion
-    
+
+    #region Init & Register
     protected override void OnReady()
     {
         base.OnReady();
@@ -28,7 +29,7 @@ public class VillageModule : BaseModule
 
         RandomInventoryItemInfo();
     }
-    
+
     protected override void Register()
     {
         base.Register();
@@ -43,6 +44,9 @@ public class VillageModule : BaseModule
         m_pInventoryItemList = new List<InventoryItem>();
         m_strInventoryConfig = Application.streamingAssetsPath + "//TxtInfo//InventoryListinfo.txt";
     }
+    #endregion
+
+    #region Package Data
 
     void ReadInventoryInfo()
     {
@@ -51,8 +55,11 @@ public class VillageModule : BaseModule
         string[] itemStrArray = str.Split('\n');
         foreach (string itemStr in itemStrArray)
         {
-            //ID 名称 图标 类型（Equip，Drug） 装备类型 售价 星级 品质 伤害 生命 战斗力 作用类型 作用值 描述
-            // EquipType:(Helm,Cloth,Weapon,Shoes,Necklace,Bracelet,Ring,Wing)
+
+            /// **************************
+            ///	ID 名称 图标 类型（Equip，Drug） 装备类型 售价 星级 品质 伤害 生命 战斗力 作用类型 作用值 描述
+            ///	EquipType:(Helm,Cloth,Weapon,Shoes,Necklace,Bracelet,Ring,Wing)
+            /// **************************
             string[] proArray = itemStr.Split('|');
             Inventory inventory = new Inventory();
             inventory.ID = int.Parse(proArray[0]);
@@ -101,8 +108,10 @@ public class VillageModule : BaseModule
                 }
 
             }
-            //print(itemStr);
-            //售价 星级 品质 伤害 生命 战斗力 作用类型 作用值 描述
+
+            /// **************************
+            ///	售价 星级 品质 伤害 生命 战斗力 作用类型 作用值 描述 
+            /// **************************
             inventory.Price = int.Parse(proArray[5]);
             if (inventory.InventoryTYPE == InventoryType.Equip)
             {
@@ -126,8 +135,11 @@ public class VillageModule : BaseModule
     /// </summary>
     void RandomInventoryItemInfo()
     {
-        //TODO 需要链接服务器 取得当前角色拥有的物品信息
-        //随机生成主角拥有的物品
+
+        /// **************************
+        ///	TODO 需要链接服务器 取得当前角色拥有的物品信息 
+        ///	随机生成主角拥有的物品
+        /// **************************
         for (int j = 0; j < 20; j++)
         {
             int id = Random.Range(1001, 1020);
@@ -171,10 +183,10 @@ public class VillageModule : BaseModule
         }
 
         Debug.Log("--------------Read Equip:" + m_pInventoryItemList.Count);
-        //OnInventoryChange();
     }
+    #endregion
 
-    #region Inventory 
+    #region Package Event 
     private void RefreshRoleEquipList(Message _msg)
     {
         Message msg = new Message(MsgType.Role_RefreshPackage,this);
