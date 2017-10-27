@@ -18,7 +18,7 @@ public class LineRendererBehaviour : MonoBehaviour
 
   private EffectSettings effectSettings;
   private Transform tRoot, tTarget;
-  private bool isInitializedOnStart;
+  private bool isInitializedOnReady;
   private LineRenderer line;
   private int currentShaderIndex;
   RaycastHit hit;
@@ -42,7 +42,7 @@ public class LineRendererBehaviour : MonoBehaviour
     tRoot = effectSettings.transform;
     line = GetComponent<LineRenderer>();
 	  InitializeDefault();
-	  isInitializedOnStart = true;
+	  isInitializedOnReady = true;
 	}
 
   void InitializeDefault()
@@ -91,6 +91,6 @@ public class LineRendererBehaviour : MonoBehaviour
 
   void OnEnable()
   {
-    if (isInitializedOnStart) InitializeDefault();
+    if (isInitializedOnReady) InitializeDefault();
   }
 }

@@ -231,7 +231,7 @@ public class NcSpriteAnimation : NcEffectAniBehaviour
 			if (nSeqIndex == 0)
 			{
 				if (m_NcSpriteFactoryCom != null)
-					m_NcSpriteFactoryCom.OnAnimationStartFrame(this);
+					m_NcSpriteFactoryCom.OnAnimatiOnReadyFrame(this);
 //				if (m_funcStartSprite != "")
 //					gameObject.SendMessage(m_funcStartSprite, this, SendMessageOptions.DontRequireReceiver);
 			}

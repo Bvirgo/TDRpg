@@ -10,11 +10,11 @@ public class RoleProperty : BaseActor
     private int m_nPL;
     private int m_nHp;
     private int m_nAttack;
+    private int m_nExp;
     private string m_strRoleName;
 
-    public float fPLTimer = 0;
-    public float fHpTimer = 0;
-
+    private float fPLTimer = 0;
+    private float fHpTimer = 0;
 
     private PropertyItem m_proGold;
     private PropertyItem m_proGem;
@@ -29,16 +29,16 @@ public class RoleProperty : BaseActor
         base.OnPropertyChanged(id, oldValue, newValue);
         RefreshUI();
     }
-    protected override void OnStart()
+    protected override void OnReady()
     {
-        base.OnStart();
-        InitData();
+        base.OnReady();
+        InitContainer();
         Register();
     }
     void Update()
     {
         // Add HP & PL By Time
-        if (this.m_nPL < 100)
+        if (this.m_nPL < 50)
         {
             fPLTimer += Time.deltaTime;
             if (fPLTimer > 60)
@@ -52,7 +52,8 @@ public class RoleProperty : BaseActor
         {
             this.fPLTimer = 0;
         }
-        if (m_nHp < 50)
+
+        if (m_nHp < 100)
         {
             fHpTimer += Time.deltaTime;
             if (fHpTimer > 60)
@@ -67,8 +68,9 @@ public class RoleProperty : BaseActor
         {
             fHpTimer = 0;
         }
-    }
 
+        RefreshTimer();
+    }
 
     private void Register()
     {
@@ -80,13 +82,14 @@ public class RoleProperty : BaseActor
         MessageCenter.Instance.RemoveListener(MsgType.Role_GetRoleInfo, GetRoleInfo);
     }
 
-    private void InitData()
+    private void InitContainer()
     {
+        m_nExp = 10000;
         m_nGold = 1000;
         m_nGem = 100;
         m_nHp = 90;
         m_nPL = 60;
-        m_nLevel = 1;
+        m_nLevel = m_nExp / 100;
         m_nAttack = 999;
         m_strRoleName = "马云";
         
@@ -120,6 +123,17 @@ public class RoleProperty : BaseActor
         msg["lv"] = m_nLevel;
         msg["name"] = m_strRoleName;
         msg["attack"] = m_nAttack;
+        msg["exp"] = m_nExp;
+        msg["plTimer"] = (int)fPLTimer;
+        msg["hpTimer"] = (int)fHpTimer;
+        msg.Send();
+    }
+
+    private void RefreshTimer()
+    {
+        Message msg = new Message(MsgType.Role_RefreshTimer, this);
+        msg["plTimer"] = (int)fPLTimer;
+        msg["hpTimer"] = (int)fHpTimer;
         msg.Send();
     }
 

@@ -79,41 +79,33 @@ public class VillageMainView : BaseUI {
         return UIType.Village;
     }
 
-    protected override void OnStart()
+    protected override void OnReady()
     {
-        base.OnStart();
-
-        InitUI();
-
-        RegisterMsg();
-
+        base.OnReady();
+        
         GetRoleInfo();
     }
-
-    protected override void OnRelease()
+    
+    protected override void Register()
     {
-        base.OnRelease();
+        base.Register();
 
-        UnRegisterMsg();
+        RegisterMsg(MsgType.Role_RefreshRoleInfo, RefreshRoleInfo);
     }
-
-    private void RegisterMsg()
-    {
-        MessageCenter.Instance.AddListener(MsgType.Role_RefreshRoleInfo,RefreshRoleInfo);
-    }
-
-    private void InitUI()
+    
+    protected override void InitUI()
     {
         Btn_Head.onClick.AddListener(()=> 
         {
             UIManager.Instance.OpenSubPanle(UIType.SubRoleInfo, root, true);
         });
-    }
 
-    private void UnRegisterMsg()
-    {
-        MessageCenter.Instance.RemoveListener(MsgType.Role_RefreshRoleInfo, RefreshRoleInfo);
+        Btn_Bag.onClick.AddListener(()=> 
+        {
+            UIManager.Instance.OpenSubPanle(UIType.SubPackage,root,true);
+        });
     }
+    
 
     private void RefreshRoleInfo(Message _msg)
     {

@@ -13,18 +13,18 @@ public class VillageScn : BaseScene
         this.AutoRegister = true;
     }
 
-    protected override void OnLoad()
+    protected override void OnReady()
     {
-        base.OnLoad();
+        base.OnReady();
 
-        InitData();
+        InitContainer();
 
         RegisterModule();
 
         NewPlayer();
     }
 
-    private void InitData()
+    private void InitContainer()
     {
 
     }

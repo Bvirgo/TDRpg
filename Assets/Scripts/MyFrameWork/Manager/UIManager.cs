@@ -521,7 +521,6 @@ namespace ZFrameWork
                 {
                     _baseUI.OnSetParent(_tfParent);
                     _baseUI.SetUIWhenOpening(_uiParams);
-                    _baseUI.OnShow();
                 }
             }
         }
@@ -557,6 +556,28 @@ namespace ZFrameWork
             if (_tf != null && uiView_SubPanles.ContainsKey(_tf))
             {
                 var dic = uiView_SubPanles[_tf];
+                if (dic.ContainsKey(_uiType))
+                {
+                    var subUIObj = dic[_uiType];
+                    var bp = subUIObj.GetComponent<BasePanel>();
+                    if (bp != null)
+                    {
+                        bp.OnHide();
+                    }
+                    dic[_uiType].SetActive(false);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Hide Sub UI By UIType
+        /// </summary>
+        /// <param name="_uiType"></param>
+        public void HideSubPanle(UIType _uiType)
+        {
+            foreach (var item in uiView_SubPanles)
+            {
+                var dic = item.Value;
                 if (dic.ContainsKey(_uiType))
                 {
                     var subUIObj = dic[_uiType];

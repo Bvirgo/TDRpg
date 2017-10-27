@@ -22,6 +22,12 @@ namespace ZFrameWork
                 parent = _tf;
             }
         }
+
+        protected override void OnReady()
+        {
+            base.OnReady();
+            OnShow();
+        }
     }
 }
 

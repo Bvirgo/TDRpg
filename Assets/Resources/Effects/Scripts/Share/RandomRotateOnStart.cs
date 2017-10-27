@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RandomRotateOnStart : MonoBehaviour
+public class RandomRotateOnReady : MonoBehaviour
 {
   public Vector3 NormalizedRotateVector = new Vector3(0, 1, 0);
 

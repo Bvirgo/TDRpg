@@ -14,9 +14,9 @@ public class StartScn : BaseScene
         this.AutoRegister = true;
     }
 
-    protected override void OnLoad()
+    protected override void OnReady()
     {
-        base.OnLoad();
+        base.OnReady();
 
         // Open Login View
         UIManager.Instance.OpenUI(UIType.Start, true);

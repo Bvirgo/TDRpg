@@ -62,24 +62,31 @@ public class RoleInfoPanel : BasePanel
     private int m_nPL;
     private int m_nHp;
     private int m_nAttack;
+    private int m_nExp;
     private string m_strRoleName;
+
+    private int m_nPLTimer ;
+    private int m_nHPTimer;
 
     #endregion
     public override UIType GetUIType()
     {
         return UIType.SubRoleInfo;
     }
-
-    protected override void OnStart()
+    
+    protected override void OnReady()
     {
-        base.OnStart();
-
-        InitUI();
-
-        RegisterMsg();
+        base.OnReady();
 
         GetRoleInfo();
+    }
 
+    protected override void Register()
+    {
+        base.Register();
+
+        RegisterMsg(MsgType.Role_RefreshRoleInfo, RefreshRoleInfo);
+        RegisterMsg(MsgType.Role_RefreshTimer, RefreshTimer);
     }
 
     private void GetRoleInfo()
@@ -87,49 +94,33 @@ public class RoleInfoPanel : BasePanel
         Message msg = new Message(MsgType.Role_GetRoleInfo, this);
         msg.Send();
     }
-
-    public override void OnShow()
-    {
-        base.OnShow();
-
-    }
-
-    public override void OnHide()
-    {
-        base.OnHide();
-
-    }
+    
 
     protected override void OnUpdate(float deltaTime)
     {
         base.OnUpdate(deltaTime);
 
+        UpdateEnergyAndToughenShow();
     }
 
     protected override void OnRelease()
     {
         base.OnRelease();
-
-        UnRegisterMsg();
     }
 
-    private void RegisterMsg()
+    protected override void InitContainer()
     {
-
-        MessageCenter.Instance.AddListener(MsgType.Role_RefreshRoleInfo, RefreshRoleInfo);
+        m_nPL = 0;
+        m_nHp = 0;
+        m_nPLTimer = 0;
+        m_nHPTimer = 0;
     }
 
-    private void UnRegisterMsg()
-    {
-
-        MessageCenter.Instance.RemoveListener(MsgType.Role_RefreshRoleInfo, RefreshRoleInfo);
-    }
-
-    private void InitUI()
+    protected override void InitUI()
     {
         Btn_Close.onClick.AddListener(()=>
         {
-            UIManager.Instance.HideSubPanle(parent, UIType.SubRoleInfo);
+            UIManager.Instance.HideSubPanle(UIType.SubRoleInfo);
         });
     }
 
@@ -141,6 +132,9 @@ public class RoleInfoPanel : BasePanel
         m_nGem = (int)_msg["gem"];
         m_nLevel = (int)_msg["lv"];
         m_nAttack = (int)_msg["attack"];
+        m_nPLTimer = (int)_msg["plTimer"];
+        m_nHPTimer = (int)_msg["hpTimer"];
+        m_nExp = (int)_msg["exp"];
         m_strRoleName = _msg["name"].ToString();
 
         m_nPL = m_nPL > 100 ? 100 : m_nPL;
@@ -156,6 +150,57 @@ public class RoleInfoPanel : BasePanel
         Txt_Name.text = m_strRoleName;
         Txt_PL.text = m_nPL.ToString();
         Txt_Attack.text = m_nAttack.ToString();
+        Bg_Exp.maxValue = 100;
+        Bg_Exp.value = m_nExp / 100;
+    }
+
+    private void RefreshTimer(Message _msg)
+    {
+        m_nPLTimer = (int)_msg["plTimer"];
+        m_nHPTimer = (int)_msg["hpTimer"];
+    }
+
+    void UpdateEnergyAndToughenShow()
+    {
+        if (m_nHp >= 100)
+        {
+            Txt_ReTime.text = "00:00:00";
+            Txt_ReAllTime.text = "00:00:00";
+        }
+        else
+        {
+            int remainTime = 60 - m_nHPTimer;
+            string str = remainTime <= 9 ? "0" + remainTime : remainTime.ToString();
+            Txt_ReTime.text = "00:00:" + str;
+
+            //首先总的体力为100 其中一个体力是在最后的00表示 
+            int minutes = 99 - m_nHp;
+            int hours = minutes / 60;
+            minutes = minutes % 60;
+            string hoursStr = hours <= 9 ? "0" + hours : hours.ToString();
+            string minutesStr = minutes <= 9 ? "0" + minutes : minutes.ToString();
+            Txt_ReAllTime.text = hoursStr + ":" + minutesStr + ":" + str;
+        }
+
+        if (m_nPL >= 50)
+        {
+            Txt_PL_ReTime.text = "00:00:00";
+            Txt_PL_ReAllTime.text = "00:00:00";
+        }
+        else
+        {
+            int remainTime = 60 - m_nPLTimer;
+            string str = remainTime <= 9 ? "0" + remainTime : remainTime.ToString();
+            Txt_PL_ReTime.text = "00:00:" + str;
+
+            //首先总的历练为50 最后的两个零使用了一个历练
+            int minutes = 49 - m_nPL;
+            int hours = minutes / 60;
+            minutes = minutes % 60;
+            string hoursStr = hours <= 9 ? "0" + hours : hours.ToString();
+            string minutesStr = minutes <= 9 ? "0" + minutes : minutes.ToString();
+            Txt_PL_ReAllTime.text = hoursStr + ":" + minutesStr + ":" + str;
+        }
     }
 
 }

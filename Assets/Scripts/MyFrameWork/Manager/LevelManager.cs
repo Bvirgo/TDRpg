@@ -44,6 +44,12 @@ namespace ZFrameWork
         private UIType sceneOpenUIType = UIType.None;
         private object[] sceneOpenUIParams = null;
 
+        private Image m_loadingImg;
+        private bool m_bLoadingImgFill = false;
+        private float m_fTarget = 0;
+        private float m_fProBarSpeed = 2;
+        private float m_fDelayTime = 0.3f;
+
         public BaseScene CurrentScene
         {
             get { return currentScene; }
@@ -57,14 +63,14 @@ namespace ZFrameWork
             }
         }
 
-        private  void InitData()
+        private  void InitContainer()
         {
             dicSceneInfos = new Dictionary<ScnType, SceneInfoData>();
         }
 
         public void OnInit()
         {
-            InitData();
+            InitContainer();
 
             // Registe All Scene
             RegisterAllScene();
@@ -228,6 +234,14 @@ namespace ZFrameWork
         #endregion
 
         #region Change Scene By Loading
+   
+        void Update()
+        {
+            if (m_bLoadingImgFill)
+            {
+                m_loadingImg.fillAmount = Utils.Approach(m_loadingImg.fillAmount, m_fTarget, Time.deltaTime * m_fProBarSpeed);
+            }
+        }
         public void ChangeScene(ScnType _sceneType)
         {
             UIManager.Instance.CloseUIAll();
@@ -266,36 +280,49 @@ namespace ZFrameWork
                 GameObject uiObj = GameObject.Find("Canvas");
                 if (uiObj != null)
                 {
+                    m_bLoadingImgFill = true;
+
                     Transform LoadingProgressBar = uiObj.transform.Find("Bg/LoadingProgressBar");
-                    Image barImg = LoadingProgressBar.GetComponent<Image>();
-                    barImg.fillAmount = 0;
+                    m_loadingImg = LoadingProgressBar.GetComponent<Image>();
+                    m_loadingImg.fillAmount = 0;
 
                     // we start loading the scene
                     SceneInfoData sid = GetSceneInfo(ChangeSceneType);
                     String strNextScnName = sid.SceneName;
 
+
                     AsyncOperation _asyncOperation = SceneManager.LoadSceneAsync(strNextScnName, LoadSceneMode.Single);
                     _asyncOperation.allowSceneActivation = false;
 
-                    float _fillTarget = 0;
                     // while the scene loads, we assign its progress to a target that we'll use to fill the progress bar smoothly
                     while (_asyncOperation.progress < 0.9f)
                     {
-                        _fillTarget = _asyncOperation.progress;
-                        barImg.fillAmount = _fillTarget;
+                        m_bLoadingImgFill = true;
+
+                        m_fTarget = _asyncOperation.progress;
                         yield return null;
                     }
+                    // when the load is close to the end (it'll never reach it), we set it to 100%
+                    m_fTarget = 1f;
+
+                    // we wait for the bar to be visually filled to continue
+                    while (LoadingProgressBar.GetComponent<Image>().fillAmount != m_fTarget)
+                    {
+                        yield return null;
+                    }
+                    m_bLoadingImgFill = false;
 
                     // we switch to the new scene
                     _asyncOperation.allowSceneActivation = true;
 
-                    yield return _asyncOperation;
-
+                    yield return new WaitForSeconds(0.5f);
+                    // the load is now complete, we replace the bar with the complete animation
                     if (_asyncOperation.isDone)
                     {
                         // the load is now complete, we replace the bar with the complete animation
                         SceneLoadCompleted(sid);
                     }
+
                 }
             }
         }

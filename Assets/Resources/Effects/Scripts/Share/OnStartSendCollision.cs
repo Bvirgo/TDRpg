@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class OnStartSendCollision : MonoBehaviour
+public class OnReadySendCollision : MonoBehaviour
 {
 
   private EffectSettings effectSettings;

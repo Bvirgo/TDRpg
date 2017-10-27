@@ -12,16 +12,16 @@ public class WindowModule : BaseModule {
         this.AutoRegister = true;
     }
 
-    protected override void OnLoad()
+    protected override void OnReady()
     {
-        base.OnLoad();
+        base.OnReady();
 
-        InitData();
+        InitContainer();
 
         RegisterMessage();
     }
 
-    private void InitData()
+    private void InitContainer()
     {
         m_bShow = false;
         m_qShowWin = new Queue<Message>();

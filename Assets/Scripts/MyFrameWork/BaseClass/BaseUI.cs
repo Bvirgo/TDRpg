@@ -101,7 +101,7 @@ namespace ZFrameWork
         /// <summary>
         /// Clean Events
         /// </summary>
-        protected virtual void OnRemoveEvent()
+        protected virtual void UnRegisterAllMsg()
         {
             foreach (var item in event_action)
             {
@@ -109,21 +109,25 @@ namespace ZFrameWork
             }
         }
 
-        /// <summary>
-        /// Cache Events
-        /// </summary>
-        /// <param name="_strEvent"></param>
-        /// <param name="_msg"></param>
-        protected virtual void PushEvent(string _strEvent, MessageEvent _msg)
+        protected virtual void RegisterMsg(string _strMsg,MessageEvent _cbMsg)
         {
-            if (!event_action.ContainsKey(_strEvent))
+            MessageCenter.Instance.AddListener(_strMsg,_cbMsg);
+
+            event_action.AddOrReplace(_strMsg,_cbMsg);
+        }
+
+        protected virtual void UnRegisterMsg(string _strMsg)
+        {
+            if (event_action.ContainsKey(_strMsg))
             {
-                event_action.Add(_strEvent, _msg);
+                MessageCenter.Instance.RemoveListener(_strMsg,event_action[_strMsg]);
+                event_action.Remove(_strMsg);
             }
         }
         #endregion
 
         #region When Open
+        /**|1|**/
         void Awake()
         {
             this.State = ObjectState.Initial;
@@ -132,25 +136,16 @@ namespace ZFrameWork
             OnAwake();
         }
 
-        // Use this for initialization
-        void Start()
-        {
-            OnStart();
-        }
-
+        /**|2|**/
         protected virtual void OnAwake()
         {
             this.State = ObjectState.Loading;
+
             // Play When Open
             this.OnPlayOpenUIAudio();
         }
 
-        protected virtual void OnStart()
-        {
-
-        }
-
-
+        /**|3|**/
         /// <summary>
         /// Play Music When Open
         /// </summary>
@@ -159,20 +154,7 @@ namespace ZFrameWork
 
         }
 
-        protected virtual void SetUI(params object[] uiParams)
-        {
-            this.State = ObjectState.Loading;
-            this.uiParams = uiParams;
-        }
-
-        /// <summary>
-        /// Load Data When Open
-        /// </summary>
-        protected virtual void OnLoadData()
-        {
-
-        }
-
+        /**|4|**/
         /// <summary>
         /// Set Params & Async Load Data When Open
         /// </summary>
@@ -184,6 +166,14 @@ namespace ZFrameWork
             MonoHelper.Instance.StartCoroutine(AsyncOnLoadData());
         }
 
+        /**|5|**/
+        protected virtual void SetUI(params object[] uiParams)
+        {
+            this.State = ObjectState.Loading;
+            this.uiParams = uiParams;
+        }
+
+        /**|6|**/
         private IEnumerator AsyncOnLoadData()
         {
             yield return new WaitForSeconds(0);
@@ -193,6 +183,43 @@ namespace ZFrameWork
                 this.State = ObjectState.Ready;
             }
         }
+
+        /**|7ing|**/
+        /// <summary>
+        /// Load Data When Open
+        /// </summary>
+        protected virtual void OnLoadData() { }
+
+        /**|8|**/
+        void Start()
+        {
+            // Initial Containers
+            InitContainer();
+
+            InitUI();
+
+            Register();
+
+            OnReady();
+        }
+
+        /**|9|**/
+        /// <summary>
+        /// Initialize Containers 
+        /// </summary>
+        protected virtual void InitContainer() { }
+
+        /**|10|**/
+        /// <summary>
+        /// Initialize UI 
+        /// </summary>
+        protected virtual void InitUI() { }
+
+        /**|11|**/
+        protected virtual void Register() { }
+
+        /**|12|**/
+        protected virtual void OnReady() { }
 
         #endregion
 
@@ -212,7 +239,7 @@ namespace ZFrameWork
         protected virtual void OnRelease()
         {
             this.OnPlayCloseUIAudio();
-            OnRemoveEvent();
+            UnRegisterAllMsg();
         }
 
         /// <summary>

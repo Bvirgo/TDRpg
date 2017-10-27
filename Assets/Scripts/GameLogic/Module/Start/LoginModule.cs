@@ -12,9 +12,9 @@ public class LoginModule : BaseModule {
         this.AutoRegister = true;
     }
 
-    protected override void OnLoad()
+    protected override void OnReady()
     {
-        base.OnLoad();
+        base.OnReady();
 
         MessageCenter.Instance.AddListener(MsgType.Start_ShowLogin, OnLogin);
     }

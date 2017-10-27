@@ -40,7 +40,7 @@ public class ProjectileCollisionBehaviour : MonoBehaviour
   private float randomSpeed, randomRadiusX, randomRadiusY;
   private int randomDirection1, randomDirection2, randomDirection3;
   private bool onCollision;
-  private bool isInitializedOnStart;
+  private bool isInitializedOnReady;
   private Vector3 randomTargetOffsetXZVector;
   private bool frameDroped;
 
@@ -64,17 +64,17 @@ public class ProjectileCollisionBehaviour : MonoBehaviour
     if (!IsRootMove) startParentPosition = transform.parent.position;
     if (GoLight != null) tLight = GoLight.transform;
     InitializeDefault();
-    isInitializedOnStart = true;
+    isInitializedOnReady = true;
   }
 
   void OnEnable()
   {
-    if(isInitializedOnStart) InitializeDefault();
+    if(isInitializedOnReady) InitializeDefault();
   }
 
   void OnDisable()
   {
-    if (ResetParentPositionOnDisable && isInitializedOnStart && !IsRootMove) transform.parent.position = startParentPosition;
+    if (ResetParentPositionOnDisable && isInitializedOnReady && !IsRootMove) transform.parent.position = startParentPosition;
   }
 
   private void InitializeDefault()

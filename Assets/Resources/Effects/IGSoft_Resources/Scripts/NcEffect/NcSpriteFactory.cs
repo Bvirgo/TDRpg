@@ -450,7 +450,7 @@ public class NcSpriteFactory : NcEffectBehaviour
 	}
 
 	// 첫 frame 시작할때...
-	public void OnAnimationStartFrame(NcSpriteAnimation spriteCom)
+	public void OnAnimatiOnReadyFrame(NcSpriteAnimation spriteCom)
 	{
 	}
 

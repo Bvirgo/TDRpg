@@ -1,11 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ZFrameWork;
 
-public static class UiConfig
-{
-    
-}
+public static class UiConfig{}
 
 
 #region UI Enum
@@ -195,6 +194,10 @@ public static class UIPathDefines
                 _uiPrefab = "UIHeroInfo";
                 break;
 
+            case UIType.SubPackage:
+                _uiPrefab = "UIPackage";
+                break;
+
             default:
                 Debug.Log("Not Find EnumUIType! type: " + _uiType.ToString());
                 break;
@@ -221,6 +224,9 @@ public static class UIPathDefines
             case UIType.SubRoleInfo:
                 _scriptType = typeof(RoleInfoPanel);
                 break;
+            case UIType.SubPackage:
+                _scriptType = typeof(UIPackagePanel);
+                break;
             default:
                 Debug.Log("Not Find EnumUIType! type: " + _uiType.ToString());
                 break;
@@ -228,4 +234,17 @@ public static class UIPathDefines
         return _scriptType;
     }
     #endregion
+}
+
+public static class UIIconDefines
+{
+    public static void GetGoodsIcon(string _strIconName,Action<Texture2D> _cbDone)
+    {
+        string GOODSICONPATH = Application.streamingAssetsPath + "//GoodsIcon//";
+        string strIconPath = GOODSICONPATH + _strIconName + ".png";
+        ResManager.Instance.OnLoadLocalTexture(strIconPath, (tx) =>
+        {
+            _cbDone(tx);
+        });
+    }
 }

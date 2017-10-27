@@ -57,7 +57,7 @@ public class NcParticleSystem : NcEffectBehaviour
 							
 	protected	bool					m_bSleep						= false;
 	protected	float					m_fStartTime					= 0;
-	protected	float					m_fDurationStartTime			= 0;
+	protected	float					m_fDuratiOnReadyTime			= 0;
 	protected	float					m_fEmitStartTime				= 0;
 	protected	int						m_nCreateCount					= 0;
 	protected	bool					m_bScalePreRender				= false;
@@ -228,25 +228,25 @@ public class NcParticleSystem : NcEffectBehaviour
 				if (m_fStartTime + m_fStartDelayTime <= GetEngineTime())
 				{
 					m_fEmitStartTime	= GetEngineTime();
-					m_fDurationStartTime= GetEngineTime();
+					m_fDuratiOnReadyTime= GetEngineTime();
 					SetEnableParticle(true);
 				}
 				return;
 			} else {
 				m_fEmitStartTime	= GetEngineTime();
-				m_fDurationStartTime= GetEngineTime();
+				m_fDuratiOnReadyTime= GetEngineTime();
 			}
 		}
 
 		// burst repeat
 		if (m_bBurst)
 		{
-			if (m_fDurationStartTime <= GetEngineTime())
+			if (m_fDuratiOnReadyTime <= GetEngineTime())
 			{
 				if ((m_nBurstRepeatCount == 0 || m_nCreateCount < m_nBurstRepeatCount))		// check repeat count
 				{
 //					SetEnableParticle(true);
-					m_fDurationStartTime = m_fBurstRepeatTime + GetEngineTime();
+					m_fDuratiOnReadyTime = m_fBurstRepeatTime + GetEngineTime();
 					m_nCreateCount++;
 					if (IsShuriken())
 						m_ps.Emit(m_fBurstEmissionCount);

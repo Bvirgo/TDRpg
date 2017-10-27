@@ -98,7 +98,7 @@ public class NcDelayActive : NcEffectBehaviour
 
 			float	fInvokeTime = GetParentDelayTime(true) + m_fDelayTime;
 //  			Debug.Log("InitNcDelayActive " + fInvokeTime + gameObject.name);
-			Invoke("OnStartActive", fInvokeTime);
+			Invoke("OnReadyActive", fInvokeTime);
 			m_bAddedInvoke = true;
 		}
 	}
@@ -139,7 +139,7 @@ public class NcDelayActive : NcEffectBehaviour
 	{
 // 		Debug.Log("CancelDelayActive " + name);
 		m_fStartedTime = 0;
-		CancelInvoke("OnStartActive");
+		CancelInvoke("OnReadyActive");
 		m_bAddedInvoke = false;
 	}
 
@@ -150,9 +150,9 @@ public class NcDelayActive : NcEffectBehaviour
 		m_fAliveTime	/= fSpeedRate;
 	}
 
-	void OnStartActive()
+	void OnReadyActive()
 	{
-//   		Debug.Log("OnStartActive" + m_fStartedTime + gameObject.name);
+//   		Debug.Log("OnReadyActive" + m_fStartedTime + gameObject.name);
 		if (0 < m_fStartedTime)
 			return;
 		m_fStartedTime = GetEngineTime();

@@ -42,7 +42,7 @@ namespace ZFrameWork
 
         void Start()
         {
-            OnStart();
+            OnReady();
         }
 
         protected virtual void OnAwake()
@@ -50,7 +50,7 @@ namespace ZFrameWork
 
         }
 
-        protected virtual void OnStart()
+        protected virtual void OnReady()
         {
 
         }

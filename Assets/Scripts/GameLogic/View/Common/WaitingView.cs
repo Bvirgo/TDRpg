@@ -24,9 +24,9 @@ public class WaitingView : BaseUI {
         return UIType.Waiting;
     }
 
-    protected override void OnStart()
+    protected override void OnReady()
     {
-        base.OnStart();
+        base.OnReady();
         m_waitingImg = transform.Find("Panel/img_waiting");
         m_waitingImg.gameObject.SetActive(false);
         sld_percent.gameObject.SetActive(false);

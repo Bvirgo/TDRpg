@@ -7,6 +7,7 @@ public class RoleManager : DDOLSingleton<RoleManager>
 {
     #region Container
     private Transform m_tfPlayerRoot;
+    private GameObject objRole;
     #endregion
     /// <summary>
     /// Get Main Player
@@ -26,9 +27,19 @@ public class RoleManager : DDOLSingleton<RoleManager>
             m_tfPlayerRoot.localScale = Vector3.one;
             m_tfPlayerRoot.rotation = Quaternion.identity;
         }
+        objRole = objPrefab;
         objPrefab.transform.SetParent(m_tfPlayerRoot, true);
         RoleProperty rp = objPrefab.AddComponent<RoleProperty>();
         rp.ActorType = ActorType.Role;
         return rp;
+    }
+
+
+    void OnDrawGizmos()
+    {
+        if (objRole != null)
+        {
+            RTDebug.DrawGizmosBounds(Utils.GetRendererBounds(objRole), Color.red);
+        }
     }
 }

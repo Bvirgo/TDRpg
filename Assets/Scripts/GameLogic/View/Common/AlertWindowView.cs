@@ -46,18 +46,18 @@ public class AlertWindowView : BaseUI {
         UnRegister();
     }
 
-    protected override void OnStart()
+    protected override void OnReady()
     {
-        base.OnStart();
+        base.OnReady();
 
         RegisterMessage();
 
-        InitData();
+        InitContainer();
 
         ShowInfo();
     }
 
-    private void InitData()
+    private void InitContainer()
     {
         m_objItemPrefab = ResManager.Instance.Load("Prefabs/UI/InfoItem") as GameObject;
 
