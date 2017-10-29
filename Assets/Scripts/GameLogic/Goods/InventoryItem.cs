@@ -1,8 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class InventoryItem  {
 
+    public InventoryItem()
+    {
+        guid = Guid.NewGuid().ToString();
+    }
+    public string guid;
     private Inventory inventory;
     private int level;
     private int count;

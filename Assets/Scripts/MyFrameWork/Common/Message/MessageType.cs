@@ -49,8 +49,13 @@ namespace ZFrameWork
         public const string Role_GetRoleInfo = "Role_GetRoleInfo";
         public const string Role_RefreshTimer = "Role_RefreshTimer";
 
-        public const string Role_RefreshPackage = "Role_RefreshPackage";
+        public const string Role_RefreshRoleInventory = "Role_RefreshRoleInventory";
         public const string Role_GetRoleGoodsList = "Role_GetRoleGoodsList";
+        public const string Role_Equip = "Role_Equip";
+        public const string Role_Dequip = "Role_Dequip";
+        public const string Role_UseGoods = "Role_UseGoods";
+        public const string Role_MultUse = "Role_MultUse";
+        public const string Role_UpgradeEquip = "Role_UpgradeEquip";
         #endregion
     }
 }

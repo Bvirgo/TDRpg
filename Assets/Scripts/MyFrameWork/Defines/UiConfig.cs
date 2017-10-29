@@ -238,13 +238,14 @@ public static class UIPathDefines
 
 public static class UIIconDefines
 {
-    public static void GetGoodsIcon(string _strIconName,Action<Texture2D> _cbDone)
+    public static void GetGoodsIcon(string _strIconName,Action<Sprite> _cbDone)
     {
         string GOODSICONPATH = Application.streamingAssetsPath + "//GoodsIcon//";
         string strIconPath = GOODSICONPATH + _strIconName + ".png";
         ResManager.Instance.OnLoadLocalTexture(strIconPath, (tx) =>
         {
-            _cbDone(tx);
+            Sprite spr = Sprite.Create(tx,new Rect(0,0,tx.width,tx.height),Vector2.zero);
+            _cbDone(spr);
         });
     }
 }

@@ -1318,6 +1318,20 @@ public static class Utils
     }
 
     /// <summary>
+    /// Button Set Show Name
+    /// </summary>
+    /// <param name="_btn"></param>
+    /// <param name="_strName"></param>
+    public static void SetBtnName(UnityEngine.UI.Button _btn,string _strName)
+    {
+        if (_btn != null)
+        {
+            Text tx = _btn.GetComponentInChildren<Text>();
+            tx.text = _strName;
+        }
+    }
+
+    /// <summary>
     /// 设置滑动手感
     /// </summary>
     /// <param name="_tf"></param>
