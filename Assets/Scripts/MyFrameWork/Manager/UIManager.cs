@@ -478,6 +478,24 @@ namespace ZFrameWork
             LoadSubUIData(_uiType,_tfParent,_uiParams);
         }
 
+        public void OpenSubPanel(UIType _uiType)
+        {
+            foreach (var item in uiView_SubPanles)
+            {
+                var dic = item.Value;
+                if (dic.ContainsKey(_uiType))
+                {
+                    var subUIObj = dic[_uiType];
+                    var bp = subUIObj.GetComponent<BasePanel>();
+                    if (bp != null)
+                    {
+                        bp.OnShow();
+                    }
+                    dic[_uiType].SetActive(true);
+                }
+            }
+        }
+
         /// <summary>
         /// Load Sub UI
         /// </summary>

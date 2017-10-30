@@ -16,27 +16,22 @@ public class VillageScn : BaseScene
     protected override void OnReady()
     {
         base.OnReady();
-
-        InitContainer();
-
-        RegisterModule();
-
+        
         NewPlayer();
     }
 
-    private void InitContainer()
+    protected override void InitContainer()
     {
+        base.InitContainer();
 
+        DataManager.Instance.ReadInventoryInfo(); 
     }
-
-    protected override void OnRelease()
+    
+    protected override void Register()
     {
-        base.OnRelease();
-    }
-
-    private void RegisterModule()
-    {
-        ModuleManager.Instance.RegisterModule(typeof(VillageModule));
+        base.Register();
+        ModuleManager.Instance.RegisterModule(typeof(TaskModule));
+        RegisterMsg(MsgType.Role_GoTargetPos,SetPlayerTargetPos);
     }
 
     private void NewPlayer()
@@ -44,6 +39,23 @@ public class VillageScn : BaseScene
         RoleProperty rp = RoleManager.Instance.OnNewPlayer();
         rp.CurrentScene = this;
         AddActor(rp);
+    }
+
+    private void SetPlayerTargetPos(Message _msg)
+    {
+        TaskItem task = _msg["task"] as TaskItem;
+        Vector3 vPost = (Vector3)_msg["target"];
+        BaseActor ba = RoleManager.Instance.OnGetMainPlayer();
+        if (ba != null)
+        {
+            PlayerMove pm = ba.gameObject.GetComponent<PlayerMove>();
+            pm.SetTarget(vPost,()=> 
+            {
+                Message msg = new Message(MsgType.Role_ArriveTargetPos,this);
+                msg["task"] = task;
+                msg.Send();
+            });
+        }
     }
 
 }

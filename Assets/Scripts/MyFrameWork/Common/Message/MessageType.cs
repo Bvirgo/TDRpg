@@ -56,6 +56,15 @@ namespace ZFrameWork
         public const string Role_UseGoods = "Role_UseGoods";
         public const string Role_MultUse = "Role_MultUse";
         public const string Role_UpgradeEquip = "Role_UpgradeEquip";
+
+        public const string Role_GetTaskInfo = "Role_GetTaskInfo";
+        public const string Role_RefreshTaskUI = "Role_RefreshTaskUI";
+        public const string Role_EnterNpcRange = "Role_EnterNpcRange";
+        public const string Role_TaskStateChanged = "Role_TaskStateChanged";
+        public const string Role_TaskItemClicked = "Role_TaskItemClicked";
+
+        public const string Role_GoTargetPos = "Role_GoTargetPos";
+        public const string Role_ArriveTargetPos = "Role_ArriveTargetPos";
         #endregion
     }
 }

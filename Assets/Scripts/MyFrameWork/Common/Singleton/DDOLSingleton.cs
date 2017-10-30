@@ -21,8 +21,7 @@ public abstract class DDOLSingleton<T> : MonoBehaviour where T : DDOLSingleton<T
 					DontDestroyOnLoad(go);
 				}
 				_Instance = go.AddComponent<T>();
-
-			}
+            }
 			return _Instance;
 		}
 	}
@@ -34,5 +33,8 @@ public abstract class DDOLSingleton<T> : MonoBehaviour where T : DDOLSingleton<T
 	{
 		_Instance = null;
 	}
+
+    protected virtual void InitContainer()
+    { }
 }
 

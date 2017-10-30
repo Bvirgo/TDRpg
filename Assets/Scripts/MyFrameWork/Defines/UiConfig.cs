@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using ZFrameWork;
 
-public static class UiConfig{}
+public static class UiConfig
+{
+    public const string SubUIItemPath = "UIPrefabs/SubUIItem/";
+}
 
 
 #region UI Enum
@@ -57,6 +60,10 @@ public enum UIType : int
     SubRoleProperty,
     /**|Room Maps Panel|**/
     SubRoomsMaps,
+    /// **************************
+    ///	Task Sub Panel
+    /// **************************
+    SubTask,
 }
 
 /// <summary>
@@ -198,6 +205,10 @@ public static class UIPathDefines
                 _uiPrefab = "UIPackage";
                 break;
 
+            case UIType.SubTask:
+                _uiPrefab = "UITaskPanel";
+                break;
+
             default:
                 Debug.Log("Not Find EnumUIType! type: " + _uiType.ToString());
                 break;
@@ -227,6 +238,10 @@ public static class UIPathDefines
             case UIType.SubPackage:
                 _scriptType = typeof(UIPackagePanel);
                 break;
+
+            case UIType.SubTask:
+                _scriptType = typeof(TaskPanel);
+                break;
             default:
                 Debug.Log("Not Find EnumUIType! type: " + _uiType.ToString());
                 break;
@@ -240,7 +255,7 @@ public static class UIIconDefines
 {
     public static void GetGoodsIcon(string _strIconName,Action<Sprite> _cbDone)
     {
-        string GOODSICONPATH = Application.streamingAssetsPath + "//GoodsIcon//";
+        string GOODSICONPATH = Application.streamingAssetsPath + "//Icons//";
         string strIconPath = GOODSICONPATH + _strIconName + ".png";
         ResManager.Instance.OnLoadLocalTexture(strIconPath, (tx) =>
         {

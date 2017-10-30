@@ -3,9 +3,11 @@ using System.Collections;
 using System.Security.Cryptography.X509Certificates;
 using DG.Tweening;
 using UnityEngine.UI;
+using ZFrameWork;
+using System;
+
 public class PlayerMove : MonoBehaviour
 {
-
     public int m_nSpeed = 15;
     private Animator m_animator;
     private Rigidbody m_rigibody;
@@ -15,11 +17,10 @@ public class PlayerMove : MonoBehaviour
     private Vector3 vOffset;
     private Vector3 vTarget;
     public Transform m_Target;
-    public GameObject m_npc1;
-    public GameObject m_npc2;
     private float fY;
 
     private EffectCtr m_effectCtr;
+    private Action m_actArriaved;
 	// Use this for initialization
     void Awake()
     {
@@ -93,6 +94,10 @@ public class PlayerMove : MonoBehaviour
                 m_nav.isStopped = true;
                 m_nav.enabled = false;
                 m_animator.SetBool("bRun", false);
+                if (m_actArriaved != null)
+                {
+                    m_actArriaved();
+                }
             }
 	    }
         //transform.position = new Vector3(transform.position.x,fY,transform.position.z);
@@ -106,25 +111,15 @@ public class PlayerMove : MonoBehaviour
         }
 	}
 
-    private void SetTarget(Vector3 _vPos)
+    public void SetTarget(Vector3 _vPos,Action _cbDone = null)
     {
         if (!m_nav.enabled)
         {
             m_nav.enabled = true;
         }
+        m_actArriaved = _cbDone;
+        vTarget = _vPos;
         m_nav.SetDestination(_vPos);
         m_nav.speed = 20;
-    }
-
-    public void SetNPC1()
-    {
-        vTarget = m_npc1.transform.position;
-       SetTarget(m_npc1.transform.position);
-    }
-
-    public void SetNPC2()
-    {
-        vTarget = m_npc2.transform.position;
-        SetTarget(m_npc2.transform.position);
     }
 }

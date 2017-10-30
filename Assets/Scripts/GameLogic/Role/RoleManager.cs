@@ -8,7 +8,13 @@ public class RoleManager : DDOLSingleton<RoleManager>
     #region Container
     private Transform m_tfPlayerRoot;
     private GameObject objRole;
+    private List<BaseActor> m_pRoleList;
     #endregion
+
+    void Awake()
+    {
+        m_pRoleList = new List<BaseActor>();
+    }
     /// <summary>
     /// Get Main Player
     /// </summary>
@@ -31,9 +37,26 @@ public class RoleManager : DDOLSingleton<RoleManager>
         objPrefab.transform.SetParent(m_tfPlayerRoot, true);
         RoleProperty rp = objPrefab.AddComponent<RoleProperty>();
         rp.ActorType = ActorType.Role;
+        m_pRoleList.Add(rp);
         return rp;
     }
 
+    /// **************************
+    ///	Get Main Player 
+    /// **************************
+    public BaseActor OnGetMainPlayer()
+    {
+        return m_pRoleList.Find((item )=> { return item.ActorType == ActorType.Role; });
+    }
+
+    public void OnRemoveRole(string _strGUID)
+    {
+        var r = m_pRoleList.Find((item) => { return item.guid.Equals(_strGUID); });
+        if (r != null)
+        {
+            m_pRoleList.Remove(r);
+        }
+    }
 
     void OnDrawGizmos()
     {

@@ -236,7 +236,8 @@ public class RoleProperty : BaseActor
         RefreshUI();
     }
     #endregion
-   
+
+    #region Package UI Event
     void Update()
     {
         // Add HP & PL By Time
@@ -263,7 +264,7 @@ public class RoleProperty : BaseActor
                 m_nBaseHp += 1;
                 m_proHP.Content = m_nBaseHp;
                 fHpTimer -= 60;
-               
+
             }
         }
         else
@@ -273,7 +274,7 @@ public class RoleProperty : BaseActor
 
         RefreshTimer();
     }
-    
+
     private void RefreshUI()
     {
         Message msg = new Message(MsgType.Role_RefreshRoleInfo, this);
@@ -302,7 +303,8 @@ public class RoleProperty : BaseActor
     private void GetRoleInfo(Message _msg)
     {
         RefreshUI();
-    } 
+    }
+    #endregion
 
     #region Package Event
     private void RefreshRoleEquipList(Message _msg)

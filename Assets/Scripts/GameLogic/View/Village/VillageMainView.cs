@@ -74,6 +74,8 @@ public class VillageMainView : BaseUI {
     private string m_strRoleName;
     private bool m_bInit;
     #endregion
+
+    #region Init & Register
     public override UIType GetUIType()
     {
         return UIType.Village;
@@ -82,38 +84,44 @@ public class VillageMainView : BaseUI {
     protected override void OnReady()
     {
         base.OnReady();
-        
+
         GetRoleInfo();
     }
-    
+
     protected override void Register()
     {
         base.Register();
 
         RegisterMsg(MsgType.Role_RefreshRoleInfo, RefreshRoleInfo);
     }
-    
+
     protected override void InitUI()
     {
-        Btn_Head.onClick.AddListener(()=> 
+        Btn_Head.onClick.AddListener(() =>
         {
             UIManager.Instance.OpenSubPanle(UIType.SubRoleInfo, root, true);
         });
 
-        Btn_Bag.onClick.AddListener(()=> 
+        Btn_Bag.onClick.AddListener(() =>
         {
-            UIManager.Instance.OpenSubPanle(UIType.SubPackage,root,true);
+            UIManager.Instance.OpenSubPanle(UIType.SubPackage, root, true);
+        });
+
+        Btn_Qust.onClick.AddListener(()=> 
+        {
+            UIManager.Instance.OpenSubPanle(UIType.SubTask, root, true);
         });
     }
-    
+    #endregion
 
+    #region Role Inforamtion
     private void RefreshRoleInfo(Message _msg)
     {
         m_nHp = (int)_msg["hp"];
         m_nPL = (int)_msg["pl"];
         m_nGold = (int)_msg["gold"];
-        m_nGem  = (int)_msg["gem"];
-        m_nLevel    = (int)_msg["lv"];
+        m_nGem = (int)_msg["gem"];
+        m_nLevel = (int)_msg["lv"];
         m_strRoleName = _msg["name"].ToString();
 
         m_nPL = m_nPL > 100 ? 100 : m_nPL;
@@ -140,7 +148,9 @@ public class VillageMainView : BaseUI {
 
     private void GetRoleInfo()
     {
-        Message msg = new Message(MsgType.Role_GetRoleInfo,this);
+        Message msg = new Message(MsgType.Role_GetRoleInfo, this);
         msg.Send();
     }
+    #endregion
+
 }

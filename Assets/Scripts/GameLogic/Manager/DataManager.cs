@@ -10,17 +10,22 @@ public class DataManager : Singleton<DataManager>
     /// **************************
     private Dictionary<int, Inventory> inVentorysID_inventoryDict;
     private string m_strInventoryConfig;
+
+    private List<Task> m_pTaskConfig;
     #endregion
 
-    #region
-
+    #region Init & Rgister
     public override void Init()
     {
         base.Init();
         inVentorysID_inventoryDict = new Dictionary<int, Inventory>();
+        m_pTaskConfig = new List<Task>();
         m_strInventoryConfig = Application.streamingAssetsPath + "//TxtInfo//InventoryListinfo.txt";
-    }
 
+    }
+    #endregion
+
+    #region Load Goods Config
     /// <summary>
     /// Load Inventory Config
     /// </summary>
@@ -114,6 +119,47 @@ public class DataManager : Singleton<DataManager>
             return inVentorysID_inventoryDict[_nID];
         }
         return null;
+    }
+    #endregion
+
+    #region Load Task Config
+    public void ReadTaskConfig()
+    {
+        string strTaskLocalConfigPath = Application.streamingAssetsPath + "//TxtInfo//TaskInfo.txt";
+        string strConfig = Utils.ReadTextFile(strTaskLocalConfigPath);
+        string[] taskinfoArray = strConfig.Split('\n');
+        foreach (string str in taskinfoArray)
+        {
+            string[] proArray = str.Split('|');
+            Task task = new Task();
+            task.Id = int.Parse(proArray[0]);
+            switch (proArray[1])
+            {
+                case "Main":
+                    task.TaskType = TaskType.Main;
+                    break;
+                case "Reward":
+                    task.TaskType = TaskType.Reward;
+                    break;
+                case "Daily":
+                    task.TaskType = TaskType.Daily;
+                    break;
+            }
+            task.Name = proArray[2];
+            task.Icon = proArray[3];
+            task.Des = proArray[4];
+            task.Coin = int.Parse(proArray[5]);
+            task.Diamond = int.Parse(proArray[6]);
+            task.TalkNpc = proArray[7];
+            task.IdNpc = int.Parse(proArray[8]);
+            task.IdTranscript = int.Parse(proArray[9]);
+            m_pTaskConfig.Add(task);
+        }
+    }
+
+    public Task OnGetTaskByID(int _nID)
+    {
+        return m_pTaskConfig.Find((item ) => { return item.Id == _nID; });
     }
     #endregion
 }
