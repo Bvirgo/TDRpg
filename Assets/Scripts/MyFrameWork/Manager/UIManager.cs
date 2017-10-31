@@ -56,7 +56,10 @@ namespace ZFrameWork
         /// The stack open U is.
         /// </summary>
         private Stack<UIInfoData> stackOpenUIs = null;
-
+        /// <summary>
+        /// Render Mode Is Screen Space Camera
+        /// </summary>
+        private bool bIsSreenSpaceCamera;
         /// <summary>
         /// Init this Singleton.
         /// </summary>
@@ -64,6 +67,7 @@ namespace ZFrameWork
         {
             dicOpenUIs = new Dictionary<UIType, GameObject>();
             stackOpenUIs = new Stack<UIInfoData>();
+            bIsSreenSpaceCamera = true;
         }
         #endregion
 
@@ -233,6 +237,8 @@ namespace ZFrameWork
                         {
                             _baseUI = _uiObject.AddComponent(_uiInfoData.ScriptType) as BaseUI;
                         }
+
+                        Canvas c = _uiObject.GetComponent<Canvas>();
 
                         // 自动注册指定UGUI 
                         AutoInjectUGUI(_baseUI);

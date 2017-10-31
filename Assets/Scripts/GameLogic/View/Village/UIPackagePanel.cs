@@ -85,6 +85,9 @@ public class UIPackagePanel : BasePanel
     public Text Txt_Des;
     [HideInInspector,AutoUGUI]
     public Image Spr_EupIcon;
+
+    [HideInInspector, AutoUGUI]
+    public Transform SelectedEffect;
     #endregion
 
     #region Container
@@ -203,6 +206,7 @@ public class UIPackagePanel : BasePanel
     {
         UIEquipTips.gameObject.SetActive(false);
         UIGoodsTips.gameObject.SetActive(false);
+        SelectedEffect.gameObject.SetActive(false);
         Txt_Power.text = m_nTotalPower.ToString();
         Txt_Hp.text = m_nTotalHP.ToString();
         for (int i = 0; i < m_pEquipItem.Count; i++)
@@ -289,6 +293,12 @@ public class UIPackagePanel : BasePanel
         }
     }
 
+    private void ShowSelectedEffect(Transform _tf)
+    {
+        SelectedEffect.gameObject.SetActive(true);
+        SelectedEffect.position = new Vector3(_tf.position.x,_tf.position.y,-10);
+    }
+
     /// <summary>
     /// Refresh Package By Page Index
     /// </summary>
@@ -324,6 +334,7 @@ public class UIPackagePanel : BasePanel
         {
             Debug.Log(string.Format("Goods:{0},Is Choosed!",_item.Inventory.Name));
             ChooseGoodsItem(_item);
+            ShowSelectedEffect(_tf);
         });
         Image spr_bg = _tf.Find("Spr_Icon").GetComponent<Image>();
         UIIconDefines.GetGoodsIcon(_item.Inventory.ICON, (spr) => 
@@ -381,8 +392,6 @@ public class UIPackagePanel : BasePanel
     /// <param name="_item"></param>
     private void ShowEquipInfo(InventoryItem _item,bool _bIsDressed = false)
     {
-        ResetUIState();
-
         UIEquipTips.gameObject.SetActive(true);
         Txt_AddDamage.text = _item.Inventory.Damage.ToString();
         Txt_AddHP.text = _item.Inventory.HP.ToString();
@@ -420,7 +429,7 @@ public class UIPackagePanel : BasePanel
         Btn_CloseTips.onClick.RemoveAllListeners();
         Btn_CloseTips.onClick.AddListener(() => 
         {
-            ResetUIState();
+            UIEquipTips.gameObject.SetActive(false);
         });
     }
 
@@ -444,7 +453,7 @@ public class UIPackagePanel : BasePanel
         Btn_CloseGoodsTips.onClick.RemoveAllListeners();
         Btn_CloseGoodsTips.onClick.AddListener(()=>
         {
-            ResetUIState();
+            UIGoodsTips.gameObject.SetActive(false);
         });
 
         Btn_Use.onClick.RemoveAllListeners();
