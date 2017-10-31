@@ -7,7 +7,6 @@ public class RoleManager : DDOLSingleton<RoleManager>
 {
     #region Container
     private Transform m_tfPlayerRoot;
-    private GameObject objRole;
     private List<BaseActor> m_pRoleList;
     #endregion
 
@@ -15,13 +14,15 @@ public class RoleManager : DDOLSingleton<RoleManager>
     {
         m_pRoleList = new List<BaseActor>();
     }
+
     /// <summary>
     /// Get Main Player
     /// </summary>
     /// <returns></returns>
-    public RoleProperty OnNewPlayer()
+    public RoleProperty OnNewMainPlayer(Vector3 _vSpawn,Quaternion _q,bool _bVillage = true)
     {
-        GameObject objPrefab = Resources.Load(Defines.Man) as GameObject;
+        string strRolePrefab = _bVillage ? Defines.VillageMan : Defines.BattleMan;
+        GameObject objPrefab = Resources.Load(strRolePrefab) as GameObject;
         objPrefab = GameObject.Instantiate(objPrefab);
         objPrefab.name = "MainRole";
         if (m_tfPlayerRoot == null)
@@ -33,8 +34,11 @@ public class RoleManager : DDOLSingleton<RoleManager>
             m_tfPlayerRoot.localScale = Vector3.one;
             m_tfPlayerRoot.rotation = Quaternion.identity;
         }
-        objRole = objPrefab;
-        objPrefab.transform.SetParent(m_tfPlayerRoot, true);
+        Transform tf = objPrefab.transform;
+        tf.SetParent(m_tfPlayerRoot, true);
+        tf.position = _vSpawn;
+        tf.rotation = _q;
+
         RoleProperty rp = objPrefab.AddComponent<RoleProperty>();
         rp.ActorType = ActorType.Role;
         m_pRoleList.Add(rp);
@@ -49,20 +53,35 @@ public class RoleManager : DDOLSingleton<RoleManager>
         return m_pRoleList.Find((item )=> { return item.ActorType == ActorType.Role; });
     }
 
+
+    /// **************************
+    ///	Remove Role 
+    /// **************************
     public void OnRemoveRole(string _strGUID)
     {
         var r = m_pRoleList.Find((item) => { return item.guid.Equals(_strGUID); });
         if (r != null)
         {
+            GameObject.Destroy(r.gameObject);
             m_pRoleList.Remove(r);
         }
     }
 
-    void OnDrawGizmos()
+
+    /// **************************
+    ///	Remove All Roles 
+    /// **************************
+    public void OnRemoveAllRole()
     {
-        if (objRole != null)
+        for (int i = 0; i < m_pRoleList.Count; i++)
         {
-            RTDebug.DrawGizmosBounds(Utils.GetRendererBounds(objRole), Color.red);
+            var r = m_pRoleList[i];
+            if (r != null && r.gameObject != null)
+            {
+                GameObject.Destroy(r.gameObject);
+                m_pRoleList.Remove(r);
+            }
         }
     }
+    
 }

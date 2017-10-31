@@ -7,38 +7,21 @@ using System;
 public class WindowModule : BaseModule {
     private bool m_bShow;
     private Queue<Message> m_qShowWin;
-    public WindowModule()
+
+    protected override void InitContainer()
     {
-        this.AutoRegister = true;
-    }
-
-    protected override void OnReady()
-    {
-        base.OnReady();
-
-        InitContainer();
-
-        RegisterMessage();
-    }
-
-    private void InitContainer()
-    {
+        base.InitContainer();
         m_bShow = false;
         m_qShowWin = new Queue<Message>();
     }
 
-    private void RegisterMessage()
+    protected override void Register()
     {
+        base.Register();
         MessageCenter.Instance.AddListener(MsgType.Win_Show, OnShowWindow);
         MessageCenter.Instance.AddListener(MsgType.Win_Finish, OnAffirm);
     }
-    protected override void OnRelease()
-    {
-        base.OnRelease();
-        MessageCenter.Instance.RemoveListener(MsgType.Win_Show,OnShowWindow);
-        MessageCenter.Instance.RemoveListener(MsgType.Win_Finish, OnAffirm);
-    }
-
+    
     private void OnShowWindow(Message _msg)
     {
         if (!m_bShow)

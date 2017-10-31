@@ -30,18 +30,10 @@ public class WaitingModule : BaseModule {
     {
         this.AutoRegister = true;
     }
-
-    protected override void OnReady()
+    
+    protected override void InitContainer()
     {
-        base.OnReady();
-
-        InitContainer();
-
-        RegisterMessage();
-    }
-
-    private void InitContainer()
-    {
+        base.InitContainer();
         m_bShowWaiting = false;
         m_qMsg = new Queue<int>();
         key_msgs = new Dictionary<int, WaitingMsgInfo>();
@@ -49,24 +41,17 @@ public class WaitingModule : BaseModule {
         m_nTotal = 1;
         m_nCurrent = 0;
     }
+    
 
-    private void RegisterMessage()
+    protected override void Register()
     {
+        base.Register();
         MessageCenter.Instance.AddListener(MsgType.WV_PopWaiting, PopWaiting);
         MessageCenter.Instance.AddListener(MsgType.WV_PushWaiting, PushWaiting);
         MessageCenter.Instance.AddListener(MsgType.WV_ShowWaiting, ShowWaiting);
         MessageCenter.Instance.AddListener(MsgType.WV_HideWaiting, Hide);
     }
-
-    protected override void OnRelease()
-    {
-        base.OnRelease();
-        MessageCenter.Instance.RemoveListener(MsgType.WV_ShowWaiting, ShowWaiting);
-        MessageCenter.Instance.RemoveListener(MsgType.WV_HideWaiting, Hide);
-        MessageCenter.Instance.RemoveListener(MsgType.WV_PopWaiting, PopWaiting);
-        MessageCenter.Instance.RemoveListener(MsgType.WV_PushWaiting, PushWaiting);
-    }
-
+    
     private void SetMax(Message _msg)
     {
         if (_msg.IsKey("id") && _msg.IsKey("t"))

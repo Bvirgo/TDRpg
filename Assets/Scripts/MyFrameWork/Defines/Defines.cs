@@ -118,6 +118,7 @@ namespace ZFrameWork
         LoginScene,
         MainScene,
         VillageScene,
+        BattleScene,
         CopyScene,
         PVPScene,
         PVEScene,
@@ -145,8 +146,8 @@ namespace ZFrameWork
         public const string MapsLayerName = "Ground";
 
         /**|Role Define|**/
-        public const string Man = "Prefabs/Player/Boy_SimpleMove";
-
+        public const string VillageMan = "Prefabs/Player/Boy_SimpleMove";
+        public const string BattleMan = "Prefabs/Player/Boy_Room";
     }
     #endregion
 }

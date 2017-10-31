@@ -56,10 +56,6 @@ namespace ZFrameWork
             set
             {
                 currentScene = value;
-                //				if (null != currentScene)
-                //				{
-                //					currentScene.Load();
-                //				}
             }
         }
 
@@ -88,6 +84,8 @@ namespace ZFrameWork
             RegisterScene(ScnType.StartGame, "Start", typeof(StartScn), null);
 
             RegisterScene(ScnType.VillageScene, "Village", typeof(VillageScn), null);
+
+            RegisterScene(ScnType.BattleScene,"BattleRoom",typeof(BattleScene),null);
 
             //RegisterScene(ScnType.Battle, ScnType.Battle.ToString(), typeof(CompEditorScn), null);
         }
@@ -188,7 +186,7 @@ namespace ZFrameWork
 			MonoHelper.Instance.StartCoroutine(AsyncLoadScene(sceneName,()=> 
             {
                 // 注册场景Module
-                ModuleManager.Instance.RegisterModule(sid.SceneType);
+                currentScene = ModuleManager.Instance.Register(sid.SceneType) as BaseScene;
 
                 if (sceneOpenUIType != UIType.None)
                 {
@@ -333,7 +331,7 @@ namespace ZFrameWork
 		void SceneLoadCompleted(SceneInfoData _scInfo)
         {          
             // Register Module
-            ModuleManager.Instance.RegisterModule(_scInfo.SceneType);
+            ModuleManager.Instance.Register(_scInfo.SceneType);
 
             //Open UI
             if (sceneOpenUIType != UIType.None)

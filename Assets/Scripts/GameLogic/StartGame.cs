@@ -41,7 +41,7 @@ public class StartGame : MonoBehaviour {
     private void LoadFirstScn()
     {
         // Register Login Scene Module
-        ModuleManager.Instance.RegisterModule(typeof(StartScn));
+        ModuleManager.Instance.Register(typeof(StartScn));
     }
 
 

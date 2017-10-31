@@ -126,6 +126,7 @@ public class UIPackagePanel : BasePanel
     {
         base.Register();
         RegisterMsg(MsgType.Role_RefreshRoleInventory, RefreshPackageList);
+        RegisterMsg(MsgType.Role_RefreshRoleInfo,RefreshRolePropertyInfo);
     }
 
     private void GetPackageGoodsList()
@@ -195,11 +196,17 @@ public class UIPackagePanel : BasePanel
     private void RefreshPackageList(Message _msg)
     {
         m_pInventoryItemList = _msg["data"] as List<InventoryItem>;
+        ResetUIState();
+        CreateGoodsItem();
+    }
+
+    private void RefreshRolePropertyInfo(Message _msg)
+    {
         m_nTotalPower = (int)_msg["power"];
         m_nTotalHP = (int)_msg["hp"];
-        ResetUIState();
 
-        CreateGoodsItem();
+        Txt_Power.text = m_nTotalPower.ToString();
+        Txt_Hp.text = m_nTotalHP.ToString();
     }
 
     private void ResetUIState()
@@ -207,8 +214,7 @@ public class UIPackagePanel : BasePanel
         UIEquipTips.gameObject.SetActive(false);
         UIGoodsTips.gameObject.SetActive(false);
         SelectedEffect.gameObject.SetActive(false);
-        Txt_Power.text = m_nTotalPower.ToString();
-        Txt_Hp.text = m_nTotalHP.ToString();
+
         for (int i = 0; i < m_pEquipItem.Count; i++)
         {
             Transform tf = m_pEquipItem[i];
@@ -219,6 +225,7 @@ public class UIPackagePanel : BasePanel
             img.sprite = m_sprGoodsIconBg;
         }
     }
+    
 
     /// <summary>
     /// Refresh Package By Msg

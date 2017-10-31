@@ -77,8 +77,6 @@ namespace ZFrameWork
 			//...
 			if (registerMode == EnumRegisterMode.AutoRegister)
 			{
-				// register 
-				ModuleManager.Instance.Register(this);
 				registerMode = EnumRegisterMode.AlreadyRegister; 
 			}
 			OnReady();
@@ -94,7 +92,7 @@ namespace ZFrameWork
 
         protected virtual void InitContainer()
         {
-            event_action = new Dictionary<string, MessageEvent>();
+            event_action = new Dictionary<string, List<MessageEvent>>();
         }
 
         public void Release()
@@ -120,7 +118,7 @@ namespace ZFrameWork
         protected virtual void OnRelease() { }
 
         #region Event
-        public Dictionary<string, MessageEvent> event_action;
+        public Dictionary<string, List<MessageEvent>> event_action;
         /// <summary>
         /// Clean Events
         /// </summary>
@@ -128,25 +126,31 @@ namespace ZFrameWork
         {
             foreach (var item in event_action)
             {
-                MessageCenter.Instance.RemoveListener(item.Key, item.Value);
+                var pEvents = item.Value;
+                for (int i = 0; i < pEvents.Count; i++)
+                {
+                    MessageCenter.Instance.RemoveListener(item.Key, pEvents[i]);
+                }
             }
         }
 
         protected virtual void RegisterMsg(string _strMsg, MessageEvent _cbMsg)
         {
             MessageCenter.Instance.AddListener(_strMsg, _cbMsg);
-
-            event_action.AddOrReplace(_strMsg, _cbMsg);
-        }
-
-        protected virtual void UnRegisterMsg(string _strMsg)
-        {
             if (event_action.ContainsKey(_strMsg))
             {
-                MessageCenter.Instance.RemoveListener(_strMsg, event_action[_strMsg]);
-                event_action.Remove(_strMsg);
+                var pList = event_action[_strMsg];
+                pList.Add(_cbMsg);
+                event_action[_strMsg] = pList;
+            }
+            else
+            {
+                List<MessageEvent> pEvent = new List<MessageEvent>();
+                pEvent.Add(_cbMsg);
+                event_action[_strMsg] = pEvent;
             }
         }
+        
         #endregion
 
     }

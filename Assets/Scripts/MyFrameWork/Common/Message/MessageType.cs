@@ -50,6 +50,7 @@ namespace ZFrameWork
         public const string Role_RefreshTimer = "Role_RefreshTimer";
 
         public const string Role_RefreshRoleInventory = "Role_RefreshRoleInventory";
+        public const string Role_RefreshRoleProperty = "Role_RefreshRoleProperty";
         public const string Role_GetRoleGoodsList = "Role_GetRoleGoodsList";
         public const string Role_Equip = "Role_Equip";
         public const string Role_Dequip = "Role_Dequip";

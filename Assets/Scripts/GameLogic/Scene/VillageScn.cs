@@ -7,15 +7,14 @@ public class VillageScn : BaseScene
 {
     #region Containers
     private GameObject m_objMainPlayer;
+    private GameObject m_Spawn;
     #endregion
-    public VillageScn()
-    {
-        this.AutoRegister = true;
-    }
 
     protected override void OnReady()
     {
         base.OnReady();
+
+        m_Spawn = GameObject.Find("Spawn");
         
         NewPlayer();
     }
@@ -30,13 +29,28 @@ public class VillageScn : BaseScene
     protected override void Register()
     {
         base.Register();
-        ModuleManager.Instance.RegisterModule(typeof(TaskModule));
+
+        RegisterModule();
+
         RegisterMsg(MsgType.Role_GoTargetPos,SetPlayerTargetPos);
+    }
+
+    private void RegisterModule()
+    {
+        ModuleManager.Instance.Register(typeof(TaskModule));
+        ModuleManager.Instance.Register(typeof(InventoryModule));
     }
 
     private void NewPlayer()
     {
-        RoleProperty rp = RoleManager.Instance.OnNewPlayer();
+        Vector3 vPos = Vector3.zero;
+        Quaternion qRotation = Quaternion.identity;
+        if (m_Spawn != null)
+        {
+            vPos = m_Spawn.transform.position;
+            qRotation = m_Spawn.transform.rotation;
+        }
+        RoleProperty rp = RoleManager.Instance.OnNewMainPlayer(vPos,qRotation);
         rp.CurrentScene = this;
         AddActor(rp);
     }
@@ -56,6 +70,13 @@ public class VillageScn : BaseScene
                 msg.Send();
             });
         }
+    }
+
+    protected override void OnRelease()
+    {
+        base.OnRelease();
+
+        RoleManager.Instance.OnRemoveAllRole();
     }
 
 }

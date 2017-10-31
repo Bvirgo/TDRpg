@@ -33,8 +33,6 @@ public abstract class DDOLSingleton<T> : MonoBehaviour where T : DDOLSingleton<T
 	{
 		_Instance = null;
 	}
-
-    protected virtual void InitContainer()
-    { }
+    
 }
 

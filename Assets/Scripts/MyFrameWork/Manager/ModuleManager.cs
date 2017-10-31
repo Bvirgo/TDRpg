@@ -48,36 +48,39 @@ namespace ZFrameWork
         /// Regeiste One Module
         /// </summary>
         /// <param name="_moduleType"></param>
-        public void RegisterModule(Type _moduleType)
+        public BaseModule Register(Type _moduleType)
         {
-            LoadModule(_moduleType);
+            if (dicModules.ContainsKey(_moduleType.ToString()))
+            {
+                return dicModules[_moduleType.ToString()];
+            }
+            else
+            {
+                return LoadModule(_moduleType);
+            }
         }
 
         /// <summary>
         /// 创建指定M，初始化
         /// </summary>
         /// <param name="moduleType"></param>
-        private void LoadModule(Type moduleType)
+        private BaseModule LoadModule(Type moduleType)
         {
             BaseModule bm = System.Activator.CreateInstance(moduleType) as BaseModule;
             bm.Load();
+            if (bm.AutoRegister)
+            {
+                Register(moduleType.ToString(), bm);
+            }
+            return bm;
         }
-        /// <summary>
-        /// Register the specified module.
-        /// </summary>
-        /// <param name="module">Module.</param>
-        public void Register(BaseModule module)
-		{
-			Type t = module.GetType();
-			Register(t.ToString(), module);
-		}
 
 		/// <summary>
 		/// Register the specified key and module.
 		/// </summary>
 		/// <param name="key">Key.</param>
 		/// <param name="module">Module.</param>
-		public void Register(string key, BaseModule module)
+		private void Register(string key, BaseModule module)
 		{
 			if (!dicModules.ContainsKey(key))
 				dicModules.Add(key, module);

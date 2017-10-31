@@ -18,29 +18,21 @@ public class IndexPanel : BasePanel {
     {
         return UIType.SubIndex;
     }
-
-    public override void OnShow()
+    
+    protected override void InitUI()
     {
-        base.OnShow();
+        base.InitUI();
 
-        InitUI();
-    }
-
-    private void InitUI()
-    {
-        Btn_User.onClick.AddListener(()=> 
+        Btn_User.onClick.AddListener(() =>
         {
             UIManager.Instance.OpenSubPanle(UIType.SubLogin, parent, true);
         });
 
-        Btn_Enter.onClick.AddListener(()=> 
+        Btn_Enter.onClick.AddListener(() =>
         {
-            LevelManager.Instance.ChangeScene(ScnType.VillageScene,UIType.Village);
+            //LevelManager.Instance.ChangeScene(ScnType.VillageScene, UIType.Village);
+            LevelManager.Instance.ChangeScene(ScnType.BattleScene, UIType.Battle);
         });
     }
-
-    public override void OnHide()
-    {
-        base.OnHide();  
-    }
+    
 }

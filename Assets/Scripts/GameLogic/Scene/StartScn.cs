@@ -35,9 +35,9 @@ public class StartScn : BaseScene
     /// </summary>
     private void RegisterModule()
     {
-        ModuleManager.Instance.RegisterModule(typeof(LoginModule));
-        ModuleManager.Instance.RegisterModule(typeof(WindowModule));
-        ModuleManager.Instance.RegisterModule(typeof(WaitingModule));
+        ModuleManager.Instance.Register(typeof(LoginModule));
+        ModuleManager.Instance.Register(typeof(WindowModule));
+        ModuleManager.Instance.Register(typeof(WaitingModule));
     }
     #endregion
 }
