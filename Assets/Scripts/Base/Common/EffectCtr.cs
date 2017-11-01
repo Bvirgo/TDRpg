@@ -9,7 +9,7 @@ public class EffectCtr : MonoBehaviour
     private NcCurveAnimation[] m_pNcAni;
     private Transform m_effect;
 	// Use this for initialization
-    void Awake()
+    void Start()
     {
         m_pNcAni = transform.GetComponentsInChildren<NcCurveAnimation>();
         m_pRender = transform.GetComponentsInChildren<Renderer>();

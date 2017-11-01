@@ -39,6 +39,10 @@ public class BattleScene : BaseScene
             qRotation = m_Spawn.transform.rotation;
         }
         RoleProperty rp = RoleManager.Instance.OnNewMainPlayer(vPos, qRotation, false);
+        if (rp.gameObject.GetComponent<PlayerAttack>() == null)
+        {
+            rp.gameObject.AddComponent<PlayerAttack>();
+        }
         rp.CurrentScene = this;
         AddActor(rp);
     }
