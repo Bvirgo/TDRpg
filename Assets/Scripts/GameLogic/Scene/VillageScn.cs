@@ -30,17 +30,12 @@ public class VillageScn : BaseScene
     {
         base.Register();
 
-        RegisterModule();
+        RegisterModule(typeof(TaskModule));
+        RegisterModule(typeof(InventoryModule));
 
         RegisterMsg(MsgType.Role_GoTargetPos,SetPlayerTargetPos);
     }
-
-    private void RegisterModule()
-    {
-        ModuleManager.Instance.Register(typeof(TaskModule));
-        ModuleManager.Instance.Register(typeof(InventoryModule));
-    }
-
+    
     private void NewPlayer()
     {
         Vector3 vPos = Vector3.zero;

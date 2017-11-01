@@ -10,6 +10,7 @@ using UnityEngine.EventSystems;
 using System.Drawing;
 using System.Windows.Forms;
 using UnityEngine.UI;
+using System.Xml.Serialization;
 
 public static class Utils
 {
@@ -1702,5 +1703,52 @@ public static class Utils
             return ms.ToArray();
         }
     }
+    #endregion
+
+    #region XML
+    /// <summary>
+    /// Read XML 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="sPath"></param>
+    /// <returns></returns>
+   public static T ReadXML<T>(string sPath)
+    {
+        if (!File.Exists(sPath))
+        {
+            return default(T);
+        }
+        // 读取XML文件流：融化的铁水
+        FileStream pReadStream = new FileStream(sPath, FileMode.Open);
+        // 反射，构造出T对应的XML结构：造模型
+        // XmlSerializer有出现内存泄露的风险，它的构造必须用以下的方式，否则就会出现内存泄露
+        XmlSerializer xml = new XmlSerializer(typeof(T));
+        // 反序列化：铁水流入指定模型，打造出对应物品
+        T data = (T)xml.Deserialize(pReadStream);
+        pReadStream.Close();
+        return data;
+    }
+
+    /// <summary>
+    /// Save Data To XML
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="sPath"></param>
+   public static void WriteXML<T>(T data, string sPath)
+    {
+        // 指定编码格式uft8
+        UTF8Encoding utf8 = new UTF8Encoding(false);
+        // 按指定编码格式，在指定路径下，创建写入流
+        StreamWriter pWriter = new StreamWriter(sPath, false, utf8);
+        // 反射，根据T类型，创建对象的XML模型
+        XmlSerializer xs = new XmlSerializer(typeof(T));
+        xs.Serialize(pWriter, data);
+        if (pWriter != null)
+        {
+            pWriter.Close();
+        }
+    }
+
     #endregion
 }

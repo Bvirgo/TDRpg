@@ -139,7 +139,7 @@ public static class UIPathDefines
                 break;
 
             default:
-                Debug.Log("Not Find EnumUIType! type: " + _uiType.ToString());
+                Debug.Log("Find UIPrefab Not EnumUIType: " + _uiType.ToString());
                 break;
         }
         return UI_PREFAB + _uiPrefab;
@@ -171,8 +171,11 @@ public static class UIPathDefines
                 _scriptType = typeof(VillageMainView);
                 break;
 
+            case UIType.Battle:
+                _scriptType = typeof(BattleView);
+                break;
             default:
-                Debug.Log("Not Find EnumUIType! type: " + _uiType.ToString());
+                Debug.Log("Find View Scripte Not EnumUIType: " + _uiType.ToString());
                 break;
         }
         return _scriptType;
@@ -210,7 +213,7 @@ public static class UIPathDefines
                 break;
 
             default:
-                Debug.Log("Not Find EnumUIType! type: " + _uiType.ToString());
+                Debug.Log("Find SubUIPrefab Not EnumUIType: " + _uiType.ToString());
                 break;
         }
         return UI_SUBUI_PREFAB + _uiPrefab;
@@ -243,7 +246,7 @@ public static class UIPathDefines
                 _scriptType = typeof(TaskPanel);
                 break;
             default:
-                Debug.Log("Not Find EnumUIType! type: " + _uiType.ToString());
+                Debug.Log("Find Panel Scripte Not EnumUIType: " + _uiType.ToString());
                 break;
         }
         return _scriptType;

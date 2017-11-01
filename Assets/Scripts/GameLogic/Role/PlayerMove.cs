@@ -23,7 +23,7 @@ public class PlayerMove : MonoBehaviour
     private EffectCtr[] m_pEffectCtr;
     private Action m_actArriaved;
     private int m_nEffectIndex;
-    void Awake()
+    void Start()
     {
         m_roleAnmCtr = GetComponent<RoleAnimator>();
         if (m_roleAnmCtr == null)
@@ -57,8 +57,17 @@ public class PlayerMove : MonoBehaviour
         float hDir = Input.GetAxis("Horizontal");
         float vDir = Input.GetAxis("Vertical");
 
-        //--是否落地判断:如果没有落地，需要自己处理重力，SimpleMove处理重力太轻飘飘
-        if(!m_charCtr.SimpleMove(new Vector3(-vDir * m_nSpeed, transform.localPosition.y, hDir * m_nSpeed)))
+        /// **************************
+        /// 这里特殊处理一下，按理说，h是x正向，v是Z正向
+        /// 调整地图轴向和角色轴向一致
+        /// 但是，这个地图把出生地放在了h的反向
+        /// **************************
+        hDir = -hDir;
+        
+        /// **************************
+        ///	是否落地判断:如果没有落地，需要自己处理重力，SimpleMove处理重力太轻飘飘 
+        /// **************************
+        if (!m_charCtr.SimpleMove(new Vector3(vDir * m_nSpeed, transform.localPosition.y, hDir * m_nSpeed)))
         {
             RaycastHit hit;
             //--检测角色离开地面的高度，获取角色正下方的地面点，每一帧都同步一下这个Y值，让角色一直贴着地面
@@ -68,8 +77,8 @@ public class PlayerMove : MonoBehaviour
                 transform.position = new Vector3(transform.position.x,vPos.y,transform.position.z);
             }
         }
-
-        Vector3 vSpeed = new Vector3(-vDir,0, hDir);
+        
+        Vector3 vSpeed = new Vector3(vDir, 0, hDir);
         if (Mathf.Abs(hDir) > 0.1f || Mathf.Abs(vDir) > 0.1f)
         {
             m_roleAnmCtr.AnmType = ActionType.run;

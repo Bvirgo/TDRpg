@@ -66,6 +66,10 @@ namespace ZFrameWork
 
         public const string Role_GoTargetPos = "Role_GoTargetPos";
         public const string Role_ArriveTargetPos = "Role_ArriveTargetPos";
+
+        public const string Role_PressSkillBtn = "Role_PressSkillBtn";
+        public const string Role_UpdateSkillCD = "Role_UpdateSkillCD";
+        public const string Role_Fire = "Role_Fire";
         #endregion
     }
 }

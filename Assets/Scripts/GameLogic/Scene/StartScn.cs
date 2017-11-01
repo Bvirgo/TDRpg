@@ -8,11 +8,7 @@ using ZFrameWork;
 /// </summary>
 public class StartScn : BaseScene
 {
-    #region Base
-    public StartScn()
-    {
-        this.AutoRegister = true;
-    }
+    #region Init & Register
 
     protected override void OnReady()
     {
@@ -20,22 +16,20 @@ public class StartScn : BaseScene
 
         // Open Login View
         UIManager.Instance.OpenUI(UIType.Start, true);
-
-        RegisterModule();
-
     }
 
-    protected override void OnRelease()
+    protected override void Register()
     {
-        base.OnRelease();
+        base.Register();
+        RegisterModule();
     }
-
+    
     /// <summary>
     /// Registe Child Module
     /// </summary>
     private void RegisterModule()
     {
-        ModuleManager.Instance.Register(typeof(LoginModule));
+        RegisterModule(typeof(LoginModule));
         ModuleManager.Instance.Register(typeof(WindowModule));
         ModuleManager.Instance.Register(typeof(WaitingModule));
     }

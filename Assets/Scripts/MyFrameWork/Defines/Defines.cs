@@ -104,6 +104,19 @@ namespace ZFrameWork
         NPC,
     }
 
+
+    public enum ActionType
+    {
+        idel,
+        attack,
+        run,
+        die,
+        hurt,
+        sk_1,
+        sk_2,
+        sk_3,
+    }
+
     #endregion
 
     #region Scene Enum

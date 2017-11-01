@@ -162,4 +162,26 @@ public class DataManager : Singleton<DataManager>
         return m_pTaskConfig.Find((item ) => { return item.Id == _nID; });
     }
     #endregion
+
+    #region Load Skill Config
+    private Skills m_skillConfig;
+    public void ReadSkillConfig()
+    {
+        string strSkillConfigPath = Application.streamingAssetsPath + "//Xml//SkillInfo.xml";
+        m_skillConfig = Utils.ReadXML<Skills>(strSkillConfigPath);
+        if (m_skillConfig != null)
+        {
+            Debug.Log(string.Format("Skill Config:{0}",m_skillConfig.pSkill.Count));
+        }
+    }
+
+
+    /// **************************
+    ///	Get Skill By Id 
+    /// **************************
+    public Skill OnGetSkillByID(int _nID)
+    {
+        return m_skillConfig.pSkill.Find((item)=> { return item.m_nID == _nID; });
+    }
+    #endregion
 }

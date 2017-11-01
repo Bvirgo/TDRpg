@@ -76,16 +76,27 @@ public class RoleAnimator : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// 动作动画上绑定的动画事件回调
+    /// </summary>
+    /// <param name="_strSkillClip"></param>
+    public void ShowEffectInPlayer(string _strSkillClip)
+    {
+        Debug.LogWarning(string.Format("Skill Event ShowEffectInPlayer:{0}", _strSkillClip));
+    }
+
+    public void Attack(string _strSkillClip)
+    {
+        Debug.LogWarning(string.Format("Skill Event Attack:{0}", _strSkillClip));
+    }
+
+    /// <summary>
+    /// 群体技能
+    /// </summary>
+    /// <param name="_strSkillClip"></param>
+    public void ShowEffectAround(string _strSkillClip)
+    {
+        Debug.LogWarning(string.Format("Skill Event ShowEffectInPlayer:{0}", _strSkillClip));
+    }
 }
 
-public enum ActionType
-{
-    idel,
-    attack,
-    run,
-    die,
-    hurt,
-    sk_1,
-    sk_2,
-    sk_3,    
-}

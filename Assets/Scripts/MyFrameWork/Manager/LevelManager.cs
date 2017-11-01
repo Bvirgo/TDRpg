@@ -331,7 +331,7 @@ namespace ZFrameWork
 		void SceneLoadCompleted(SceneInfoData _scInfo)
         {          
             // Register Module
-            ModuleManager.Instance.Register(_scInfo.SceneType);
+            currentScene = ModuleManager.Instance.Register(_scInfo.SceneType) as BaseScene;
 
             //Open UI
             if (sceneOpenUIType != UIType.None)

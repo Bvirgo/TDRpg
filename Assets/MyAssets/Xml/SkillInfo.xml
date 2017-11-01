@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?> 
     <Root>  
       <Skill id="1001" name="浮生万刃" icon="icon_zhu" playerType="Warrior" skillType="Basic" pos="0" coldTime="0" damage="30" dis="4" bRound="0"/>
-      <Skill id="1002" name="凤凰涅槃" icon="icon_up" playerType="Warrior" skillType="Skill" pos="1" coldTime="1" damage="30" dis="6" bRound="1"/>
-      <Skill id="1003" name="寒冰连斩" icon="iocn_ho" playerType="Warrior" skillType="Skill" pos="2" coldTime="2" damage="40" dis="6" bRound="1"/>
-      <Skill id="1004" name="咫尺天涯" icon="iocn_yi" playerType="Warrior" skillType="Skill" pos="3" coldTime="3" damage="50" dis="8" bRound=""/>
+      <Skill id="1002" name="凤凰涅槃" icon="icon_up" playerType="Warrior" skillType="Skill" pos="1" coldTime="5" damage="30" dis="6" bRound="1"/>
+      <Skill id="1003" name="寒冰连斩" icon="iocn_ho" playerType="Warrior" skillType="Skill" pos="2" coldTime="5" damage="40" dis="6" bRound="1"/>
+      <Skill id="1004" name="咫尺天涯" icon="iocn_yi" playerType="Warrior" skillType="Skill" pos="3" coldTime="8" damage="50" dis="8" bRound=""/>
       <Skill id="2001" name="雷动九天" icon="icon_zhu" playerType="FemaleAssassin" skillType="Skill" pos="0" coldTime="0" damage="30" dis="4" bRound="0"/>
       <Skill id="2002" name="炽天使" icon="icon_up" playerType="FemaleAssassin" skillType="Skill" pos="1" coldTime="2" damage="30" dis="6" bRound="1"/>
       <Skill id="2003" name="不动明王" icon="iocn_ho" playerType="FemaleAssassin" skillType="Skill" pos="2" coldTime="2" damage="40" dis="7" bRound="1"/>

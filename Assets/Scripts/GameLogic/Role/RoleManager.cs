@@ -55,6 +55,15 @@ public class RoleManager : DDOLSingleton<RoleManager>
 
 
     /// **************************
+    ///	Get Role By GUID 
+    /// **************************
+    public BaseActor OnGetRole(string _strGUID)
+    {
+        return m_pRoleList.Find((item) => { return item.guid.Equals(_strGUID); });
+    }
+
+
+    /// **************************
     ///	Remove Role 
     /// **************************
     public void OnRemoveRole(string _strGUID)

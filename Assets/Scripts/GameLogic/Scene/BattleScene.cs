@@ -9,6 +9,8 @@ public class BattleScene : BaseScene
     private GameObject m_objMainPlayer;
     private GameObject m_Spawn;
     #endregion
+
+    #region Init & Register
     protected override void OnReady()
     {
         base.OnReady();
@@ -21,7 +23,10 @@ public class BattleScene : BaseScene
     protected override void Register()
     {
         base.Register();
-        RegisterMsg(MsgType.Role_GoTargetPos, SetPlayerTargetPos);
+
+        RegisterModule(typeof(SkillModule));
+
+        RegisterMsg(MsgType.Role_Fire,MainPlaySkill);
     }
 
     private void NewPlayer()
@@ -33,26 +38,9 @@ public class BattleScene : BaseScene
             vPos = m_Spawn.transform.position;
             qRotation = m_Spawn.transform.rotation;
         }
-        RoleProperty rp = RoleManager.Instance.OnNewMainPlayer(vPos, qRotation,false);
+        RoleProperty rp = RoleManager.Instance.OnNewMainPlayer(vPos, qRotation, false);
         rp.CurrentScene = this;
         AddActor(rp);
-    }
-
-    private void SetPlayerTargetPos(Message _msg)
-    {
-        TaskItem task = _msg["task"] as TaskItem;
-        Vector3 vPost = (Vector3)_msg["target"];
-        BaseActor ba = RoleManager.Instance.OnGetMainPlayer();
-        if (ba != null)
-        {
-            PlayerMove pm = ba.gameObject.GetComponent<PlayerMove>();
-            pm.SetTarget(vPost, () =>
-            {
-                Message msg = new Message(MsgType.Role_ArriveTargetPos, this);
-                msg["task"] = task;
-                msg.Send();
-            });
-        }
     }
 
     protected override void OnRelease()
@@ -61,5 +49,43 @@ public class BattleScene : BaseScene
 
         RoleManager.Instance.OnRemoveAllRole();
     }
+    #endregion
 
+    #region Anatior & Effect
+    /// **************************
+    ///	Main Player Show Skill 
+    /// **************************
+    private void MainPlaySkill(Message _msg)
+    {
+        ActionType at = ActionType.attack;
+        int nPos = (int)_msg["pos"];
+        switch (nPos)
+        {
+            case 1:
+                at = ActionType.sk_1;
+                break;
+            case 2:
+                at = ActionType.sk_2;
+                break;
+            case 3:
+                at = ActionType.sk_3;
+                break;
+            default:
+                break;
+        }
+
+        var role = RoleManager.Instance.OnGetMainPlayer();
+        PlaySkill(role.transform,at);
+    }
+
+    private void PlaySkill(Transform _tf, ActionType _at)
+    {
+        RoleAnimator ra = _tf.GetComponent<RoleAnimator>();
+        if (ra != null)
+        {
+            ra.AnmType = _at;
+        }
+    }
+
+    #endregion
 }

@@ -93,6 +93,7 @@ namespace ZFrameWork
         protected virtual void InitContainer()
         {
             event_action = new Dictionary<string, List<MessageEvent>>();
+            m_pRegisterModule = new List<BaseModule>();
         }
 
         public void Release()
@@ -112,6 +113,8 @@ namespace ZFrameWork
 				OnRelease();
 
                 UnRegisterAllMsg();
+
+                UnRegisterAllModule();
             }
 		}
 
@@ -119,6 +122,7 @@ namespace ZFrameWork
 
         #region Event
         public Dictionary<string, List<MessageEvent>> event_action;
+        public List<BaseModule> m_pRegisterModule;
         /// <summary>
         /// Clean Events
         /// </summary>
@@ -150,7 +154,19 @@ namespace ZFrameWork
                 event_action[_strMsg] = pEvent;
             }
         }
-        
+
+        protected virtual void RegisterModule(Type _moduleType)
+        {
+            m_pRegisterModule.Add(ModuleManager.Instance.Register(_moduleType));
+        }
+
+        protected virtual void UnRegisterAllModule()
+        {
+            for (int i = 0; i < m_pRegisterModule.Count; i++)
+            {
+                ModuleManager.Instance.UnRegister(m_pRegisterModule[i]);
+            }
+        }
         #endregion
 
     }
