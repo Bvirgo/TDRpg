@@ -10,11 +10,20 @@ namespace ZFrameWork
     /// </summary>
 	public class BaseScene : BaseModule
 	{
+        private static BaseScene _instance;
+        public static BaseScene Instance
+        {
+            get
+            {
+                return _instance;
+            }
+        }
         // 场景角色列表
 		protected List<BaseActor> actorList = null;
         
 		public BaseScene ()
 		{
+            _instance = this;
 			actorList = new List<BaseActor> ();
 		}
 

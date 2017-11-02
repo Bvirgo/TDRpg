@@ -113,6 +113,15 @@ namespace ZFrameWork
                 return _assetInfo.AssetObject;
             return null;
         }
+
+        public T Load<T>(string _path) where T :UnityEngine.Object
+        {
+            AssetInfo _assetInfo = GetAssetInfo(_path);
+            if (null != _assetInfo)
+                return _assetInfo.AssetObject as T;
+            return null;
+        }
+
         #endregion
 
         #region Load Coroutine Resources

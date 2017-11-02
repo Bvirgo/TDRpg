@@ -184,4 +184,20 @@ public class DataManager : Singleton<DataManager>
         return m_skillConfig.pSkill.Find((item)=> { return item.m_nID == _nID; });
     }
     #endregion
+
+    #region Common Effect
+    public GameObject OnGetBleedEffect()
+    {
+        string strEffectPath = "Prefabs/EffectPrefabs/BloodSplatEffect";
+        GameObject go = ResManager.Instance.Load(strEffectPath) as GameObject ;
+        return go;
+    }
+    
+    public GameObject OnGetSkillEffect(string _strEffectName)
+    {
+        string strEffectPath = "Prefabs/EffectPrefabs/" + _strEffectName;
+        GameObject go = ResManager.Instance.Load(strEffectPath) as GameObject;
+        return go;
+    }
+    #endregion
 }

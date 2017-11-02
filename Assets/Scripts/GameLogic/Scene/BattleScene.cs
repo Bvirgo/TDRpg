@@ -27,6 +27,16 @@ public class BattleScene : BaseScene
         RegisterModule(typeof(SkillModule));
 
         RegisterMsg(MsgType.Role_Fire,MainPlaySkill);
+
+        // Play Background Music
+        //PlayBackGroundMuisc();
+    }
+
+    private void PlayBackGroundMuisc()
+    {
+        string strClipPath = Defines.ResMusicPath + "bg-city";
+        var mClip = ResManager.Instance.Load<AudioClip>(strClipPath);
+        SoundManager.Instance.PlayBackgroundMusic(mClip);
     }
 
     private void NewPlayer()

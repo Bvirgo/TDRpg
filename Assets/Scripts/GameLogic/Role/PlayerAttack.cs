@@ -69,15 +69,31 @@ public class PlayerAttack : MonoBehaviour
 
         //4 damage
         string posType = proArray[0];
+
+        int nDamage = damageArray[0];
+        float fBackDis = float.Parse(proArray[3]);
+        float fJumpDis = float.Parse(proArray[4]);
+        Message msg = new Message(MsgType.EmptyMsg, this);
+        msg["damage"] = nDamage;
+        msg["bDis"] = fBackDis;
+        msg["jDis"] = fJumpDis;
+
+        Vector3 vDir = transform.forward;
+        msg["dir"] = vDir;
+
         if (posType == "2001" || posType =="1001")
         {
-            ArrayList array = GetEnemyInAttackRange(AttackRange.Forward);
-
+            List<GameObject> array = GetEnemyInAttackRange(AttackRange.Forward);
+            
             //Calls the method named methodName on every MonoBehaviour in this game object.
             foreach (GameObject go in array)
             {
-                go.SendMessage("TakeDamage", damageArray[0] + "," + proArray[3] + "," + proArray[4]);
+                go.SendMessage("TakeDamage", msg);
             }
+        }
+        else
+        {
+            SkillAttack(args);
         }
     }
 
@@ -87,7 +103,8 @@ public class PlayerAttack : MonoBehaviour
     /// <param name="soundName"></param>
     void PlaySound(string soundName)
     {
-        //SoundManager.Instance.Play(soundName);
+        var clip = ResManager.Instance.Load<AudioClip>(Defines.ResMusicPath + soundName);
+        SoundManager.Instance.PlaySound(clip,transform.position,0.5f);
     }
 
     //0 normal skill1 skill2 skill3
@@ -97,45 +114,51 @@ public class PlayerAttack : MonoBehaviour
     {
         string[] proArray = args.Split(',');
         string posType = proArray[0];
-        if (posType == "skill1")
+
+        int nDamage = damageArray[0];
+        float fBackDis = float.Parse(proArray[3]);
+        float fJumpDis = float.Parse(proArray[4]);
+        Message msg = new Message(MsgType.EmptyMsg, this);
+        msg["damage"] = nDamage;
+        msg["bDis"] = fBackDis;
+        msg["jDis"] = fJumpDis;
+        Vector3 vDir = transform.forward;
+        msg["dir"] = vDir;
+
+        if (posType == "2002")
         {
-            ArrayList array = GetEnemyInAttackRange(AttackRange.Around);
+            List<GameObject> array = GetEnemyInAttackRange(AttackRange.Around);
             foreach (GameObject go in array)
             {
-                go.SendMessage("TakeDamage", damageArray[1] + "," + proArray[1] + "," + proArray[2]);
+                go.SendMessage("TakeDamage", msg);
             }
         }
-        else if (posType == "skill2")
+        else if (posType == "2003")
         {
-            ArrayList array = GetEnemyInAttackRange(AttackRange.Around);
+            List<GameObject> array = GetEnemyInAttackRange(AttackRange.Around);
             foreach (GameObject go in array)
             {
-                go.SendMessage("TakeDamage", damageArray[2] + "," + proArray[1] + "," + proArray[2]);
+                go.SendMessage("TakeDamage", msg);
             }
         }
-        else if (posType == "skill3")
+        else if (posType == "2004")
         {
-            ArrayList array = GetEnemyInAttackRange(AttackRange.Forward);
+            List<GameObject> array = GetEnemyInAttackRange(AttackRange.Forward);
             foreach (GameObject go in array)
             {
-                go.SendMessage("TakeDamage", damageArray[3] + "," + proArray[1] + "," + proArray[2]);
+                go.SendMessage("TakeDamage", msg);
             }
         }
     }
 
     void ShowEffect(string args)
     {
-        if (args.Equals("DeviHandMobile"))
+        if (args.Equals("DevilHandMobile"))
         {
             ShowEffectDevilHand();
         }
     }
-
-    void ShowEffectAround(string args)
-    {
-
-    }
-
+    
     void ShowEffectCtr(string effectName)
     {
         EffectCtr pe;
@@ -145,77 +168,87 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Show Devi Hand
+    /// </summary>
     void ShowEffectDevilHand()
     {
-        string effectName = "DevilHandMobile";
-        EffectCtr pe;
-        effectDict.TryGetValue(effectName, out pe);
-        ArrayList array = GetEnemyInAttackRange(AttackRange.Forward);
+        List<GameObject> array = GetEnemyInAttackRange(AttackRange.Forward);
         foreach (GameObject go in array)
         {
             RaycastHit hit;
             bool collider = Physics.Raycast(go.transform.position + Vector3.up, Vector3.down, out hit, 10f, LayerMask.GetMask("Ground"));
             if (collider)
             {
-                GameObject.Instantiate(pe, hit.point, Quaternion.identity);
+                GameObject.Instantiate(DataManager.Instance.OnGetSkillEffect("DevilHandMobile"), hit.point, Quaternion.identity);
             }
         }
     }
 
-    void ShowEffectSelfToTarget(string effectName)
+    /// <summary>
+    ///  Fire Bird
+    /// </summary>
+    /// <param name="effectName"></param>
+    void ShowEffectInPlayer(string effectName)
     {
-        //print("showeffect self to target");
-        EffectCtr pe;
-        effectDict.TryGetValue(effectName, out pe);
-        ArrayList array = GetEnemyInAttackRange(AttackRange.Around);
+        List<GameObject> array = GetEnemyInAttackRange(AttackRange.Around);
         foreach (GameObject go in array)
         {
-            GameObject goEffect = (GameObject.Instantiate(pe) as EffectCtr).gameObject;
+            GameObject goEffect = GameObject.Instantiate(DataManager.Instance.OnGetSkillEffect("FirePhoenixMobile"));
             goEffect.transform.position = transform.position + Vector3.up;
             goEffect.GetComponent<EffectSettings>().Target = go;
         }
     }
-    void ShowEffectToTarget(string effectName)
+
+    /// <summary>
+    /// MassFire
+    /// </summary>
+    /// <param name="effectName"></param>
+    void ShowEffectAround(string effectName)
     {
-        //print("showeffect self to target");
-        EffectCtr pe;
-        effectDict.TryGetValue(effectName, out pe);
-        ArrayList array = GetEnemyInAttackRange(AttackRange.Around);
+        List<GameObject> array = GetEnemyInAttackRange(AttackRange.Around);
         foreach (GameObject go in array)
         {
             RaycastHit hit;
             bool collider = Physics.Raycast(go.transform.position + Vector3.up, Vector3.down, out hit, 10f, LayerMask.GetMask("Ground"));
             if (collider)
             {
-                GameObject goEffect = (GameObject.Instantiate(pe) as EffectCtr).gameObject;
+                GameObject goEffect = GameObject.Instantiate(DataManager.Instance.OnGetSkillEffect("HolyFireStrike"));
                 goEffect.transform.position = hit.point;
             }
         }
     }
 
-    //得到在攻击范围之内的敌人
-    ArrayList GetEnemyInAttackRange(AttackRange attackRange)
+    /// <summary>
+    /// Get Enemys In Attack Range
+    /// </summary>
+    /// <param name="attackRange"></param>
+    /// <returns></returns>
+    List<GameObject> GetEnemyInAttackRange(AttackRange attackRange)
     {
-        ArrayList arrayList = new ArrayList();
-        //if (attackRange == AttackRange.Forward) {
-        //    foreach (GameObject go in TranscriptManager._instance.enemyList) {
-        //        Vector3 pos = transform.InverseTransformPoint(go.transform.position);
-        //        if (pos.z > -0.5f) {
-        //            float distance = Vector3.Distance(Vector3.zero, pos);
-        //            if (distance < distanceAttackForward) {
-        //                arrayList.Add(go);
-        //            }
-        //        }
-        //    }
-        //} else {
-        //    foreach (GameObject go in TranscriptManager._instance.enemyList) {
-        //        float distance = Vector3.Distance(transform.position, go.transform.position);
-        //            if (distance < distanceAttackAround) {
-        //                arrayList.Add(go);
-        //            }
-        //    }
-        //}
-
+        List<GameObject> arrayList = new List<GameObject>();
+        if (attackRange == AttackRange.Forward)
+        {
+            var pEnemy = Utils.GetAroundGameObject(transform.position, distanceAttackForward, "Monster");
+            foreach (GameObject go in pEnemy)
+            {
+                Vector3 pos = transform.InverseTransformPoint(go.transform.position);
+                if (pos.z > -0.5f)
+                {
+                   arrayList.Add(go);
+                }
+            }
+        }
+        else
+        {
+            var pEnemy = Utils.GetAroundGameObject(transform.position, distanceAttackAround, "Monster");
+            arrayList.AddRange(pEnemy);
+        }
+        Debug.LogWarning(string.Format("Get Enemy Count:{0}",arrayList.Count));
+        if (arrayList.Count != 0)
+        {
+            transform.LookAt(arrayList[0].transform);
+        }
         return arrayList;
     }
 

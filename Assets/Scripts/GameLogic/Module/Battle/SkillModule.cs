@@ -44,10 +44,12 @@ public class SkillModule : BaseModule
                 m_pSkills.Add(si);
             }
         }
+
+        AsyncSkillInformation();
     }
     #endregion
 
-    #region RealAct
+    #region Skill UI 
     private void PressSkill(Message _msg)
     {
         int nPos = (int)_msg["pos"];
@@ -66,6 +68,8 @@ public class SkillModule : BaseModule
                 BroadCastSkillPressed(sk);
             }
         }
+
+        AsyncSkillInformation();
     }
 
     private void BroadCastSkillPressed(SkillItem _sk)
@@ -74,7 +78,15 @@ public class SkillModule : BaseModule
         msg["pos"] = _sk.m_sk.m_nPos;
         msg.Send();
     }
-    
+
+    private void AsyncSkillInformation()
+    {
+        // 同步技能信息到角色身上
+        Message msg = new Message(MsgType.Role_GetSkillProperty, this);
+        msg["skills"] = m_pSkills;
+        msg.Send();
+    }
+
     private void Update()
     {
         for (int i = 0; i < m_pSkills.Count; i++)
@@ -110,6 +122,10 @@ public class SkillModule : BaseModule
         msg["pos"] = _sk.m_sk.m_nPos;
         msg.Send(); 
     }
+    #endregion
+
+    #region Skill Effect
+
     #endregion
 
 

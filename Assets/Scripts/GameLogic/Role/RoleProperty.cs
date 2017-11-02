@@ -28,7 +28,8 @@ public class RoleProperty : BaseActor
     private PropertyItem m_proHP;
     private PropertyItem m_proName;
     private PropertyItem m_proAttack;
-    
+
+    private List<SkillItem> m_pSkills;
     #endregion
 
     #region Init & Register
@@ -77,7 +78,8 @@ public class RoleProperty : BaseActor
         m_proGold = GetProperty(PropertyType.Gold);
         m_proGem = GetProperty(PropertyType.Coin);
         m_proName = GetProperty(PropertyType.RoleName);
-        
+
+        m_pSkills = new List<SkillItem>();     
     }
 
     protected override void Register()
@@ -85,6 +87,7 @@ public class RoleProperty : BaseActor
         base.Register();
         RegisterMsg(MsgType.Role_GetRoleInfo, GetRoleInfo);
         RegisterMsg(MsgType.Role_RefreshRoleProperty,GetInventory);
+        RegisterMsg(MsgType.Role_GetSkillProperty,RefreshSkillInfo);
     }
 
     #endregion
@@ -174,5 +177,14 @@ public class RoleProperty : BaseActor
     {
         RefreshUI();
     }
+    #endregion
+
+    #region Skill
+    private void RefreshSkillInfo(Message _msg)
+    {
+        Debug.Log("同步技能信息到角色");
+        m_pSkills = _msg["skills"] as List<SkillItem>;
+    }
+
     #endregion
 }

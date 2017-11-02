@@ -26,16 +26,27 @@ namespace ZFrameWork
         /// Only one background music can be active at a time.
         /// </summary>
         /// <param name="Clip">Your audio clip.</param>
-        public virtual void PlayBackgroundMusic(AudioSource Music)
+        public virtual void PlayBackgroundMusic(AudioClip _clip)
         {
             // if the music's been turned off, we do nothing and exit
             if (!m_bMusicOn)
                 return;
+            if (m_AsbackgroundMusic == null)
+            {
+                Transform tfCamera = Camera.main.transform;
+                m_AsbackgroundMusic = tfCamera.GetComponent<AudioSource>();
+                if (m_AsbackgroundMusic == null)
+                {
+                    m_AsbackgroundMusic = tfCamera.gameObject.AddComponent<AudioSource>();
+                }
+            }
             // if we already had a background music playing, we stop it
             if (m_AsbackgroundMusic != null)
+            {
                 m_AsbackgroundMusic.Stop();
+            }
             // we set the background music clip
-            m_AsbackgroundMusic = Music;
+            m_AsbackgroundMusic.clip = _clip;
             // we set the music's volume
             m_AsbackgroundMusic.volume = m_fMusicVolume;
             // we set the loop setting to true, the music will loop forever
@@ -73,8 +84,15 @@ namespace ZFrameWork
 
             if (!loop)
             {
-                // we destroy the host after the clip has played
-                Destroy(temporaryAudioHost, sfx.length);
+                if (sfx != null)
+                {
+                    // we destroy the host after the clip has played
+                    Destroy(temporaryAudioHost, sfx.length);
+                }
+                else
+                {
+                    Destroy(temporaryAudioHost);
+                }
             }
 
             // we return the audiosource reference

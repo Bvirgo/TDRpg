@@ -161,6 +161,11 @@ namespace ZFrameWork
         /**|Role Define|**/
         public const string VillageMan = "Prefabs/Player/Boy_SimpleMove";
         public const string BattleMan = "Prefabs/Player/Boy_Room";
+
+        /// **************************
+        ///	Music Path 
+        /// **************************
+        public const string ResMusicPath = "Audio/";
     }
     #endregion
 }

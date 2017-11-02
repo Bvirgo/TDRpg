@@ -720,6 +720,31 @@ public static class Utils
         }
         return vPos;
     }
+
+    /// <summary>
+    /// Get Sphere Colliders
+    /// </summary>
+    /// <param name="_vPos"></param>
+    /// <param name="_fDis"></param>
+    /// <param name="_strTag"></param>
+    /// <returns></returns>
+    public static List<GameObject> GetAroundGameObject(Vector3 _vPos, float _fDis,string _strTag = "")
+    {
+        List<GameObject> pGo = new List<GameObject>();
+        _fDis = _fDis < 0 ? 0 : _fDis;
+        bool bCheckTag = !string.IsNullOrEmpty(_strTag);
+
+        var cs = Physics.OverlapSphere(_vPos, _fDis);
+        for (int i = 0; i < cs.Length; i++)
+        {
+            var c = cs[i];
+            if (bCheckTag && c.gameObject.tag.Equals(_strTag) || !bCheckTag)
+            {
+                pGo.Add(c.gameObject);
+            }
+        }
+        return pGo;
+    }
     #endregion
 
     #region Dictionary扩展
