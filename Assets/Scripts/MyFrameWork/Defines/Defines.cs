@@ -99,7 +99,8 @@ namespace ZFrameWork
     public enum ActorType
     {
         None = 0,
-        Role,
+        MainRole,
+        NetRole,
         Monster,
         NPC,
     }

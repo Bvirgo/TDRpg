@@ -252,7 +252,7 @@ namespace ZFrameWork
             LastSceneType = ChangeSceneType;
             ChangeSceneType = _sceneType;
             //change loading scene
-            MonoHelper.Instance.StartCoroutine(AsyncLoadOtherScene());
+           StartCoroutine(AsyncLoadOtherScene());
         }
 
         /// <summary>

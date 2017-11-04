@@ -9,7 +9,7 @@ using System;
 public class PlayerMove : MonoBehaviour
 {
     [Header("Speed:")]
-    public int m_nSpeed = 15;
+    public int m_nSpeed = 5;
     private RoleAnimator m_roleAnmCtr;
     private Rigidbody m_rigibody;
     private CharacterController m_charCtr;
@@ -23,6 +23,8 @@ public class PlayerMove : MonoBehaviour
     private EffectCtr[] m_pEffectCtr;
     private Action m_actArriaved;
     private int m_nEffectIndex;
+    //网络同步
+    private float lastSendInfoTime = float.MinValue;
     void Start()
     {
         m_roleAnmCtr = GetComponent<RoleAnimator>();
@@ -90,6 +92,13 @@ public class PlayerMove : MonoBehaviour
             m_roleAnmCtr.AnmType = ActionType.idel;
         }
 
+        //网络同步
+        if (Time.time - lastSendInfoTime > 0.1f)
+        {
+            SendUnitInfo();
+            lastSendInfoTime = Time.time;
+        }
+
 	    if (m_nav.enabled)
 	    {
 	        float f = Vector3.Distance(transform.position, vTarget);
@@ -124,6 +133,28 @@ public class PlayerMove : MonoBehaviour
     {
         m_pEffectCtr = gameObject.GetComponentsInChildren<EffectCtr>();
         m_pEffectCtr[m_nEffectIndex].Show();
+    }
+
+    public void SendUnitInfo()
+    {
+        ProtocolBytes proto = new ProtocolBytes();
+        proto.AddString("UpdateUnitInfo");
+        //位置旋转
+        Vector3 pos = transform.position;
+        Vector3 rot = transform.eulerAngles;
+        proto.AddFloat(pos.x);
+        proto.AddFloat(pos.y);
+        proto.AddFloat(pos.z);
+        proto.AddFloat(rot.x);
+        proto.AddFloat(rot.y);
+        proto.AddFloat(rot.z);
+        //炮塔
+        float angleY = 0;
+        proto.AddFloat(angleY);
+        //炮管
+        float angleX = 0f;
+        proto.AddFloat(angleX);
+        NetMgr.srvConn.Send(proto);
     }
 
     public void SetTarget(Vector3 _vPos,Action _cbDone = null)

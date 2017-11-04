@@ -30,18 +30,14 @@ public class LoginPanel : BasePanel {
         return UIType.SubLogin;
     }
 
-    void Start()
-    {
-        InitUI();
-    }
 
-    private void InitUI()
+    protected override void InitUI()
     {
         ipt_user.text = UserCache.GetUserName();
         ipt_pwd.text = UserCache.GetPassword();
 
         btn_login.onClick.AddListener(() => {
-            Message msg = new Message(MsgType.Start_ShowLogin, this);
+            Message msg = new Message(MsgType.Start_EnterGame, this);
             msg["user"] = ipt_user.text;
             msg["psw"] = ipt_pwd.text;
             msg.Send();
@@ -49,7 +45,7 @@ public class LoginPanel : BasePanel {
 
         btn_close.onClick.AddListener(()=> 
         {
-            UIManager.Instance.OpenSubPanle(UIType.SubIndex, parent, true);
+            UIManager.Instance.OpenSubPanel(UIType.SubIndex, parent, true);
         });
     }
 

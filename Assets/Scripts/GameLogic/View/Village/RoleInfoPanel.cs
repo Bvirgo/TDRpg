@@ -120,7 +120,7 @@ public class RoleInfoPanel : BasePanel
     {
         Btn_Close.onClick.AddListener(()=>
         {
-            UIManager.Instance.HideSubPanle(UIType.SubRoleInfo);
+            UIManager.Instance.HideSubPanel(UIType.SubRoleInfo);
         });
     }
 

@@ -59,7 +59,7 @@ public enum UIType : int
     /**|Role Property Panel|**/
     SubRoleProperty,
     /**|Room Maps Panel|**/
-    SubRoomsMaps,
+    SubTeamPanel,
     /// **************************
     ///	Task Sub Panel
     /// **************************
@@ -212,6 +212,10 @@ public static class UIPathDefines
                 _uiPrefab = "UITaskPanel";
                 break;
 
+            case UIType.SubTeamPanel:
+                _uiPrefab = "BattleTeamPanel";
+                break;
+
             default:
                 Debug.Log("Find SubUIPrefab Not EnumUIType: " + _uiType.ToString());
                 break;
@@ -244,6 +248,9 @@ public static class UIPathDefines
 
             case UIType.SubTask:
                 _scriptType = typeof(TaskPanel);
+                break;
+            case UIType.SubTeamPanel:
+                _scriptType = typeof(RoomTeamPanel);
                 break;
             default:
                 Debug.Log("Find Panel Scripte Not EnumUIType: " + _uiType.ToString());

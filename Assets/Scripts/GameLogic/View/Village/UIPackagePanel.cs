@@ -158,7 +158,7 @@ public class UIPackagePanel : BasePanel
 
         Btn_ClosePackage.onClick.AddListener(()=> 
         {
-            UIManager.Instance.HideSubPanle(UIType.SubPackage);
+            UIManager.Instance.HideSubPanel(UIType.SubPackage);
         });
 
         Btn_Left.onClick.AddListener(()=> 

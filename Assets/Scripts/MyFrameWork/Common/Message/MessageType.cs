@@ -42,7 +42,7 @@ namespace ZFrameWork
         #endregion
 
         #region Start
-        public const string  Start_ShowLogin= "Start_ShowLogin";
+        public const string Start_EnterGame = "Start_EnterGame";
 
         #endregion
 

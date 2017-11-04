@@ -50,7 +50,7 @@ public class PlayerAttack : MonoBehaviour
     //4 jump height
     void Attack(string args)
     {
-        Debug.Log(string.Format("Attack :{0}",args));
+        //Debug.Log(string.Format("Attack :{0}",args));
         string[] proArray = args.Split(',');
         //1 show effect
         string effectName = proArray[1];

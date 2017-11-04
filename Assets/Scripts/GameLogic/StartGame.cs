@@ -10,6 +10,9 @@ public class StartGame : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+        DontDestroyOnLoad(this);
+
+        Application.runInBackground = true;
         // Server Net
         //InitNet();
 
@@ -44,5 +47,8 @@ public class StartGame : MonoBehaviour {
         ModuleManager.Instance.Register(typeof(StartScn));
     }
 
-
+    void Update()
+    {
+        NetMgr.Update();
+    }
 }

@@ -77,7 +77,7 @@ public class Enemy : BaseActor
     {
         yield return new WaitForSeconds(0.3f);
         RaycastHit hit;
-        bool collider = Physics.Raycast(transform.position, Vector3.down, out hit, 10f, LayerMask.GetMask("Ground"));
+        bool collider = Physics.Raycast(transform.position, Vector3.down, out hit, 100f, LayerMask.GetMask("Ground"));
         if (collider)
         {
             float fDis = transform.position.y - hit.point.y;

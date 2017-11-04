@@ -448,19 +448,19 @@ namespace ZFrameWork
         }
         #endregion
 
-        #region Sub Panle
-        Dictionary<Transform, Dictionary<UIType, GameObject>> uiView_SubPanles = new Dictionary<Transform, Dictionary<UIType, GameObject>>();
-        public void OpenSubPanle(UIType _uiType, Transform _tfParent,bool _isCloseOthers = false, params object[] _uiParams)
+        #region Sub Panel
+        Dictionary<Transform, Dictionary<UIType, GameObject>> uiView_SubPanels = new Dictionary<Transform, Dictionary<UIType, GameObject>>();
+        public void OpenSubPanel(UIType _uiType, Transform _tfParent,bool _isCloseOthers = false, params object[] _uiParams)
         {
             // Close Others UI.
             if (_isCloseOthers)
             {
-                HideAllSubPanle(_tfParent);
+                HideAllSubPanel(_tfParent);
             }
 
-            if (uiView_SubPanles.ContainsKey(_tfParent))
+            if (uiView_SubPanels.ContainsKey(_tfParent))
             {
-                var dic = uiView_SubPanles[_tfParent];
+                var dic = uiView_SubPanels[_tfParent];
   
                 if (dic.ContainsKey(_uiType))
                 {
@@ -477,8 +477,8 @@ namespace ZFrameWork
             }
             else
             {
-                Dictionary<UIType, GameObject> dicSubPanle = new Dictionary<UIType, GameObject>();
-                uiView_SubPanles.Add(_tfParent, dicSubPanle);
+                Dictionary<UIType, GameObject> dicSubPanel = new Dictionary<UIType, GameObject>();
+                uiView_SubPanels.Add(_tfParent, dicSubPanel);
             }
 
             LoadSubUIData(_uiType,_tfParent,_uiParams);
@@ -486,7 +486,7 @@ namespace ZFrameWork
 
         public void OpenSubPanel(UIType _uiType)
         {
-            foreach (var item in uiView_SubPanles)
+            foreach (var item in uiView_SubPanels)
             {
                 var dic = item.Value;
                 if (dic.ContainsKey(_uiType))
@@ -514,20 +514,20 @@ namespace ZFrameWork
             if (_prefabObj != null && uiScripte != null)
             {
                 GameObject _subUiObject = MonoBehaviour.Instantiate(_prefabObj) as GameObject;
-                Transform tfPanleRoot = _tfParent.Find("Panels") ?? _tfParent;
-                _subUiObject.transform.SetParent(tfPanleRoot);
+                Transform tfPanelRoot = _tfParent.Find("Panels") ?? _tfParent;
+                _subUiObject.transform.SetParent(tfPanelRoot);
                 _subUiObject.transform.localPosition = Vector3.zero;
                 _subUiObject.transform.localScale = Vector3.one;
 
-                Dictionary<UIType, GameObject> dicSubPanle;
-                if (!uiView_SubPanles.ContainsKey(_tfParent))
+                Dictionary<UIType, GameObject> dicSubPanel;
+                if (!uiView_SubPanels.ContainsKey(_tfParent))
                 {
-                    dicSubPanle = new Dictionary<UIType, GameObject>();
-                    uiView_SubPanles.Add(_tfParent, dicSubPanle);
+                    dicSubPanel = new Dictionary<UIType, GameObject>();
+                    uiView_SubPanels.Add(_tfParent, dicSubPanel);
                 }
-                dicSubPanle = uiView_SubPanles[_tfParent];
-                dicSubPanle.AddOrReplace(_uiType, _subUiObject);
-                uiView_SubPanles[_tfParent] = dicSubPanle;
+                dicSubPanel = uiView_SubPanels[_tfParent];
+                dicSubPanel.AddOrReplace(_uiType, _subUiObject);
+                uiView_SubPanels[_tfParent] = dicSubPanel;
 
                 BasePanel _baseUI = _subUiObject.GetComponent<BasePanel>();
                 if (null == _baseUI)
@@ -550,14 +550,14 @@ namespace ZFrameWork
         }
 
         /// <summary>
-        /// Hide All Sub Panle
+        /// Hide All Sub Panel
         /// </summary>
         /// <param name="_tf"></param>
-        public void HideAllSubPanle(Transform _tf)
+        public void HideAllSubPanel(Transform _tf)
         {
-            if (_tf != null && uiView_SubPanles.ContainsKey(_tf))
+            if (_tf != null && uiView_SubPanels.ContainsKey(_tf))
             {
-                var dic = uiView_SubPanles[_tf];
+                var dic = uiView_SubPanels[_tf];
                 foreach (var item in dic)
                 {
                     var subUIObj = item.Value;
@@ -575,11 +575,11 @@ namespace ZFrameWork
         /// Hide Sub UI
         /// </summary>
         /// <param name="_uiType"></param>
-        public void HideSubPanle(Transform _tf, UIType _uiType)
+        public void HideSubPanel(Transform _tf, UIType _uiType)
         {
-            if (_tf != null && uiView_SubPanles.ContainsKey(_tf))
+            if (_tf != null && uiView_SubPanels.ContainsKey(_tf))
             {
-                var dic = uiView_SubPanles[_tf];
+                var dic = uiView_SubPanels[_tf];
                 if (dic.ContainsKey(_uiType))
                 {
                     var subUIObj = dic[_uiType];
@@ -597,9 +597,9 @@ namespace ZFrameWork
         /// Hide Sub UI By UIType
         /// </summary>
         /// <param name="_uiType"></param>
-        public void HideSubPanle(UIType _uiType)
+        public void HideSubPanel(UIType _uiType)
         {
-            foreach (var item in uiView_SubPanles)
+            foreach (var item in uiView_SubPanels)
             {
                 var dic = item.Value;
                 if (dic.ContainsKey(_uiType))
@@ -616,18 +616,18 @@ namespace ZFrameWork
         }
 
         /// <summary>
-        /// Close All Sub Panle
+        /// Close All Sub Panel
         /// </summary>
         /// <param name="_tfParent"></param>
         private void CloseAllSubUI(Transform _tfParent)
         {
-            if (_tfParent != null && uiView_SubPanles.ContainsKey(_tfParent))
+            if (_tfParent != null && uiView_SubPanels.ContainsKey(_tfParent))
             {
-                var dicSubPanle = uiView_SubPanles[_tfParent];
-                foreach (var item in dicSubPanle)
+                var dicSubPanel = uiView_SubPanels[_tfParent];
+                foreach (var item in dicSubPanel)
                 {
                     GameObject _objSub = item.Value;
-                    // close Sub Panle
+                    // close Sub Panel
                     BaseUI _baseUI = _objSub.GetComponent<BaseUI>();
                     if (_baseUI != null)
                     {
@@ -639,7 +639,7 @@ namespace ZFrameWork
                     }
                 }
 
-                uiView_SubPanles.Remove(_tfParent);
+                uiView_SubPanels.Remove(_tfParent);
             }
         }
         #endregion

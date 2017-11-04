@@ -63,7 +63,7 @@ public class TaskPanel : BasePanel
         base.InitUI();
         Btn_Close.onClick.AddListener(() =>
         {
-            UIManager.Instance.HideSubPanle(UIType.SubTask);
+            UIManager.Instance.HideSubPanel(UIType.SubTask);
         });
     }
 

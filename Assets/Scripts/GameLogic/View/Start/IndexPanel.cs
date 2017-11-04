@@ -25,13 +25,17 @@ public class IndexPanel : BasePanel {
 
         Btn_User.onClick.AddListener(() =>
         {
-            UIManager.Instance.OpenSubPanle(UIType.SubLogin, parent, true);
+            UIManager.Instance.OpenSubPanel(UIType.SubLogin, parent, true);
         });
 
         Btn_Enter.onClick.AddListener(() =>
         {
             //LevelManager.Instance.ChangeScene(ScnType.VillageScene, UIType.Village);
-            LevelManager.Instance.ChangeScene(ScnType.BattleScene, UIType.Battle);
+            //LevelManager.Instance.ChangeScene(ScnType.BattleScene, UIType.Battle);
+            Message msg = new Message(MsgType.Start_EnterGame,this);
+            msg["user"] = "zwc";
+            msg["psw"] = "1";
+            msg.Send();
         });
     }
     

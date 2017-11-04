@@ -99,17 +99,22 @@ public class VillageMainView : BaseUI {
     {
         Btn_Head.onClick.AddListener(() =>
         {
-            UIManager.Instance.OpenSubPanle(UIType.SubRoleInfo, root, true);
+            UIManager.Instance.OpenSubPanel(UIType.SubRoleInfo, root, true);
         });
 
         Btn_Bag.onClick.AddListener(() =>
         {
-            UIManager.Instance.OpenSubPanle(UIType.SubPackage, root, true);
+            UIManager.Instance.OpenSubPanel(UIType.SubPackage, root, true);
         });
 
         Btn_Qust.onClick.AddListener(()=> 
         {
-            UIManager.Instance.OpenSubPanle(UIType.SubTask, root, true);
+            UIManager.Instance.OpenSubPanel(UIType.SubTask, root, true);
+        });
+
+        Btn_Fight.onClick.AddListener(() => 
+        {
+            UIManager.Instance.OpenSubPanel(UIType.SubTeamPanel,root,true);
         });
     }
     #endregion

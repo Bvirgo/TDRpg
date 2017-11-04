@@ -182,7 +182,7 @@ public class RoleProperty : BaseActor
     #region Skill
     private void RefreshSkillInfo(Message _msg)
     {
-        Debug.Log("同步技能信息到角色");
+        //Debug.Log("同步技能信息到角色");
         m_pSkills = _msg["skills"] as List<SkillItem>;
     }
 

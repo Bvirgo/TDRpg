@@ -14,7 +14,7 @@ public class StartView : BaseUI
     protected override void OnAwake()
     {
         base.OnAwake();
-        UIManager.Instance.OpenSubPanle(UIType.SubIndex, root, true);
+        UIManager.Instance.OpenSubPanel(UIType.SubIndex, root, true);
     }
 
     protected override void OnRelease()
