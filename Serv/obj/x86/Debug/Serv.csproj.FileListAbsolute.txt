@@ -1,0 +1,5 @@
+I:\TanNetPro\Chapter11\Serv\Serv\bin\Debug\Serv.exe
+I:\TanNetPro\Chapter11\Serv\Serv\bin\Debug\Serv.pdb
+I:\TanNetPro\Chapter11\Serv\Serv\obj\x86\Debug\Serv.csprojResolveAssemblyReference.cache
+I:\TanNetPro\Chapter11\Serv\Serv\obj\x86\Debug\Serv.exe
+I:\TanNetPro\Chapter11\Serv\Serv\obj\x86\Debug\Serv.pdb
