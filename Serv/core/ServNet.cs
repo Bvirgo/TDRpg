@@ -30,8 +30,6 @@ public class ServNet
 	public HandlePlayerMsg handlePlayerMsg = new HandlePlayerMsg();
 	public HandlePlayerEvent handlePlayerEvent = new HandlePlayerEvent ();
 
-
-
 	public ServNet()
 	{
 		instance = this;
