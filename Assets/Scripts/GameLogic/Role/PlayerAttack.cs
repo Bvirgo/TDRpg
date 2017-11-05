@@ -42,7 +42,7 @@ public class PlayerAttack : MonoBehaviour
         damageShowPoint = transform.Find("DamageShowPoint");
     }
 
-
+    #region Attack Effect
     //0 normal skill1 skill2 skill3
     //1 effect name
     //2 sound name
@@ -81,10 +81,10 @@ public class PlayerAttack : MonoBehaviour
         Vector3 vDir = transform.forward;
         msg["dir"] = vDir;
 
-        if (posType == "2001" || posType =="1001")
+        if (posType == "2001" || posType == "1001")
         {
             List<GameObject> array = GetEnemyInAttackRange(AttackRange.Forward);
-            
+
             //Calls the method named methodName on every MonoBehaviour in this game object.
             foreach (GameObject go in array)
             {
@@ -104,7 +104,7 @@ public class PlayerAttack : MonoBehaviour
     void PlaySound(string soundName)
     {
         var clip = ResManager.Instance.Load<AudioClip>(Defines.ResMusicPath + soundName);
-        SoundManager.Instance.PlaySound(clip,transform.position,0.5f);
+        SoundManager.Instance.PlaySound(clip, transform.position, 0.5f);
     }
 
     //0 normal skill1 skill2 skill3
@@ -158,7 +158,7 @@ public class PlayerAttack : MonoBehaviour
             ShowEffectDevilHand();
         }
     }
-    
+
     void ShowEffectCtr(string effectName)
     {
         EffectCtr pe;
@@ -235,7 +235,7 @@ public class PlayerAttack : MonoBehaviour
                 Vector3 pos = transform.InverseTransformPoint(go.transform.position);
                 if (pos.z > -0.5f)
                 {
-                   arrayList.Add(go);
+                    arrayList.Add(go);
                 }
             }
         }
@@ -244,7 +244,7 @@ public class PlayerAttack : MonoBehaviour
             var pEnemy = Utils.GetAroundGameObject(transform.position, distanceAttackAround, "Monster");
             arrayList.AddRange(pEnemy);
         }
-        Debug.LogWarning(string.Format("Get Enemy Count:{0}",arrayList.Count));
+        Debug.LogWarning(string.Format("Get Enemy Count:{0}", arrayList.Count));
         if (arrayList.Count != 0)
         {
             transform.LookAt(arrayList[0].transform);
@@ -268,5 +268,8 @@ public class PlayerAttack : MonoBehaviour
         ////屏幕上血红特效的显示
         //BloodScreen.Instance.Show();
     }
+    #endregion
+
+  
 
 }

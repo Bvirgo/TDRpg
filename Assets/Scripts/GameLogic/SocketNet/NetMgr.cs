@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 //网络管理
 public class NetMgr
@@ -23,6 +24,24 @@ public class NetMgr
         return protocol;
     }
 
+    #region 
+
+    public static void Send(ProtocolBase protocol)
+    {
+        srvConn.Send(protocol);
+    }
+
+    public static void AddListener(string name, MsgDistribution.Delegate cb)
+    {
+        srvConn.msgDist.AddListener(name, cb);
+    }
+
+    public void DelListener(string name, MsgDistribution.Delegate cb)
+    {
+        srvConn.msgDist.DelListener(name, cb);
+    }
+
+    #endregion
     public static void SetToken(string _strToken)
     {
         srvConn.m_strToken = _strToken;

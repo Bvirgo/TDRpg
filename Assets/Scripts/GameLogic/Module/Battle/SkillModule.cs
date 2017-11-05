@@ -124,9 +124,4 @@ public class SkillModule : BaseModule
     }
     #endregion
 
-    #region Skill Effect
-
-    #endregion
-
-
 }

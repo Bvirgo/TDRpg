@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ZFrameWork;
-public class RoleProperty : BaseActor
+public class MainActor : BaseActor
 {
     #region Container
     private int m_nGold;
@@ -88,6 +88,7 @@ public class RoleProperty : BaseActor
         RegisterMsg(MsgType.Role_GetRoleInfo, GetRoleInfo);
         RegisterMsg(MsgType.Role_RefreshRoleProperty,GetInventory);
         RegisterMsg(MsgType.Role_GetSkillProperty,RefreshSkillInfo);
+        RegisterMsg(MsgType.Role_Fire, MsgAttack);
     }
 
     #endregion
@@ -185,6 +186,39 @@ public class RoleProperty : BaseActor
         //Debug.Log("同步技能信息到角色");
         m_pSkills = _msg["skills"] as List<SkillItem>;
     }
+    #endregion
 
+    #region Attack Animatior
+    private void MsgAttack(Message _msg)
+    {
+        ActionType at = ActionType.attack;
+        int nPos = (int)_msg["pos"];
+        switch (nPos)
+        {
+            case 1:
+                at = ActionType.sk_1;
+                break;
+            case 2:
+                at = ActionType.sk_2;
+                break;
+            case 3:
+                at = ActionType.sk_3;
+                break;
+            default:
+                break;
+        }
+
+        var role = RoleManager.Instance.OnGetMainPlayer();
+        AttackAnimator(role.transform, at);
+    }
+
+    private void AttackAnimator(Transform _tf, ActionType _at)
+    {
+        RoleAnimator ra = _tf.GetComponent<RoleAnimator>();
+        if (ra != null)
+        {
+            ra.AnmType = _at;
+        }
+    }
     #endregion
 }

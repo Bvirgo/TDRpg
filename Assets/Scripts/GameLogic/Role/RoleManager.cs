@@ -19,7 +19,7 @@ public class RoleManager : DDOLSingleton<RoleManager>
     /// Get Main Player
     /// </summary>
     /// <returns></returns>
-    public RoleProperty OnNewMainPlayer(Vector3 _vSpawn,Quaternion _q, bool _bVillage = true)
+    public MainActor OnNewMainPlayer(Vector3 _vSpawn,Quaternion _q, bool _bVillage = true)
     {
         string strRolePrefab = _bVillage ? Defines.VillageMan : Defines.BattleMan;
         GameObject objPrefab = Resources.Load(strRolePrefab) as GameObject;
@@ -38,12 +38,14 @@ public class RoleManager : DDOLSingleton<RoleManager>
         {
             objPrefab.AddComponent<PlayerMove>();
         }
+        objPrefab.AddComponent<PlayerAttack>();
+
         Transform tf = objPrefab.transform;
         tf.SetParent(m_tfPlayerRoot, true);
         tf.position = _vSpawn;
         tf.rotation = _q;
 
-        RoleProperty rp = objPrefab.AddComponent<RoleProperty>();
+        MainActor rp = objPrefab.AddComponent<MainActor>();
         rp.ActorType = ActorType.MainRole;
         rp.guid = NetMgr.srvConn.m_strToken;
         m_pRoleList.Add(rp);
@@ -82,10 +84,7 @@ public class RoleManager : DDOLSingleton<RoleManager>
         }
 
         objPrefab.AddComponent<NetPlayerMove>();
-        if (objPrefab.GetComponent<PlayerMove>() != null)
-        {
-
-        }
+        objPrefab.AddComponent<PlayerAttack>();
 
         Transform tf = objPrefab.transform;
         tf.SetParent(m_tfPlayerRoot, true);

@@ -25,6 +25,8 @@ public class PlayerMove : MonoBehaviour
     private int m_nEffectIndex;
     //网络同步
     private float lastSendInfoTime = float.MinValue;
+    private BaseActor m_roleProperty;
+    private bool m_bMainPlayer;
     void Start()
     {
         m_roleAnmCtr = GetComponent<RoleAnimator>();
@@ -44,7 +46,9 @@ public class PlayerMove : MonoBehaviour
         {
             m_pEffectCtr = gameObject.GetComponentsInChildren<EffectCtr>();
         }
-      
+
+        m_roleProperty = gameObject.GetComponent<BaseActor>();
+        m_bMainPlayer = m_roleProperty.ActorType == ActorType.MainRole;
     }
 	
 	// Update is called once per frame

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ZFrameWork;
-public class NetPlayerMove : MonoBehaviour {
+public class NetPlayerMove : MonoBehaviour
+{
     private RoleAnimator m_roleAnmCtr;
     //last 上次的位置信息
     Vector3 lPos;

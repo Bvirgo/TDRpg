@@ -45,7 +45,7 @@ public class VillageScn : BaseScene
             vPos = m_Spawn.transform.position;
             qRotation = m_Spawn.transform.rotation;
         }
-        RoleProperty rp = RoleManager.Instance.OnNewMainPlayer(vPos,qRotation);
+        MainActor rp = RoleManager.Instance.OnNewMainPlayer(vPos,qRotation);
         rp.CurrentScene = this;
         AddActor(rp);
     }
