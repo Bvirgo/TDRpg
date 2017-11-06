@@ -16,9 +16,7 @@ public class BattleScene : BaseScene
         base.OnReady();
 
         m_Spawn = GameObject.Find("Spawn");
-
-        //NewPlayer();
-
+        
         ProtocolBase pb = NetMgr.GetCacheNetMsg("Fight");
         StartBattle(pb as ProtocolBytes);
     }
@@ -40,24 +38,6 @@ public class BattleScene : BaseScene
         SoundManager.Instance.PlayBackgroundMusic(mClip);
     }
 
-    private void NewPlayer()
-    {
-        Vector3 vPos = Vector3.zero;
-        Quaternion qRotation = Quaternion.identity;
-        if (m_Spawn != null)
-        {
-            vPos = m_Spawn.transform.position;
-            qRotation = m_Spawn.transform.rotation;
-        }
-        MainActor rp = RoleManager.Instance.OnNewMainPlayer(vPos, qRotation, false);
-        if (rp.gameObject.GetComponent<PlayerAttack>() == null)
-        {
-            rp.gameObject.AddComponent<PlayerAttack>();
-        }
-        rp.CurrentScene = this;
-        AddActor(rp);
-    }
-
     protected override void OnRelease()
     {
         base.OnRelease();
@@ -67,7 +47,7 @@ public class BattleScene : BaseScene
     #endregion
 
     #region Battle Fighting
-  
+
     //开始战斗
     public void StartBattle(ProtocolBytes proto)
     {
@@ -76,26 +56,32 @@ public class BattleScene : BaseScene
         string protoName = proto.GetString(start, ref start);
         if (protoName != "Fight")
             return;
-        //坦克总数
+        // Player Count
         int count = proto.GetInt(start, ref start);
 
-        //每一辆坦克
+        // Players
         for (int i = 0; i < count; i++)
         {
             string id = proto.GetString(start, ref start);
             int team = proto.GetInt(start, ref start);
             int swopID = proto.GetInt(start, ref start);
-            GenerateTank(id, team, swopID);
+            GenerateRole(id, team, swopID);
         }
+
         NetMgr.srvConn.msgDist.AddListener("UpdateUnitInfo", RecvUpdateUnitInfo);
+        NetMgr.AddListener("UpdateSkill", RecvUpdateSkill);
         //NetMgr.srvConn.msgDist.AddListener ("Shooting", RecvShooting);
         //NetMgr.srvConn.msgDist.AddListener ("Hit", RecvHit);
         //NetMgr.srvConn.msgDist.AddListener ("Result", RecvResult);
     }
 
-
-    //产生坦克
-    public void GenerateTank(string id, int team, int swopID)
+    /// <summary>
+    /// Spawn New Player
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="team"></param>
+    /// <param name="swopID"></param>
+    public void GenerateRole(string id, int team, int swopID)
     {
         //获取出生点
         Transform sp = GameObject.Find("SpawnPoints").transform;
@@ -118,7 +104,8 @@ public class BattleScene : BaseScene
 
         if (NetMgr.IsMainRole(id))
         {
-            RoleManager.Instance.OnNewMainPlayer(swopTrans.position, swopTrans.rotation,false);
+           MainActor ma = RoleManager.Instance.OnNewMainPlayer(swopTrans.position, swopTrans.rotation, false);
+            ma.m_bIsTeam = true;
         }
         else
         {
@@ -126,7 +113,10 @@ public class BattleScene : BaseScene
         }
     }
 
-
+    /// <summary>
+    /// Update Move & Animator
+    /// </summary>
+    /// <param name="protocol"></param>
     public void RecvUpdateUnitInfo(ProtocolBase protocol)
     {
         //解析协议
@@ -154,9 +144,42 @@ public class BattleScene : BaseScene
         }
         if (ba.ActorType == ActorType.NetRole)
         {
-            NetPlayerMove npm = ba.gameObject.GetComponent<NetPlayerMove>();
-            npm.NetForecastInfo(nPos, nRot);
+            NetPlayer np = ba.gameObject.GetComponent<NetPlayer>();
+            if (np != null)
+            {
+                np.AsyncMove(nPos, nRot);
+            }
         }
+    }
+
+    /// <summary>
+    /// Receive Skill Fire 
+    /// </summary>
+    /// <param name="protocol"></param>
+    public void RecvUpdateSkill(ProtocolBase protocol)
+    {
+        //解析协议
+        int start = 0;
+        ProtocolBytes proto = (ProtocolBytes)protocol;
+        string protoName = proto.GetString(start, ref start);
+        string id = proto.GetString(start, ref start);
+        int nPos = proto.GetInt(start, ref start);
+
+        BaseActor ba = RoleManager.Instance.OnGetRole(id);
+        if (ba == null)
+        {
+            Debug.Log("RecvUpdateUnitInfo bt == null ");
+            return;
+        }
+        if (ba.ActorType == ActorType.NetRole)
+        {
+            NetPlayer np = ba.gameObject.GetComponent<NetPlayer>();
+            if (np != null)
+            {
+                np.AsyncAttack(nPos);
+            }
+        }
+
     }
     #endregion
 }

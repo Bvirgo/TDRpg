@@ -24,7 +24,8 @@ public class RoleManager : DDOLSingleton<RoleManager>
         string strRolePrefab = _bVillage ? Defines.VillageMan : Defines.BattleMan;
         GameObject objPrefab = Resources.Load(strRolePrefab) as GameObject;
         objPrefab = GameObject.Instantiate(objPrefab);
-        objPrefab.name = "MainRole";
+        string strName = _bVillage ? "VillageRole" : "RoomRole";
+        objPrefab.name = strName;
         if (m_tfPlayerRoot == null)
         {
             var root = new GameObject();
@@ -131,6 +132,12 @@ public class RoleManager : DDOLSingleton<RoleManager>
             var r = m_pRoleList[i];
             if (r != null && r.gameObject != null)
             {
+                BaseActor ba = r.GetComponent<BaseActor>();
+                if (ba != null)
+                {
+                    ba.OnQuit();
+                }
+
                 GameObject.Destroy(r.gameObject);
                 m_pRoleList.Remove(r);
             }

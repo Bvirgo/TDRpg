@@ -70,6 +70,7 @@ public class Conn
 		socket.Shutdown(SocketShutdown.Both);
 		socket.Close();
 		isUse = false;
+
 	}
 	
 	//发送协议，相关内容稍后实现

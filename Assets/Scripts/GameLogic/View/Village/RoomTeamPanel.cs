@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class RoomTeamPanel : BasePanel
 {
     #region UI
-
     /// **************************
     ///	Battle Teams 
     /// **************************
@@ -50,6 +49,7 @@ public class RoomTeamPanel : BasePanel
     #region Container
     private string m_strMainRoleGUID;
     #endregion
+
     public override UIType GetUIType()
     {
         return UIType.SubTeamPanel;
@@ -65,13 +65,35 @@ public class RoomTeamPanel : BasePanel
     {
         base.InitUI();
         //按钮事件
-        Btn_Refrash.onClick.AddListener(OnReflashClick);
-        NewBtn.onClick.AddListener(OnNewClick);
-        CloseBtn.onClick.AddListener(OnCloseClick);
+        Btn_Refrash.onClick.AddListener(()=>
+        {
+            Message msg = new Message(MsgType.Team_RefreshTeamList,this);
+            msg.Send();
+        });
+
+        NewBtn.onClick.AddListener(() =>
+        {
+            Message msg = new Message(MsgType.Team_NewTeam, this);
+            msg.Send();
+        });
+
+        CloseBtn.onClick.AddListener(()=> 
+        {
+            UIManager.Instance.HideSubPanel(UIType.SubTeamPanel);
+        });
 
         //按钮事件
-        CloseRoomBtn.onClick.AddListener(QuietTeam);
-        StartFightBtn.onClick.AddListener(OnStartFightClick);
+        CloseRoomBtn.onClick.AddListener(()=> 
+        {
+            Message msg = new Message(MsgType.Team_QuitTeam, this);
+            msg.Send();
+        });
+
+        StartFightBtn.onClick.AddListener(()=> 
+        {
+            Message msg = new Message(MsgType.Team_Fighting, this);
+            msg.Send();
+        });
 
         m_pRooms = new List<Transform>();
         for (int i = 0; i < 6; i++)
@@ -98,33 +120,23 @@ public class RoomTeamPanel : BasePanel
     private void GetTeamMsg()
     {
         // TeamListPanel监听
-        NetMgr.srvConn.msgDist.AddListener("GetAchieve", RecvGetAchieve);
-        NetMgr.srvConn.msgDist.AddListener("GetRoomList", RecvGetRoomList);
+        NetMgr.AddListener("GetAchieve", RecvGetAchieve);
+        NetMgr.AddListener("GetRoomList", RecvGetRoomList);
 
         // RoomPanel监听
-        NetMgr.srvConn.msgDist.AddListener("GetRoomInfo", RecvGetRoomInfo);
-        NetMgr.srvConn.msgDist.AddListener("Fight", RecvFight);
+        NetMgr.AddListener("GetRoomInfo", RecvGetRoomInfo);
+        NetMgr.AddListener("Fight", RecvFight);
 
         // 查新所有队伍信息
         ProtocolBytes protocol = new ProtocolBytes();
         protocol.AddString("GetRoomList");
-        NetMgr.srvConn.Send(protocol);
+        NetMgr.Send(protocol);
 
         // 获取当前玩家战绩
         protocol = new ProtocolBytes();
         protocol.AddString("GetAchieve");
-        NetMgr.srvConn.Send(protocol);
-
+        NetMgr.Send(protocol);
     }
-
-    //public override void OnShow()
-    //{
-    //    base.OnShow();
-
-    //    Utils.RemoveChildren(Content);
-    //    // ceshi
-    //    GenerateRoomUnit(1, 1, 1);
-    //}
 
     protected override void OnRelease()
     {
@@ -210,6 +222,7 @@ public class RoomTeamPanel : BasePanel
     //刷新按钮 ： 刷新房间列表
     public void OnReflashClick()
     {
+        
         ProtocolBytes protocol = new ProtocolBytes();
         protocol.AddString("GetRoomList");
         NetMgr.srvConn.Send(protocol);
@@ -222,7 +235,7 @@ public class RoomTeamPanel : BasePanel
         protocol.AddString("EnterRoom");
 
         protocol.AddInt(int.Parse(name));
-        NetMgr.srvConn.Send(protocol, OnJoinBtnBack);
+        NetMgr.SendWithListenOnce(protocol, OnJoinBtnBack);
         Debug.Log("请求进入房间 " + name);
     }
 
@@ -275,9 +288,11 @@ public class RoomTeamPanel : BasePanel
     //登出按钮
     public void OnCloseClick()
     {
-        ProtocolBytes protocol = new ProtocolBytes();
-        protocol.AddString("Logout");
-        NetMgr.srvConn.Send(protocol, OnCloseBack);
+        // Close Team Panel
+        //ProtocolBytes protocol = new ProtocolBytes();
+        //protocol.AddString("Logout");
+        //NetMgr.srvConn.Send(protocol, OnCloseBack);
+        UIManager.Instance.HideSubPanel(UIType.SubTeamPanel);
     }
 
     //登出返回
@@ -409,8 +424,6 @@ public class RoomTeamPanel : BasePanel
     public void RecvFight(ProtocolBase protocol)
     {
         ProtocolBytes proto = (ProtocolBytes)protocol;
-        //MultiBattle.instance.StartBattle(proto);
-        //Close();
         NetMgr.CacheNetMsg(protocol.GetName(), protocol);
         LevelManager.Instance.ChangeScene(ScnType.BattleScene, UIType.Battle);
     }

@@ -10,11 +10,9 @@ public class StartGame : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        DontDestroyOnLoad(this);
-
-        Application.runInBackground = true;
+        Init();
         // Server Net
-        //InitNet();
+        //InitJHQCNet();
 
         // Mouse Manager
         MouseManager.Instance.OnInit();
@@ -29,10 +27,16 @@ public class StartGame : MonoBehaviour {
         LoadFirstScn();
     }
 
+    private void Init()
+    {
+        DontDestroyOnLoad(this);
+        Application.runInBackground = true;
+    }
+
     /// <summary>
     /// Init Net
     /// </summary>
-    private void InitNet()
+    private void InitJHQCNet()
     {
         WWWManager.Instance.Init(Defines.ServerAddress, Jhqc.EditorCommon.LogType.None);// 外网
         WWWManager.Instance.TimeOut = 600f;

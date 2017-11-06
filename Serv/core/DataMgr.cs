@@ -15,7 +15,8 @@ public class DataMgr
 	public static DataMgr instance;
 	public DataMgr()
 	{
-		instance = this;
+        Console.WriteLine("DataMgr Manager Init");
+        instance = this;
 		Connect();
 	}
 	

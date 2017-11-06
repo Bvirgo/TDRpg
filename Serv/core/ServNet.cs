@@ -32,7 +32,8 @@ public class ServNet
 
 	public ServNet()
 	{
-		instance = this;
+        Console.WriteLine("Server Manager Init");
+        instance = this;
 	}
 	
 	//获取链接池索引，返回负数表示获取失败

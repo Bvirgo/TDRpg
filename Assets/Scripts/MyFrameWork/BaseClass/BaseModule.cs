@@ -120,9 +120,10 @@ namespace ZFrameWork
 
         protected virtual void OnRelease() { }
 
-        #region Event
-        public Dictionary<string, List<MessageEvent>> event_action;
-        public List<BaseModule> m_pRegisterModule;
+        #region Register & UnRegister
+        private Dictionary<string, List<MessageEvent>> event_action;
+        private List<BaseModule> m_pRegisterModule;
+
         /// <summary>
         /// Clean Events
         /// </summary>

@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ZFrameWork;
+
+/// <summary>
+/// Main Player Center Controller
+/// Register Local Message & Net Message
+/// Distribute Logic
+/// </summary>
 public class MainActor : BaseActor
 {
     #region Container
@@ -30,6 +36,8 @@ public class MainActor : BaseActor
     private PropertyItem m_proAttack;
 
     private List<SkillItem> m_pSkills;
+
+    public bool m_bIsTeam;
     #endregion
 
     #region Init & Register
@@ -79,7 +87,8 @@ public class MainActor : BaseActor
         m_proGem = GetProperty(PropertyType.Coin);
         m_proName = GetProperty(PropertyType.RoleName);
 
-        m_pSkills = new List<SkillItem>();     
+        m_pSkills = new List<SkillItem>();
+        m_bIsTeam = false;
     }
 
     protected override void Register()
@@ -191,6 +200,7 @@ public class MainActor : BaseActor
     #region Attack Animatior
     private void MsgAttack(Message _msg)
     {
+        Debug.LogWarning(string.Format("Msg Attack By:{0}",transform.name));
         ActionType at = ActionType.attack;
         int nPos = (int)_msg["pos"];
         switch (nPos)
@@ -208,17 +218,30 @@ public class MainActor : BaseActor
                 break;
         }
 
-        var role = RoleManager.Instance.OnGetMainPlayer();
-        AttackAnimator(role.transform, at);
+        AsyncSkill(nPos);
+
+        AttackAnimator(at);
     }
 
-    private void AttackAnimator(Transform _tf, ActionType _at)
+    private void AttackAnimator(ActionType _at)
     {
-        RoleAnimator ra = _tf.GetComponent<RoleAnimator>();
+        RoleAnimator ra = gameObject.transform.GetComponent<RoleAnimator>();
         if (ra != null)
         {
             ra.AnmType = _at;
         }
+    }
+    #endregion
+
+    #region Async Skill 
+    private void AsyncSkill(int _nPos)
+    {
+        if (!m_bIsTeam) return;
+
+        ProtocolBytes proto = new ProtocolBytes();
+        proto.AddString("UpdateSkill");
+        proto.AddInt(_nPos);
+        NetMgr.Send(proto);
     }
     #endregion
 }

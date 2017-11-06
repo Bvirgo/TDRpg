@@ -25,7 +25,7 @@ public class PlayerMove : MonoBehaviour
     private int m_nEffectIndex;
     //网络同步
     private float lastSendInfoTime = float.MinValue;
-    private BaseActor m_roleProperty;
+    private MainActor m_roleProperty;
     private bool m_bMainPlayer;
     void Start()
     {
@@ -47,8 +47,7 @@ public class PlayerMove : MonoBehaviour
             m_pEffectCtr = gameObject.GetComponentsInChildren<EffectCtr>();
         }
 
-        m_roleProperty = gameObject.GetComponent<BaseActor>();
-        m_bMainPlayer = m_roleProperty.ActorType == ActorType.MainRole;
+        m_roleProperty = gameObject.GetComponent<MainActor>();
     }
 	
 	// Update is called once per frame
@@ -99,7 +98,7 @@ public class PlayerMove : MonoBehaviour
         //网络同步
         if (Time.time - lastSendInfoTime > 0.1f)
         {
-            SendUnitInfo();
+            AsyncTransform();
             lastSendInfoTime = Time.time;
         }
 
@@ -139,8 +138,10 @@ public class PlayerMove : MonoBehaviour
         m_pEffectCtr[m_nEffectIndex].Show();
     }
 
-    public void SendUnitInfo()
+    public void AsyncTransform()
     {
+        if (!m_roleProperty.m_bIsTeam) return;
+
         ProtocolBytes proto = new ProtocolBytes();
         proto.AddString("UpdateUnitInfo");
         //位置旋转

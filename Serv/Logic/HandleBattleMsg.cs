@@ -40,7 +40,7 @@ public partial class HandlePlayerMsg
 		room.StartFight ();
 	}
 
-	//同步坦克单元
+	//同步移动
 	public void MsgUpdateUnitInfo(Player player, ProtocolBase protoBase)
 	{
 		//获取数值
@@ -78,6 +78,26 @@ public partial class HandlePlayerMsg
 		protocolRet.AddFloat (gunRoll);
 		room.Broadcast (protocolRet);
 	}
+
+    //同步技能释放
+    public void MsgUpdateSkill(Player player, ProtocolBase protoBase)
+    {
+        //获取数值
+        int start = 0;
+        ProtocolBytes protocol = (ProtocolBytes)protoBase;
+        string protoName = protocol.GetString(start, ref start);
+        int posX = protocol.GetInt(start, ref start);
+        //获取房间
+        if (player.tempData.status != PlayerTempData.Status.Fight)  return;
+
+        //广播
+        Room room = player.tempData.room;
+        ProtocolBytes protocolRet = new ProtocolBytes();
+        protocolRet.AddString("UpdateSkill");
+        protocolRet.AddString(player.id);
+        protocolRet.AddInt(posX);
+        room.Broadcast(protocolRet);
+    }
 
 
 

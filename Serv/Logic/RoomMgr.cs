@@ -9,6 +9,7 @@ public class RoomMgr
 	public RoomMgr()
 	{
 		instance = this;
+        Console.WriteLine("Room Manager Init");
 	}
 	
 	//房间列表

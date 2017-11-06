@@ -48,6 +48,7 @@ public class Connection
                       SocketType.Stream, ProtocolType.Tcp);
             //Connect
             socket.Connect(host, port);
+
             //BeginReceive
             socket.BeginReceive(readBuff, buffCount,
                       BUFFER_SIZE - buffCount, SocketFlags.None,
@@ -111,7 +112,7 @@ public class Connection
             return;
         //协议解码
         ProtocolBase protocol = proto.Decode(readBuff, sizeof(Int32), msgLength);
-        Debug.Log(string.Format("收到:{0},內容：{1}",protocol.GetName(),protocol.GetDesc()));
+        //Debug.Log(string.Format("收到:{0},內容：{1}",protocol.GetName(),protocol.GetDesc()));
         lock (msgDist.msgList)
         {
             msgDist.msgList.Add(protocol);

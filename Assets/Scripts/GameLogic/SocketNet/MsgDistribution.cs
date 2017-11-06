@@ -41,17 +41,23 @@ public class MsgDistribution
         Debug.Log("分发处理消息 " + name);
         if (eventDict.ContainsKey(name))
         {
-            eventDict[name](protocol);
+            Delegate cb = eventDict[name];
+            if (cb != null)
+            {
+                cb(protocol);
+            }
         }
         if (onceDict.ContainsKey(name))
         {
-            onceDict[name](protocol);
+            Delegate cb = onceDict[name];
+            if (cb != null)
+            {
+                cb(protocol);
+            }
             onceDict[name] = null;
             onceDict.Remove(name);
         }
     }
-
-
 
     //添加事件监听 
     public void AddListener(string name, Delegate cb)

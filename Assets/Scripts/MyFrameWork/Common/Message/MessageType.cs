@@ -73,6 +73,15 @@ namespace ZFrameWork
         public const string Role_PressSkillBtn = "Role_PressSkillBtn";
         public const string Role_UpdateSkillCD = "Role_UpdateSkillCD";
         public const string Role_Fire = "Role_Fire";
+
+        public const string Team_RefreshTeamList = "Team_RefreshTeamList";
+        public const string Team_RefreshAchive = "Team_RefreshAchive";
+        public const string Team_ShowTeamInfo = "Team_ShowTeamInfo";
+        public const string Team_NewTeam = "Team_NewTeam";
+        public const string Team_JoinTeam = "Team_JoinTeam";
+        public const string Team_QuitTeam = "Team_QuitTeam";
+        public const string Team_Fighting = "Team_Fighting";
+
         #endregion
     }
 }

@@ -24,7 +24,7 @@ public class NetMgr
         return protocol;
     }
 
-    #region 
+    #region Connect Protocal
 
     public static void Send(ProtocolBase protocol)
     {
@@ -41,6 +41,15 @@ public class NetMgr
         srvConn.msgDist.DelListener(name, cb);
     }
 
+    /// <summary>
+    /// Send Msg & Listen Once 
+    /// </summary>
+    /// <param name="pro"></param>
+    /// <param name="cb"></param>
+    public static void SendWithListenOnce(ProtocolBase pro, MsgDistribution.Delegate cb)
+    {
+        srvConn.Send(pro, cb);
+    }
     #endregion
     public static void SetToken(string _strToken)
     {

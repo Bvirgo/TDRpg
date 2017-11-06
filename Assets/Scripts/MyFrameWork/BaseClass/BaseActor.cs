@@ -62,9 +62,17 @@ namespace ZFrameWork
             event_action = new Dictionary<string, List<MessageEvent>>();
         }
 
-        void OnDestory()
+        public void OnQuit()
         {
             OnRelease();
+        }
+
+        /// <summary>
+        /// 虽然是对象销毁会调用，但是调用时机不确定，一般在系统GC的时候调用
+        /// </summary>
+        void OnDestory()
+        {
+
         }
 
         protected virtual void OnRelease()

@@ -5,7 +5,20 @@ using ZFrameWork;
 
 public class NetPlayer : BaseActor 
 {
-    public void MsgAttack(int _nPos)
+
+    #region AsyncMove
+    public void AsyncMove(Vector3 nPos, Vector3 nRot)
+    {
+        NetPlayerMove npm = gameObject.GetComponent<NetPlayerMove>();
+        if (npm != null)
+        {
+            npm.NetForecastInfo(nPos, nRot);
+        }
+    }
+
+    #endregion
+    #region AsyncSkill
+    public void AsyncAttack(int _nPos)
     {
         ActionType at = ActionType.attack;
         int nPos = _nPos;
@@ -24,8 +37,7 @@ public class NetPlayer : BaseActor
                 break;
         }
 
-        var role = RoleManager.Instance.OnGetMainPlayer();
-        AttackAnimator(role.transform, at);
+        AttackAnimator(transform, at);
     }
 
     private void AttackAnimator(Transform _tf, ActionType _at)
@@ -36,4 +48,6 @@ public class NetPlayer : BaseActor
             ra.AnmType = _at;
         }
     }
+    #endregion
+
 }

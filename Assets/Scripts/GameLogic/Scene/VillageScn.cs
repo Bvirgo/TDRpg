@@ -47,6 +47,7 @@ public class VillageScn : BaseScene
         }
         MainActor rp = RoleManager.Instance.OnNewMainPlayer(vPos,qRotation);
         rp.CurrentScene = this;
+        rp.m_bIsTeam = false;
         AddActor(rp);
     }
 
