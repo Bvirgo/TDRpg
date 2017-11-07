@@ -145,7 +145,7 @@ public class Connection
         return true;
     }
 
-    public bool Send(ProtocolBase protocol, string cbName, MsgDistribution.Delegate cb)
+    public bool Send(ProtocolBase protocol, string cbName, Action<ProtocolBase> cb)
     {
         if (status != Status.Connected)
             return false;
@@ -153,7 +153,7 @@ public class Connection
         return Send(protocol);
     }
 
-    public bool Send(ProtocolBase protocol, MsgDistribution.Delegate cb)
+    public bool Send(ProtocolBase protocol, Action<ProtocolBase> cb)
     {
         string cbName = protocol.GetName();
         return Send(protocol, cbName, cb);

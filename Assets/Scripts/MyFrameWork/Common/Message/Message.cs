@@ -18,6 +18,11 @@ namespace ZFrameWork
         // 附件内容
 		public object Content { get; set; }
 
+        /// **************************
+        ///	Msg Call Back 
+        /// **************************
+        public Action<Message> Done;
+
 		#region message[key] = value or data = message[key]
 
 		/// <summary>
@@ -86,6 +91,15 @@ namespace ZFrameWork
 			Sender = sender;
 			Content = null;
 		}
+
+        /// <summary>
+        /// Empty Message Only Data Container
+        /// </summary>
+        public Message()
+        {
+            Name = "Empty";
+            Sender = Content =null;
+        }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ZFrameWork.Message"/> class.
@@ -185,6 +199,7 @@ namespace ZFrameWork
 		/// </summary>
 		public void Send()
 		{
+            if (Sender == null) return;
 			//MessageCenter Send Message
 			MessageCenter.Instance.SendMessage(this);
 		}

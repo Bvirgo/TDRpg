@@ -50,6 +50,8 @@ public class RoomTeamPanel : BasePanel
     private string m_strMainRoleGUID;
     #endregion
 
+    #region Init & Register
+
     public override UIType GetUIType()
     {
         return UIType.SubTeamPanel;
@@ -65,33 +67,37 @@ public class RoomTeamPanel : BasePanel
     {
         base.InitUI();
         //按钮事件
-        Btn_Refrash.onClick.AddListener(()=>
+        Btn_Refrash.onClick.AddListener(() =>
         {
-            Message msg = new Message(MsgType.Team_RefreshTeamList,this);
+            Message msg = new Message(MsgType.Team_GetTeamList, this);
+            msg.Done = (rsp) => { RecvGetRoomList(rsp.Content as ProtocolBytes); };
             msg.Send();
         });
 
         NewBtn.onClick.AddListener(() =>
         {
             Message msg = new Message(MsgType.Team_NewTeam, this);
+            msg.Done = NewTeam;
             msg.Send();
         });
 
-        CloseBtn.onClick.AddListener(()=> 
+        CloseBtn.onClick.AddListener(() =>
         {
             UIManager.Instance.HideSubPanel(UIType.SubTeamPanel);
         });
 
         //按钮事件
-        CloseRoomBtn.onClick.AddListener(()=> 
+        CloseRoomBtn.onClick.AddListener(() =>
         {
             Message msg = new Message(MsgType.Team_QuitTeam, this);
+            msg.Done = p => { OnCloseTeam((bool)p.Content); };
             msg.Send();
         });
 
-        StartFightBtn.onClick.AddListener(()=> 
+        StartFightBtn.onClick.AddListener(() =>
         {
             Message msg = new Message(MsgType.Team_Fighting, this);
+            msg.Done = P => { OnStartBack(P.Content as ProtocolBytes); };
             msg.Send();
         });
 
@@ -119,34 +125,18 @@ public class RoomTeamPanel : BasePanel
     /// **************************
     private void GetTeamMsg()
     {
-        // TeamListPanel监听
-        NetMgr.AddListener("GetAchieve", RecvGetAchieve);
-        NetMgr.AddListener("GetRoomList", RecvGetRoomList);
+        Message msg = new Message(MsgType.Team_GetTeamList, this);
+        msg.Done = (rsp) => { RecvGetRoomList(rsp.Content as ProtocolBytes); };
+        msg.Send();
 
-        // RoomPanel监听
-        NetMgr.AddListener("GetRoomInfo", RecvGetRoomInfo);
-        NetMgr.AddListener("Fight", RecvFight);
-
-        // 查新所有队伍信息
-        ProtocolBytes protocol = new ProtocolBytes();
-        protocol.AddString("GetRoomList");
-        NetMgr.Send(protocol);
-
-        // 获取当前玩家战绩
-        protocol = new ProtocolBytes();
-        protocol.AddString("GetAchieve");
-        NetMgr.Send(protocol);
+        msg = new Message(MsgType.Team_GetAchive, this);
+        msg.Done = (rsp) => { RecvGetAchieve(rsp.Content as ProtocolBytes); }; ;
+        msg.Send();
     }
+    #endregion
 
-    protected override void OnRelease()
-    {
-        base.OnRelease();
-        NetMgr.srvConn.msgDist.DelListener("GetAchieve", RecvGetAchieve);
-        NetMgr.srvConn.msgDist.DelListener("GetRoomList", RecvGetRoomList);
-        NetMgr.srvConn.msgDist.DelListener("GetRoomInfo", RecvGetRoomInfo);
-        NetMgr.srvConn.msgDist.DelListener("Fight", RecvFight);
-    }
 
+    #region Team List Panel
     //收到GetAchieve协议:战绩信息
     public void RecvGetAchieve(ProtocolBase protocol)
     {
@@ -211,96 +201,37 @@ public class RoomTeamPanel : BasePanel
         //按钮事件
         Button btn = trans.Find("JoinButton").GetComponent<Button>();
         btn.name = i.ToString();   //改变按钮的名字，以便给OnJoinBtnClick传参
-        btn.onClick.AddListener(delegate()
+        btn.onClick.AddListener(() =>
         {
             OnJoinBtnClick(btn.name);
         }
         );
     }
 
-
-    //刷新按钮 ： 刷新房间列表
-    public void OnReflashClick()
-    {
-        
-        ProtocolBytes protocol = new ProtocolBytes();
-        protocol.AddString("GetRoomList");
-        NetMgr.srvConn.Send(protocol);
-    }
-
     //加入按钮：加入房间
     public void OnJoinBtnClick(string name)
     {
-        ProtocolBytes protocol = new ProtocolBytes();
-        protocol.AddString("EnterRoom");
-
-        protocol.AddInt(int.Parse(name));
-        NetMgr.SendWithListenOnce(protocol, OnJoinBtnBack);
-        Debug.Log("请求进入房间 " + name);
+        Message msg = new Message(MsgType.Team_JoinTeam, this);
+        msg["id"] = int.Parse(name);
+        msg.Done = JoinTeam;
+        msg.Send();
     }
 
-    // 加入房间申请回调
-    public void OnJoinBtnBack(ProtocolBase protocol)
+    private void JoinTeam(Message _msg)
     {
-        //解析参数
-        ProtocolBytes proto = (ProtocolBytes)protocol;
-        int start = 0;
-        string protoName = proto.GetString(start, ref start);
-        int ret = proto.GetInt(start, ref start);
-        //处理
-        if (ret == 0)
-        {
-            ShowRoomPanel();
-        }
-        else
-        {
-            LogicUtils.Instance.OnAlert("进入房间失败");
-        }
+        bool bSuc = (bool)_msg.Content;
+        if (bSuc) ShowRoomPanel();
+        else LogicUtils.Instance.OnAlert("进入房间失败");
     }
 
-    // New Room
-    public void OnNewClick()
+    private void NewTeam(Message _msg)
     {
-        ProtocolBytes protocol = new ProtocolBytes();
-        protocol.AddString("CreateRoom");
-        NetMgr.srvConn.Send(protocol, OnNewBack);
+        bool bSuc = (bool)_msg.Content;
+        if (bSuc) ShowRoomPanel();
+        else LogicUtils.Instance.OnAlert("新建房间失败");
     }
+    #endregion
 
-    // New Room CallBack
-    public void OnNewBack(ProtocolBase protocol)
-    {
-        //解析参数
-        ProtocolBytes proto = (ProtocolBytes)protocol;
-        int start = 0;
-        string protoName = proto.GetString(start, ref start);
-        int ret = proto.GetInt(start, ref start);
-        //处理
-        if (ret == 0)
-        {
-            ShowRoomPanel();
-        }
-        else
-        {
-            LogicUtils.Instance.OnAlert("创建房间失败");
-        }
-    }
-
-    //登出按钮
-    public void OnCloseClick()
-    {
-        // Close Team Panel
-        //ProtocolBytes protocol = new ProtocolBytes();
-        //protocol.AddString("Logout");
-        //NetMgr.srvConn.Send(protocol, OnCloseBack);
-        UIManager.Instance.HideSubPanel(UIType.SubTeamPanel);
-    }
-
-    //登出返回
-    public void OnCloseBack(ProtocolBase protocol)
-    {
-        LogicUtils.Instance.OnAlert("登出成功");
-        NetMgr.srvConn.Close();
-    }
 
     #region Room Panel
 
@@ -310,10 +241,9 @@ public class RoomTeamPanel : BasePanel
     private void ShowRoomPanel()
     {
         RoomPanel.gameObject.SetActive(true);
-        //发送查询
-        ProtocolBytes protocol = new ProtocolBytes();
-        protocol.AddString("GetRoomInfo");
-        NetMgr.srvConn.Send(protocol);
+        Message msg = new Message(MsgType.Team_GetTeamInfo,this);
+        msg.Done = p => { RecvGetRoomInfo(p.Content as ProtocolBytes); };
+        msg.Send();
     }
 
     /// <summary>
@@ -363,26 +293,14 @@ public class RoomTeamPanel : BasePanel
             trans.GetComponent<Image>().color = Color.gray;
         }
     }
-
+    
     /// <summary>
-    /// Close Room Panel
+    /// Quite Team
     /// </summary>
-    public void QuietTeam()
+    /// <param name="protocol"></param>
+    public void OnCloseTeam(bool _bSun)
     {
-        ProtocolBytes protocol = new ProtocolBytes();
-        protocol.AddString("LeaveRoom");
-        NetMgr.srvConn.Send(protocol, OnCloseTeam);
-    }
-
-    public void OnCloseTeam(ProtocolBase protocol)
-    {
-        //获取数值
-        ProtocolBytes proto = (ProtocolBytes)protocol;
-        int start = 0;
-        string protoName = proto.GetString(start, ref start);
-        int ret = proto.GetInt(start, ref start);
-        //处理
-        if (ret == 0)
+        if (_bSun)
         {
             LogicUtils.Instance.OnAlert("退出成功");
             RoomPanel.gameObject.SetActive(false);
@@ -392,17 +310,7 @@ public class RoomTeamPanel : BasePanel
             LogicUtils.Instance.OnAlert("退出失败");
         }
     }
-
-    /// <summary>
-    /// Start Fighting 
-    /// </summary>
-    public void OnStartFightClick()
-    {
-        ProtocolBytes protocol = new ProtocolBytes();
-        protocol.AddString("StartFight");
-        NetMgr.srvConn.Send(protocol, OnStartBack);
-    }
-
+    
     /// <summary>
     /// Start Fighting Call Back
     /// </summary>
@@ -419,13 +327,6 @@ public class RoomTeamPanel : BasePanel
         {
             LogicUtils.Instance.OnAlert("开始游戏失败！两队至少都需要一名玩家，只有队长可以开始战斗！");
         }
-    }
-
-    public void RecvFight(ProtocolBase protocol)
-    {
-        ProtocolBytes proto = (ProtocolBytes)protocol;
-        NetMgr.CacheNetMsg(protocol.GetName(), protocol);
-        LevelManager.Instance.ChangeScene(ScnType.BattleScene, UIType.Battle);
     }
     #endregion
 }

@@ -31,12 +31,12 @@ public class NetMgr
         srvConn.Send(protocol);
     }
 
-    public static void AddListener(string name, MsgDistribution.Delegate cb)
+    public static void AddListener(string name, Action<ProtocolBase> cb)
     {
         srvConn.msgDist.AddListener(name, cb);
     }
 
-    public void DelListener(string name, MsgDistribution.Delegate cb)
+    public void DelListener(string name, Action<ProtocolBase> cb)
     {
         srvConn.msgDist.DelListener(name, cb);
     }
@@ -46,7 +46,7 @@ public class NetMgr
     /// </summary>
     /// <param name="pro"></param>
     /// <param name="cb"></param>
-    public static void SendWithListenOnce(ProtocolBase pro, MsgDistribution.Delegate cb)
+    public static void SendWithListenOnce(ProtocolBase pro, Action<ProtocolBase> cb)
     {
         srvConn.Send(pro, cb);
     }

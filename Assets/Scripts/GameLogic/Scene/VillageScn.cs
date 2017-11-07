@@ -32,7 +32,7 @@ public class VillageScn : BaseScene
 
         RegisterModule(typeof(TaskModule));
         RegisterModule(typeof(InventoryModule));
-
+        RegisterModule(typeof(TeamModule));
         RegisterMsg(MsgType.Role_GoTargetPos,SetPlayerTargetPos);
     }
     

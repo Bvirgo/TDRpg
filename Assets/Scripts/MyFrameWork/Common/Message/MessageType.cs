@@ -77,6 +77,11 @@ namespace ZFrameWork
         public const string Team_RefreshTeamList = "Team_RefreshTeamList";
         public const string Team_RefreshAchive = "Team_RefreshAchive";
         public const string Team_ShowTeamInfo = "Team_ShowTeamInfo";
+
+        public const string Team_GetTeamInfo = "Team_GetTeamInfo";
+        public const string Team_GetTeamList = "Team_GetTeamList";
+        public const string Team_GetAchive = "Team_GetAchive";
+
         public const string Team_NewTeam = "Team_NewTeam";
         public const string Team_JoinTeam = "Team_JoinTeam";
         public const string Team_QuitTeam = "Team_QuitTeam";
