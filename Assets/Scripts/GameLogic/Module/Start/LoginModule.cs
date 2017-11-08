@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ZFrameWork;
 using LitJson;
+using ProtoBuf;
 
 public class LoginModule : BaseModule {
 
@@ -42,6 +43,7 @@ public class LoginModule : BaseModule {
             string host = "127.0.0.1";
             int port = 1234;
             NetMgr.srvConn.proto = new ProtocolBytes();
+            //NetMgr.srvConn.proto = new ProtocolPB();
             if (!NetMgr.srvConn.Connect(host, port))
             {
                 LogicUtils.Instance.OnAlert("网络连接错误！");
@@ -65,7 +67,7 @@ public class LoginModule : BaseModule {
         string strToken = proto.GetString(start);
         if (ret == 0)
         {
-            Debug.Log(string.Format("GET Token:{0}",strToken));
+            Debug.Log(string.Format("GET Token:{0}", strToken));
             NetMgr.SetToken(strToken);
             //LevelManager.Instance.ChangeScene(ScnType.BattleScene, UIType.Battle);
             LevelManager.Instance.ChangeScene(ScnType.VillageScene, UIType.Village);
@@ -77,4 +79,58 @@ public class LoginModule : BaseModule {
     }
     #endregion
 
+    private void TestJsonPro(ProtocolBase protocol)
+    {
+        ProtocolJson proto = (ProtocolJson)protocol;
+        string protoName = proto.GetName();
+        RspMsg rsp = proto.GetContent<RspMsg>();
+        TMsg tg = JsonMapper.ToObject<TMsg>(rsp.strJsData);
+        Debug.LogWarning(string.Format("Json:{0},{1} || TMsg:{2}", rsp.rspType, rsp.strTips, tg.name));
+        return;
+    }
+
+}
+/// <summary>
+/// 消息对象
+/// </summary>
+[ProtoContract]
+public class ChatMsg
+{
+    [ProtoMember(1)]
+    public string sender;//发送者
+    [ProtoMember(2)]
+    public string msg;//消息
+    [ProtoMember(3)]
+    public List<string> data
+    {
+        get;
+        set;
+    }
+    [ProtoMember(4)]
+    public object content;
+}
+
+public class RspMsg
+{
+    public byte rspType;
+    public string strTips;
+    public string strJsData;
+}
+
+public enum RspType : byte
+{
+    None,
+    NetError,
+    LogicError,
+    DataError
+}
+public class TMsg
+{
+    public TMsg()
+    {
+        name = "Sub TMSG";
+        nID = 10;
+    }
+    public string name;//发送者
+    public int nID;//消息
 }
