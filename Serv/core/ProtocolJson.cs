@@ -1,17 +1,18 @@
 using System;
 using System.Collections;
 using System.Linq;
+using LitJson;
 
 //字节流协议模型
-public class ProtocolBytes : ProtocolBase
+public class ProtocolJson : ProtocolBase
 {
 	//传输的字节流
 	public byte[] bytes;
 	
 	//解码器
 	public override ProtocolBase Decode(byte[] readbuff, int start, int length)
-	{		
-		ProtocolBytes protocol = new ProtocolBytes();
+	{
+        ProtocolJson protocol = new ProtocolJson();
 		protocol.bytes = new byte[length];
 		Array.Copy(readbuff, start, protocol.bytes, 0, length);
 		return protocol;
@@ -42,9 +43,17 @@ public class ProtocolBytes : ProtocolBase
 		return str;
 	}
 
+    /// <summary>
+    /// 协议Key
+    /// </summary>
+    /// <param name="_strKey"></param>
+    public void SetKeyCode(string _strKey)
+    {
+        AddString(_strKey);
+    }
 
 	//添加字符串
-	public void AddString(string str)
+	private void AddString(string str)
 	{
 		Int32 len = str.Length;
 		byte[] lenBytes = BitConverter.GetBytes (len);
@@ -54,9 +63,50 @@ public class ProtocolBytes : ProtocolBase
 		else
 			bytes = bytes.Concat(lenBytes).Concat(strBytes).ToArray();
 	}
+
+    /// <summary>
+    /// 添加协议内容：Json格式，float请用double代替
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="_conten"></param>
+    public void PushContent<T>(T _conten)
+    {
+        string strJsonData;
+        try
+        {
+            strJsonData = JsonMapper.ToJson(_conten);
+        }
+        catch (Exception e)
+        {
+            strJsonData = "To Json ERROR:"+e; 
+        }
+        AddString(strJsonData);
+    }
+
+    /// <summary>
+    /// 获取Json数据
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public T GetContent<T>()
+    {
+        T conten = default(T);
+        int nStart = 0;
+        GetString(nStart, ref nStart);
+        string strJson = GetString(nStart,ref nStart);
+        try
+        {
+            conten = JsonMapper.ToObject<T>(strJson);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Json To Object Error:"+e);
+        }
+        return conten;
+    }
 	
 	//从字节数组的start处开始读取字符串
-	public string GetString(int start, ref int end)
+	private string GetString(int start, ref int end)
 	{
 		if (bytes == null)
 			return "";
@@ -70,59 +120,9 @@ public class ProtocolBytes : ProtocolBase
 		return str;
 	}
 	
-	public string GetString(int start)
+	private string GetString(int start)
 	{
 		int end = 0;
 		return GetString (start, ref end);
-	}
-
-	public void AddInt(int num)
-	{
-		byte[] numBytes = BitConverter.GetBytes (num);
-		if (bytes == null)
-			bytes = numBytes;
-		else
-			bytes = bytes.Concat(numBytes).ToArray();
-	}
-	
-	public int GetInt(int start, ref int end)
-	{
-		if (bytes == null)
-			return 0;
-		if (bytes.Length < start + sizeof(Int32))
-			return 0;
-		end = start + sizeof(Int32);
-		return BitConverter.ToInt32(bytes, start);
-	}
-	
-	public int GetInt(int start)
-	{
-		int end = 0;
-		return GetInt (start, ref end);
-	}
-
-	public void AddFloat(float num)
-	{
-		byte[] numBytes = BitConverter.GetBytes (num);
-		if (bytes == null)
-			bytes = numBytes;
-		else
-			bytes = bytes.Concat(numBytes).ToArray();
-	}
-	
-	public float GetFloat(int start, ref int end)
-	{
-		if (bytes == null)
-			return 0;
-		if (bytes.Length < start + sizeof(float))
-			return 0;
-		end = start + sizeof(float);
-		return BitConverter.ToSingle(bytes, start);
-	}
-	
-	public float GetFloat(int start)
-	{
-		int end = 0;
-		return GetFloat (start, ref end);
 	}
 }

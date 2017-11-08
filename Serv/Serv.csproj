@@ -48,12 +48,19 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LitJson">
+      <HintPath>lib\LitJson.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\MySql.Data.dll</HintPath>
     </Reference>
+    <Reference Include="protobuf-net">
+      <HintPath>lib\protobuf-net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -63,12 +70,14 @@
     <Compile Include="core\Player.cs" />
     <Compile Include="core\ProtocolBase.cs" />
     <Compile Include="core\ProtocolBytes.cs" />
+    <Compile Include="core\ProtocolPB.cs" />
     <Compile Include="core\ProtocolStr.cs" />
     <Compile Include="core\Sys.cs" />
     <Compile Include="core\ServNet.cs" />
     <Compile Include="Logic\handleConnMsg.cs" />
     <Compile Include="Logic\handlePlayerEvent.cs" />
     <Compile Include="Logic\handlePlayerMsg.cs" />
+    <Compile Include="Logic\MsgType.cs" />
     <Compile Include="Logic\PlayerData.cs" />
     <Compile Include="Logic\PlayerTempData.cs" />
     <Compile Include="Logic\ScenePlayer.cs" />

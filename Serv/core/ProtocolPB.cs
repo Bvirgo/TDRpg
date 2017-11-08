@@ -1,16 +1,19 @@
 using System;
 using System.Collections;
 using System.Linq;
-
+using ProtoBuf;
+using System.IO;
+using System.Xml;
 //字节流协议模型
-public class ProtocolBytes : ProtocolBase
+public class ProtocolPB : ProtocolBase
 {
 	//传输的字节流
 	public byte[] bytes;
 	
 	//解码器
 	public override ProtocolBase Decode(byte[] readbuff, int start, int length)
-	{		
+	{
+		
 		ProtocolBytes protocol = new ProtocolBytes();
 		protocol.bytes = new byte[length];
 		Array.Copy(readbuff, start, protocol.bytes, 0, length);
@@ -44,7 +47,7 @@ public class ProtocolBytes : ProtocolBase
 
 
 	//添加字符串
-	public void AddString(string str)
+	public void SetKeyCode(string str)
 	{
 		Int32 len = str.Length;
 		byte[] lenBytes = BitConverter.GetBytes (len);
@@ -54,6 +57,32 @@ public class ProtocolBytes : ProtocolBase
 		else
 			bytes = bytes.Concat(lenBytes).Concat(strBytes).ToArray();
 	}
+
+    public void Serialize<T>(T _conten)
+    {
+        using (MemoryStream ms = new MemoryStream())
+        {
+            Serializer.Serialize<T>(ms, _conten);
+            byte[] data = new byte[ms.Length];
+            ms.Position = 0;
+            ms.Read(data, 0, data.Length);
+            bytes = bytes != null ? bytes.Concat(data).ToArray() : data;
+        }
+    }
+
+    public T DeSerialize<T>()
+    {
+        T content = default(T);
+        int nEnd = 0;
+        GetString(0, ref nEnd);
+        using (MemoryStream ms = new MemoryStream())
+        {
+            ms.Write(bytes, nEnd, bytes.Length - nEnd);
+            ms.Position = 0;
+            content = Serializer.Deserialize<T>(ms);
+        }
+        return content;
+    }
 	
 	//从字节数组的start处开始读取字符串
 	public string GetString(int start, ref int end)
@@ -74,55 +103,5 @@ public class ProtocolBytes : ProtocolBase
 	{
 		int end = 0;
 		return GetString (start, ref end);
-	}
-
-	public void AddInt(int num)
-	{
-		byte[] numBytes = BitConverter.GetBytes (num);
-		if (bytes == null)
-			bytes = numBytes;
-		else
-			bytes = bytes.Concat(numBytes).ToArray();
-	}
-	
-	public int GetInt(int start, ref int end)
-	{
-		if (bytes == null)
-			return 0;
-		if (bytes.Length < start + sizeof(Int32))
-			return 0;
-		end = start + sizeof(Int32);
-		return BitConverter.ToInt32(bytes, start);
-	}
-	
-	public int GetInt(int start)
-	{
-		int end = 0;
-		return GetInt (start, ref end);
-	}
-
-	public void AddFloat(float num)
-	{
-		byte[] numBytes = BitConverter.GetBytes (num);
-		if (bytes == null)
-			bytes = numBytes;
-		else
-			bytes = bytes.Concat(numBytes).ToArray();
-	}
-	
-	public float GetFloat(int start, ref int end)
-	{
-		if (bytes == null)
-			return 0;
-		if (bytes.Length < start + sizeof(float))
-			return 0;
-		end = start + sizeof(float);
-		return BitConverter.ToSingle(bytes, start);
-	}
-	
-	public float GetFloat(int start)
-	{
-		int end = 0;
-		return GetFloat (start, ref end);
-	}
+	}	
 }

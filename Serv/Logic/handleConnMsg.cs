@@ -1,4 +1,6 @@
+using LitJson;
 using System;
+using System.Collections.Generic;
 
 public partial class HandleConnMsg
 {
@@ -87,11 +89,40 @@ public partial class HandleConnMsg
 		//事件触发
 		ServNet.instance.handlePlayerEvent.OnLogin(conn.player);
 
-		//返回
-		protocolRet.AddInt(0);
-        protocolRet.AddString(id);
-		conn.Send (protocolRet);
-		return;
+        // 正常返回
+        //protocolRet.AddInt(0);
+        //protocolRet.AddString(id);
+        //conn.Send(protocolRet);
+
+        // 测试 Json
+        RspMsg msg = new RspMsg();
+        msg.rspType = 0;
+        msg.strTips = "登录成功！";
+        TMsg tg = new TMsg();
+        msg.strJsData = JsonMapper.ToJson(tg);
+
+        ProtocolJson ptemp = new ProtocolJson();
+        ptemp.SetKeyCode("Login");
+        ptemp.PushContent<RspMsg>(msg);
+        conn.Send(ptemp);
+
+        //// 测试probuffer
+        //ProtocolPB pb = new ProtocolPB();
+        //pb.SetKeyCode("Login");
+        //ChatMsg cm = new ChatMsg();
+        //cm.sender = "习近平:";
+        //cm.msg = "特朗普今日访华,拉出去宰了！！";
+        //List<string> pData = new List<string>();
+        //for (int i = 0; i < 10; i++)
+        //{
+        //    pData.Add(i.ToString());
+        //}
+        //cm.data = pData;
+        //TMsg tm = new TMsg();
+        //cm.content = tm;
+        //pb.Serialize<ChatMsg>(cm);
+        //conn.Send(pb);
+        return;
 	}
 
 	//下线

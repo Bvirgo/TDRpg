@@ -14,6 +14,7 @@ public class PlayerTempData
 		Room,
 		Fight,
 	}
+
 	public Status status;
 	//room状态
 	public Room room;
