@@ -226,7 +226,6 @@ public class UIPackagePanel : BasePanel
         }
     }
     
-
     /// <summary>
     /// Refresh Package By Msg
     /// </summary>

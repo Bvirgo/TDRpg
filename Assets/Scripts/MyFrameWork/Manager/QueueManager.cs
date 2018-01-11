@@ -11,7 +11,7 @@ namespace ZFrameWork
     public  class QueueManager: Singleton<QueueManager>
     {
         /// <summary>
-        /// 运行窗阈值
+        /// Runing Count
         /// </summary>
         public int m_nMax;
 
@@ -21,11 +21,14 @@ namespace ZFrameWork
 
         List<AsyncTask> m_pWaitingList;
 
-        Queue<AsyncTask> m_qTask;
-
         public QueueManager()
         {
-            m_nMax = 5;
+            m_nMax = 1;
+        }
+
+        public void OnSetThreshold(int _nWindow)
+        {
+            m_nMax = _nWindow;
         }
         public override void Init()
         {
@@ -51,18 +54,18 @@ namespace ZFrameWork
         /// <summary>
         /// New Task
         /// </summary>
-        /// <param name="loadFunc">回调</param>
-        /// <param name="priority">权重</param>
-        /// <param name="label"></param>
+        /// <param name="_taskAct">Task Act & Done Act</param>
+        /// <param name="_nPriority">Priority</param>
+        /// <param name="_strTips">Tips</param>
         /// <returns></returns>
-        public AsyncTask Add(Action<Action> loadFunc, int priority = 3, string label = "")
+        public AsyncTask Add(Action<Action> _taskAct, TaskPriority _tp = TaskPriority.Bronze, string _strTips = "")
         {
-            AsyncTask _task = new AsyncTask(loadFunc, priority, label);
+            AsyncTask _task = new AsyncTask(_taskAct, _tp, _strTips);
             return Add(_task);
         }
 
         /// <summary>
-        /// 新任务，插入队列
+        /// Insert New Task
         /// </summary>
         /// <param name="_task"></param>
         public void Insert(AsyncTask _task)
@@ -79,20 +82,21 @@ namespace ZFrameWork
         }
 
         /// <summary>
-        /// 任务按权重排序
+        /// Sort By Task Priority
         /// </summary>
         /// <param name="_q1"></param>
         /// <param name="_q2"></param>
         /// <returns></returns>
         private int SortTask(AsyncTask _q1,AsyncTask _q2)
         {
-            if (_q1.Priority > _q2.Priority)
-            {
-                return -1;
-            }
-            return 1;
+            return _q1.tp > _q2.tp ? -1 : 1;
         }
 
+        /// <summary>
+        /// Remove Waiting Task
+        /// </summary>
+        /// <param name="_task"></param>
+        /// <returns></returns>
         public bool Cancel(AsyncTask _task)
         {
             if (m_pWaitingList.Contains(_task))
@@ -107,7 +111,7 @@ namespace ZFrameWork
         }
 
         /// <summary>
-        /// 清除等待队列
+        /// Clear
         /// </summary>
         public void ClearWaitList()
         {
@@ -116,7 +120,7 @@ namespace ZFrameWork
         }
 
         /// <summary>
-        /// 获取等待队列
+        /// Get Waiting List
         /// </summary>
         /// <returns></returns>
         public List<AsyncTask> GetWaitList()
@@ -125,10 +129,10 @@ namespace ZFrameWork
         }
 
         /// <summary>
-        /// 等待队列长度
+        /// Get The Length of  Waiting List 
         /// </summary>
         /// <returns></returns>
-        public int GetWaitLenth()
+        public int GetWaitLength()
         {
             return m_pWaitingList.Count + m_pRuningList.Count;
         }
@@ -138,10 +142,7 @@ namespace ZFrameWork
         /// </summary>
         void TaskLoop()
         {
-            if (m_pRuningList.Count >= m_nMax)
-            {
-                return;
-            }
+            if (m_pRuningList.Count >= m_nMax) return;
 
             if (m_pWaitingList.Count > 0)
             {
@@ -154,7 +155,7 @@ namespace ZFrameWork
                     AsyncTask qvo = m_pWaitingList[i];
                     m_pRuningList.Add(m_pWaitingList[i]);
                     m_pWaitingList.RemoveAt(i);
-                    qvo.LoadFunc(() =>
+                    qvo._taskAct(() =>
                     {
                         TaskLoop();
                         m_pRuningList.Remove(qvo);
@@ -174,15 +175,25 @@ namespace ZFrameWork
 
     public class AsyncTask
     {
-        public Action<Action> LoadFunc;
-        public float Priority;
+        public Action<Action> _taskAct;
         public string Label;
+        public TaskPriority tp;
 
-        public AsyncTask(Action<Action> loadFunc, float priority, string label)
+        public AsyncTask(Action<Action> loadFunc, TaskPriority _tp, string label)
         {
-            LoadFunc = loadFunc;
-            Priority = priority;
+            _taskAct = loadFunc;
+            tp = _tp;
             Label = label;
         }
+    }
+
+    public enum TaskPriority
+    {
+        Bronze = 1, // 青铜
+        Silver,     // 白银
+        Gold,       // 黄金
+        Diamond,    // 钻石
+        Obsidian,   // 星耀
+        King        // 王者       
     }
 }
